@@ -1,0 +1,241 @@
+---
+---
+
+<section id="contact" class="contact fade-in">
+	<div class="container">
+		<h2 class="section-title">Get In Touch</h2>
+		<p class="contact-intro">
+			I'm always open to discussing new opportunities, collaborations, or just having a chat about technology and music!
+		</p>
+		
+		<div class="contact-grid">
+			<div class="contact-info">
+				<h3>Let's Connect</h3>
+				<div class="contact-methods">
+					<a href="mailto:rvabhi2504@gmail.com" class="contact-item">
+						<span class="contact-icon">📧</span>
+						<div>
+							<h4>Email</h4>
+							<p>rvabhi2504@gmail.com</p>
+						</div>
+					</a>
+					<a href="tel:+918329965881" class="contact-item">
+						<span class="contact-icon">📱</span>
+						<div>
+							<h4>Phone</h4>
+							<p>+91 83299 65881</p>
+						</div>
+					</a>
+					<a href="https://github.com/R-V-Abhishek" target="_blank" rel="noopener noreferrer" class="contact-item">
+						<span class="contact-icon">💻</span>
+						<div>
+							<h4>GitHub</h4>
+							<p>github.com/R-V-Abhishek</p>
+						</div>
+					</a>
+					<a href="https://www.linkedin.com/in/r-v-abhishek" target="_blank" rel="noopener noreferrer" class="contact-item">
+						<span class="contact-icon">💼</span>
+						<div>
+							<h4>LinkedIn</h4>
+							<p>linkedin.com/in/r-v-abhishek</p>
+						</div>
+					</a>
+				</div>
+
+				<div class="languages-interests">
+					<div class="info-section">
+						<h4>Languages</h4>
+						<div class="tags">
+							<span class="tag">English</span>
+							<span class="tag">Hindi</span>
+							<span class="tag">Kannada</span>
+							<span class="tag">Tamil</span>
+						</div>
+					</div>
+					<div class="info-section">
+						<h4>Interests</h4>
+						<div class="tags">
+							<span class="tag">Carnatic Music</span>
+							<span class="tag">Event Coordination</span>
+							<span class="tag">Books & Movies</span>
+							<span class="tag">Audio/Video Editing</span>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="contact-form-wrapper">
+				<form class="contact-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+					<div class="form-group">
+						<label for="name">Name</label>
+						<input type="text" id="name" name="name" required />
+					</div>
+					<div class="form-group">
+						<label for="email">Email</label>
+						<input type="email" id="email" name="email" required />
+					</div>
+					<div class="form-group">
+						<label for="message">Message</label>
+						<textarea id="message" name="message" rows="6" required></textarea>
+					</div>
+					<button type="submit" class="btn btn-primary">Send Message</button>
+				</form>
+			</div>
+		</div>
+	</div>
+</section>
+
+<style>
+	.contact {
+		padding: 6rem 2rem;
+		background: var(--section-bg);
+	}
+
+	.contact-intro {
+		text-align: center;
+		font-size: 1.1rem;
+		color: var(--text-color);
+		max-width: 700px;
+		margin: 0 auto 3rem;
+	}
+
+	.contact-grid {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 3rem;
+		max-width: 1200px;
+		margin: 0 auto;
+	}
+
+	.contact-info h3 {
+		font-size: 1.8rem;
+		color: var(--heading-color);
+		margin-bottom: 2rem;
+	}
+
+	.contact-methods {
+		display: grid;
+		gap: 1rem;
+		margin-bottom: 2rem;
+	}
+
+	.contact-item {
+		display: flex;
+		gap: 1rem;
+		align-items: center;
+		padding: 1rem;
+		background: var(--card-bg);
+		border-radius: 12px;
+		text-decoration: none;
+		color: var(--text-color);
+		transition: transform 0.3s ease, box-shadow 0.3s ease;
+	}
+
+	.contact-item:hover {
+		transform: translateX(5px);
+		box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+	}
+
+	.contact-icon {
+		font-size: 2rem;
+		flex-shrink: 0;
+	}
+
+	.contact-item h4 {
+		font-size: 1rem;
+		color: var(--primary-color);
+		margin-bottom: 0.25rem;
+	}
+
+	.contact-item p {
+		font-size: 0.9rem;
+		color: var(--text-light);
+		margin: 0;
+	}
+
+	.languages-interests {
+		margin-top: 2rem;
+	}
+
+	.info-section {
+		margin-bottom: 1.5rem;
+	}
+
+	.info-section h4 {
+		font-size: 1.1rem;
+		color: var(--heading-color);
+		margin-bottom: 0.75rem;
+	}
+
+	.tags {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.5rem;
+	}
+
+	.tag {
+		background: rgba(99, 102, 241, 0.1);
+		color: var(--primary-color);
+		padding: 0.4rem 0.8rem;
+		border-radius: 15px;
+		font-size: 0.85rem;
+	}
+
+	.contact-form-wrapper {
+		background: var(--card-bg);
+		padding: 2rem;
+		border-radius: 16px;
+		box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+	}
+
+	.contact-form {
+		display: flex;
+		flex-direction: column;
+		gap: 1.5rem;
+	}
+
+	.form-group {
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+	}
+
+	.form-group label {
+		font-weight: 600;
+		color: var(--heading-color);
+	}
+
+	.form-group input,
+	.form-group textarea {
+		padding: 0.875rem;
+		border: 2px solid var(--border-color);
+		border-radius: 8px;
+		font-size: 1rem;
+		font-family: inherit;
+		background: var(--bg-color);
+		color: var(--text-color);
+		transition: border-color 0.3s ease;
+	}
+
+	.form-group input:focus,
+	.form-group textarea:focus {
+		outline: none;
+		border-color: var(--primary-color);
+	}
+
+	.form-group textarea {
+		resize: vertical;
+	}
+
+	@media (max-width: 968px) {
+		.contact-grid {
+			grid-template-columns: 1fr;
+		}
+	}
+
+	@media (max-width: 768px) {
+		.contact {
+			padding: 4rem 1.5rem;
+		}
+	}
+</style>

@@ -1,0 +1,160 @@
+---
+---
+
+<section id="about" class="about fade-in">
+	<div class="container">
+		<h2 class="section-title">About Me</h2>
+		<div class="about-content">
+			<div class="about-text">
+				<p class="intro">
+					I'm a <strong>B.E. Computer Science Engineering (Data Science)</strong> student at 
+					<strong>BMS College of Engineering, Bengaluru</strong>, maintaining a stellar CGPA of 9.67.
+				</p>
+				<p>
+					With a passion for both <strong>technology and music</strong>, I bring a unique perspective to 
+					problem-solving. As a <strong>professional Carnatic musician</strong>, I've performed in numerous 
+					concerts and apply the same discipline and creativity to my engineering work.
+				</p>
+				<p>
+					My expertise spans <strong>full-stack development</strong>, <strong>data science</strong>, and 
+					<strong>machine learning</strong>. I've built production-ready applications like restaurant management 
+					systems, automated GST processing tools, and explored cutting-edge topics like Large Language Models.
+				</p>
+				<div class="highlights">
+					<div class="highlight-item">
+						<span class="highlight-icon">🎓</span>
+						<div>
+							<h4>Academic Excellence</h4>
+							<p>9.67 CGPA • 99% in Pre-University</p>
+						</div>
+					</div>
+					<div class="highlight-item">
+						<span class="highlight-icon">💻</span>
+						<div>
+							<h4>Technical Skills</h4>
+							<p>Full Stack • Data Science • ML/AI</p>
+						</div>
+					</div>
+					<div class="highlight-item">
+						<span class="highlight-icon">🎵</span>
+						<div>
+							<h4>Creative Background</h4>
+							<p>Professional Carnatic Vocalist</p>
+						</div>
+					</div>
+					<div class="highlight-item">
+						<span class="highlight-icon">🤝</span>
+						<div>
+							<h4>Leadership</h4>
+							<p>Club Coordinator • Volunteer</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<style>
+	.about {
+		padding: 6rem 2rem;
+		background: var(--section-bg);
+	}
+
+	.container {
+		max-width: 1200px;
+		margin: 0 auto;
+	}
+
+	.section-title {
+		font-size: 2.5rem;
+		text-align: center;
+		margin-bottom: 3rem;
+		color: var(--heading-color);
+		position: relative;
+		padding-bottom: 1rem;
+	}
+
+	.section-title::after {
+		content: '';
+		position: absolute;
+		bottom: 0;
+		left: 50%;
+		transform: translateX(-50%);
+		width: 80px;
+		height: 4px;
+		background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+		border-radius: 2px;
+	}
+
+	.about-content {
+		display: grid;
+		gap: 3rem;
+		align-items: center;
+	}
+
+	.about-text {
+		font-size: 1.1rem;
+		line-height: 1.8;
+		color: var(--text-color);
+	}
+
+	.intro {
+		font-size: 1.2rem;
+		color: var(--text-light);
+		margin-bottom: 1.5rem;
+	}
+
+	.about-text p {
+		margin-bottom: 1.5rem;
+	}
+
+	.highlights {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+		gap: 1.5rem;
+		margin-top: 2rem;
+	}
+
+	.highlight-item {
+		display: flex;
+		gap: 1rem;
+		padding: 1.5rem;
+		background: var(--card-bg);
+		border-radius: 12px;
+		box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+		transition: transform 0.3s ease, box-shadow 0.3s ease;
+	}
+
+	.highlight-item:hover {
+		transform: translateY(-5px);
+		box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+	}
+
+	.highlight-icon {
+		font-size: 2.5rem;
+		flex-shrink: 0;
+	}
+
+	.highlight-item h4 {
+		font-size: 1.1rem;
+		margin-bottom: 0.25rem;
+		color: var(--heading-color);
+	}
+
+	.highlight-item p {
+		font-size: 0.9rem;
+		color: var(--text-light);
+		margin: 0;
+	}
+
+	@media (max-width: 768px) {
+		.about {
+			padding: 4rem 1.5rem;
+		}
+
+		.highlights {
+			grid-template-columns: 1fr;
+		}
+	}
+</style>

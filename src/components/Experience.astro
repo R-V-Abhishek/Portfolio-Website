@@ -1,0 +1,205 @@
+---
+const experiences = [
+	{
+		title: "Club Coordinator",
+		organization: "Ninaad - Indian Music Club",
+		location: "BMS College of Engineering",
+		description: "Leading the Indian music club, organizing events and competitions, managing performances, and coordinating with various stakeholders to promote Indian classical music culture on campus.",
+		icon: "🎵"
+	},
+	{
+		title: "Design Department Member",
+		organization: "DSYNC - Data Science Club",
+		location: "BMS College of Engineering",
+		description: "Key member specializing in creation of digital assets and event branding for major BMSCE events, combining technical knowledge with creative design skills.",
+		icon: "🎨"
+	}
+];
+
+const certifications = [
+	{
+		name: "IBM Exploratory Data Analysis Course",
+		issuer: "Coursera",
+		date: "July 2025"
+	},
+	{
+		name: "Introduction to Large Language Models",
+		issuer: "NPTEL (IIT New Delhi)",
+		date: "August 2025"
+	},
+	{
+		name: "HTML + CSS in Depth",
+		issuer: "Meta (Coursera)",
+		date: "July 2024"
+	}
+];
+---
+
+<section id="experience" class="experience fade-in">
+	<div class="container">
+		<h2 class="section-title">Leadership & Experience</h2>
+		
+		<div class="experience-grid">
+			{experiences.map(exp => (
+				<div class="experience-card">
+					<div class="exp-icon">{exp.icon}</div>
+					<div class="exp-content">
+						<h3 class="exp-title">{exp.title}</h3>
+						<h4 class="exp-org">{exp.organization}</h4>
+						<p class="exp-location">{exp.location}</p>
+						<p class="exp-description">{exp.description}</p>
+					</div>
+				</div>
+			))}
+		</div>
+
+		<div class="certifications">
+			<h3 class="subsection-title">Certifications</h3>
+			<div class="cert-grid">
+				{certifications.map(cert => (
+					<div class="cert-card">
+						<div class="cert-icon">📜</div>
+						<div class="cert-info">
+							<h4 class="cert-name">{cert.name}</h4>
+							<p class="cert-issuer">{cert.issuer}</p>
+							<p class="cert-date">{cert.date}</p>
+						</div>
+					</div>
+				))}
+			</div>
+		</div>
+	</div>
+</section>
+
+<style>
+	.experience {
+		padding: 6rem 2rem;
+		background: var(--bg-color);
+	}
+
+	.experience-grid {
+		display: grid;
+		gap: 2rem;
+		margin-bottom: 4rem;
+	}
+
+	.experience-card {
+		display: flex;
+		gap: 1.5rem;
+		background: var(--card-bg);
+		padding: 2rem;
+		border-radius: 16px;
+		box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+		transition: transform 0.3s ease, box-shadow 0.3s ease;
+	}
+
+	.experience-card:hover {
+		transform: translateY(-5px);
+		box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+	}
+
+	.exp-icon {
+		font-size: 3rem;
+		flex-shrink: 0;
+	}
+
+	.exp-content {
+		flex: 1;
+	}
+
+	.exp-title {
+		font-size: 1.4rem;
+		color: var(--heading-color);
+		margin-bottom: 0.5rem;
+	}
+
+	.exp-org {
+		font-size: 1.1rem;
+		color: var(--primary-color);
+		margin-bottom: 0.25rem;
+		font-weight: 600;
+	}
+
+	.exp-location {
+		color: var(--text-light);
+		margin-bottom: 1rem;
+		font-size: 0.9rem;
+	}
+
+	.exp-description {
+		color: var(--text-color);
+		line-height: 1.6;
+	}
+
+	.certifications {
+		margin-top: 3rem;
+	}
+
+	.subsection-title {
+		font-size: 2rem;
+		color: var(--heading-color);
+		margin-bottom: 2rem;
+		text-align: center;
+	}
+
+	.cert-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+		gap: 1.5rem;
+	}
+
+	.cert-card {
+		display: flex;
+		gap: 1rem;
+		background: var(--card-bg);
+		padding: 1.5rem;
+		border-radius: 12px;
+		box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+		transition: transform 0.3s ease;
+	}
+
+	.cert-card:hover {
+		transform: translateY(-3px);
+	}
+
+	.cert-icon {
+		font-size: 2rem;
+		flex-shrink: 0;
+	}
+
+	.cert-info {
+		flex: 1;
+	}
+
+	.cert-name {
+		font-size: 1.1rem;
+		color: var(--heading-color);
+		margin-bottom: 0.5rem;
+	}
+
+	.cert-issuer {
+		color: var(--primary-color);
+		font-weight: 600;
+		margin-bottom: 0.25rem;
+	}
+
+	.cert-date {
+		color: var(--text-light);
+		font-size: 0.9rem;
+	}
+
+	@media (max-width: 768px) {
+		.experience {
+			padding: 4rem 1.5rem;
+		}
+
+		.experience-card {
+			flex-direction: column;
+			text-align: center;
+		}
+
+		.cert-grid {
+			grid-template-columns: 1fr;
+		}
+	}
+</style>

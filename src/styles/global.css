@@ -1,53 +1,211 @@
-/*
-  The CSS in this style tag is based off of Bear Blog's default CSS.
-  https://github.com/HermanMartinus/bearblog/blob/297026a877bc2ab2b3bdfbd6b9f7961c350917dd/templates/styles/blog/default.css
-  License MIT: https://github.com/HermanMartinus/bearblog/blob/master/LICENSE.md
- */
-
-:root {
-	--accent: #2337ff;
-	--accent-dark: #000d8a;
-	--black: 15, 18, 25;
-	--gray: 96, 115, 159;
-	--gray-light: 229, 233, 240;
-	--gray-dark: 34, 41, 57;
-	--gray-gradient: rgba(var(--gray-light), 50%), #fff;
-	--box-shadow:
-		0 2px 6px rgba(var(--gray), 25%), 0 8px 24px rgba(var(--gray), 33%), 0 16px 32px
-		rgba(var(--gray), 33%);
-}
-@font-face {
-	font-family: "Atkinson";
-	src: url("/fonts/atkinson-regular.woff") format("woff");
-	font-weight: 400;
-	font-style: normal;
-	font-display: swap;
-}
-@font-face {
-	font-family: "Atkinson";
-	src: url("/fonts/atkinson-bold.woff") format("woff");
-	font-weight: 700;
-	font-style: normal;
-	font-display: swap;
-}
-body {
-	font-family: "Atkinson", sans-serif;
+/* Reset and Base Styles */
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
 	margin: 0;
 	padding: 0;
-	text-align: left;
-	background: linear-gradient(var(--gray-gradient)) no-repeat;
-	background-size: 100% 600px;
-	word-wrap: break-word;
-	overflow-wrap: break-word;
-	color: rgb(var(--gray-dark));
-	font-size: 20px;
-	line-height: 1.7;
 }
+
+:root {
+	/* Colors - Light Mode */
+	--primary-color: #6366f1;
+	--secondary-color: #8b5cf6;
+	--bg-color: #ffffff;
+	--section-bg: #f9fafb;
+	--card-bg: #ffffff;
+	--text-color: #1f2937;
+	--text-light: #6b7280;
+	--heading-color: #111827;
+	--border-color: #e5e7eb;
+	
+	/* Hero Gradient */
+	--hero-bg-1: #f0f9ff;
+	--hero-bg-2: #e0e7ff;
+	
+	/* Footer */
+	--footer-bg: #1f2937;
+	--footer-text: #f9fafb;
+	--footer-text-light: #d1d5db;
+	
+	/* Shadows */
+	--shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+	--shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+	--shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="dark"] {
+	/* Colors - Dark Mode - Darker Palette */
+	--bg-color: #020617;
+	--section-bg: #0f172a;
+	--card-bg: #0f172a;
+	--text-color: #e2e8f0;
+	--text-light: #94a3b8;
+	--heading-color: #f8fafc;
+	--border-color: #1e293b;
+	
+	/* Hero Gradient */
+	--hero-bg-1: #020617;
+	--hero-bg-2: #0a0f1e;
+	
+	/* Footer */
+	--footer-bg: #000000;
+	--footer-text: #f8fafc;
+	--footer-text-light: #cbd5e1;
+}
+
+html {
+	scroll-behavior: smooth;
+	transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+body {
+	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+		'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+		sans-serif;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	background-color: var(--bg-color);
+	color: var(--text-color);
+	line-height: 1.6;
+	transition: background-color 0.4s ease, color 0.4s ease;
+}
+
 main {
-	width: 720px;
-	max-width: calc(100% - 2em);
-	margin: auto;
-	padding: 3em 1em;
+	min-height: 100vh;
+	transition: background-color 0.4s ease;
+}
+
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+	color: var(--heading-color);
+	font-weight: 700;
+	line-height: 1.2;
+	transition: color 0.4s ease;
+}
+
+a {
+	color: var(--primary-color);
+	text-decoration: none;
+	transition: color 0.4s ease;
+}
+
+/* Buttons */
+.btn {
+	display: inline-block;
+	padding: 0.875rem 2rem;
+	border-radius: 50px;
+	font-weight: 600;
+	text-align: center;
+	cursor: pointer;
+	transition: all 0.4s ease;
+	border: none;
+	font-size: 1rem;
+}
+
+.btn-primary {
+	background: var(--primary-color);
+	color: white;
+}
+
+.btn-primary:hover {
+	transform: translateY(-3px);
+	box-shadow: 0 10px 25px rgba(99, 102, 241, 0.3);
+}
+
+.btn-secondary {
+	background: transparent;
+	color: var(--primary-color);
+	border: 2px solid var(--primary-color);
+}
+
+.btn-secondary:hover {
+	background: var(--primary-color);
+	color: white;
+}
+
+/* Container */
+.container {
+	max-width: 1200px;
+	margin: 0 auto;
+	padding: 0 2rem;
+}
+
+/* Fade In Animation */
+.fade-in {
+	opacity: 0;
+	transform: translateY(30px);
+	transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.fade-in.animate-in {
+	opacity: 1;
+	transform: translateY(0);
+}
+
+/* Section Padding */
+section {
+	padding: 6rem 0;
+}
+
+@media (max-width: 768px) {
+	section {
+		padding: 4rem 0;
+	}
+	
+	.container {
+		padding: 0 1.5rem;
+	}
+}
+
+/* Loading Spinner */
+@keyframes spin {
+	to { transform: rotate(360deg); }
+}
+
+.loading {
+	display: inline-block;
+	width: 2rem;
+	height: 2rem;
+	border: 3px solid rgba(99, 102, 241, 0.3);
+	border-radius: 50%;
+	border-top-color: var(--primary-color);
+	animation: spin 1s ease-in-out infinite;
+}
+
+/* Scroll Indicator */
+@keyframes bounce {
+	0%, 100% {
+		transform: translateY(0);
+	}
+	50% {
+		transform: translateY(10px);
+	}
+}
+
+/* Selection */
+::selection {
+	background-color: rgba(99, 102, 241, 0.3);
+	color: var(--text-color);
+}
+
+/* Focus Styles */
+:focus-visible {
+	outline: 2px solid var(--primary-color);
+	outline-offset: 2px;
+}
+
+/* Accessibility */
+.sr-only {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	white-space: nowrap;
+	border-width: 0;
 }
 h1,
 h2,

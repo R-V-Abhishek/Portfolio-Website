@@ -1,0 +1,160 @@
+---
+---
+
+<nav class="navbar">
+	<div class="nav-container">
+		<a href="#" class="logo">RVA</a>
+		<ul class="nav-links">
+			<li><a href="#about">About</a></li>
+			<li><a href="#skills">Skills</a></li>
+			<li><a href="#projects">Projects</a></li>
+			<li><a href="#experience">Experience</a></li>
+			<li><a href="#contact">Contact</a></li>
+		</ul>
+		<button class="theme-toggle" aria-label="Toggle theme">
+			<span class="theme-icon">🌙</span>
+		</button>
+	</div>
+</nav>
+
+<style>
+	.navbar {
+		position: fixed;
+		top: 0;
+		left: 0;
+		right: 0;
+		background: rgba(255, 255, 255, 0.95);
+		backdrop-filter: blur(10px);
+		-webkit-backdrop-filter: blur(10px);
+		box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+		z-index: 1000;
+		padding: 1rem 0;
+		transition: all 0.4s ease;
+	}
+
+	html[data-theme="dark"] .navbar {
+		background: rgba(2, 6, 23, 0.98) !important;
+		box-shadow: 0 2px 20px rgba(0, 0, 0, 0.8);
+		border-bottom: 1px solid rgba(99, 102, 241, 0.2);
+	}
+
+	.nav-container {
+		max-width: 1200px;
+		margin: 0 auto;
+		padding: 0 2rem;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+	}
+
+	.logo {
+		font-size: 1.5rem;
+		font-weight: 700;
+		color: var(--primary-color);
+		text-decoration: none;
+		transition: all 0.4s ease;
+	}
+
+	[data-theme="dark"] .logo {
+		color: #a5b4fc;
+	}
+
+	.logo:hover {
+		transform: scale(1.1);
+	}
+
+	.nav-links {
+		display: flex;
+		gap: 2rem;
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+
+	.nav-links a {
+		color: #1f2937;
+		text-decoration: none;
+		font-weight: 500;
+		transition: all 0.4s ease;
+		position: relative;
+	}
+
+	[data-theme="dark"] .nav-links a {
+		color: #f1f5f9;
+	}
+
+	.nav-links a:hover {
+		color: var(--primary-color);
+	}
+
+	[data-theme="dark"] .nav-links a:hover {
+		color: #a5b4fc;
+	}
+
+	.nav-links a::after {
+		content: '';
+		position: absolute;
+		bottom: -5px;
+		left: 0;
+		width: 0;
+		height: 2px;
+		background: var(--primary-color);
+		transition: width 0.3s ease;
+	}
+
+	.nav-links a:hover::after {
+		width: 100%;
+	}
+
+	.theme-toggle {
+		background: none;
+		border: none;
+		font-size: 1.5rem;
+		cursor: pointer;
+		padding: 0.5rem;
+		border-radius: 50%;
+	transition: all 0.4s ease;
+		background: rgba(99, 102, 241, 0.2);
+	}
+
+	.theme-icon {
+		display: inline-block;
+	transition: all 0.4s ease;
+	.theme-toggle:hover {
+		transform: rotate(20deg);
+	}
+
+	@media (max-width: 768px) {
+		.nav-links {
+			gap: 1rem;
+			font-size: 0.9rem;
+		}
+	}
+</style>
+
+<script>
+	const themeToggle = document.querySelector('.theme-toggle');
+	const themeIcon = document.querySelector('.theme-icon');
+	const html = document.documentElement;
+	
+	// Check for saved theme or default to light
+	const currentTheme = localStorage.getItem('theme') || 'light';
+	html.setAttribute('data-theme', currentTheme);
+	
+	// Update icon based on current theme
+	function updateIcon(theme) {
+		if (themeIcon) {
+			themeIcon.textContent = theme === 'light' ? '🌙' : '☀️';
+		}
+	}
+	
+	// Set initial icon
+	updateIcon(currentTheme);
+	
+	themeToggle?.addEventListener('click', () => {
+		const theme = html.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+		html.setAttribute('data-theme', theme);
+		localStorage.setItem('theme', theme);
+		updateIcon(theme);
+	});
+</script>
