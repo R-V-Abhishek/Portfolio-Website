@@ -1,18 +1,148 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Hero from '../components/Hero.astro';
-import About from '../components/About.astro';
-import Skills from '../components/Skills.astro';
-import Projects from '../components/Projects.astro';
-import Experience from '../components/Experience.astro';
-import Contact from '../components/Contact.astro';
+import AnimatedCounter from '../components/AnimatedCounter.astro';
+import AboutPreview from '../components/previews/AboutPreview.astro';
+import SkillsPreview from '../components/previews/SkillsPreview.astro';
+import ProjectsPreview from '../components/previews/ProjectsPreview.astro';
+import ExperiencePreview from '../components/previews/ExperiencePreview.astro';
 ---
 
-<BaseLayout title="R V Abhishek - Portfolio">
+<BaseLayout
+	title="R V Abhishek — Full-Stack Developer & Data Science Enthusiast"
+	description="Portfolio of R V Abhishek — Full-Stack Developer, Data Science & AI/ML Enthusiast at BMS College of Engineering."
+	rainOpacity={0.15}
+>
 	<Hero />
-	<About />
-	<Skills />
-	<Projects />
-	<Experience />
-	<Contact />
+
+	<!-- Stats Bar -->
+	<section class="stats-bar fade-in">
+		<div class="stats-container">
+			<AnimatedCounter
+				end={9.67}
+				decimals={2}
+				label="CGPA"
+				sublabel="B.E. CSE Data Science"
+				color="var(--primary-color)"
+			/>
+			<AnimatedCounter
+				end={4}
+				suffix="+"
+				label="Projects"
+				sublabel="Built & Deployed"
+				color="var(--secondary-color)"
+			/>
+			<AnimatedCounter
+				end={3}
+				label="Certifications"
+				sublabel="Coursera · NPTEL · Meta"
+				color="var(--accent-color)"
+			/>
+			<AnimatedCounter
+				end={2}
+				label="Club Roles"
+				sublabel="Coordinator & Designer"
+				color="var(--highlight-color)"
+			/>
+		</div>
+	</section>
+
+	<AboutPreview />
+	<SkillsPreview />
+	<ProjectsPreview />
+	<ExperiencePreview />
+
+	<!-- Contact CTA strip -->
+	<section class="contact-cta fade-in">
+		<div class="cta-container">
+			<div class="cta-eyebrow">[ Let's Talk ]</div>
+			<h2 class="cta-title">Ready to build something together?</h2>
+			<p class="cta-body">
+				I'm open to full-time roles, freelance projects, and interesting collaborations.<br />
+				Drop me a message and let's make it happen.
+			</p>
+			<div class="cta-actions">
+				<a href="/contact" class="btn btn-primary">Get In Touch</a>
+				<a href="https://github.com/R-V-Abhishek" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">View GitHub</a>
+			</div>
+		</div>
+	</section>
 </BaseLayout>
+
+<style>
+	/* ---- Stats Bar ---- */
+	.stats-bar {
+		background: var(--bg-secondary);
+		border-top: 1px solid rgba(var(--primary-rgb), 0.12);
+		border-bottom: 1px solid rgba(var(--primary-rgb), 0.12);
+	}
+
+	.stats-container {
+		max-width: 1200px;
+		margin: 0 auto;
+		padding: 0 2rem;
+		display: grid;
+		grid-template-columns: repeat(4, 1fr);
+	}
+
+	/* ---- Contact CTA ---- */
+	.contact-cta {
+		padding: 6rem 2rem;
+		background: var(--bg-secondary);
+		text-align: center;
+		border-top: 1px solid rgba(var(--primary-rgb), 0.12);
+	}
+
+	.cta-container {
+		max-width: 700px;
+		margin: 0 auto;
+	}
+
+	.cta-eyebrow {
+		font-family: 'JetBrains Mono', monospace;
+		font-size: 0.9rem;
+		color: var(--primary-color);
+		font-weight: 600;
+		margin-bottom: 1rem;
+		letter-spacing: 0.08em;
+	}
+
+	.cta-title {
+		font-size: clamp(1.8rem, 4vw, 2.75rem);
+		font-weight: 700;
+		color: var(--heading-color);
+		margin-bottom: 1.25rem;
+		line-height: 1.2;
+	}
+
+	.cta-body {
+		font-size: 1.1rem;
+		color: var(--text-light);
+		line-height: 1.7;
+		margin-bottom: 2.5rem;
+	}
+
+	.cta-actions {
+		display: flex;
+		gap: 1rem;
+		justify-content: center;
+		flex-wrap: wrap;
+	}
+
+	@media (max-width: 768px) {
+		.stats-container {
+			grid-template-columns: repeat(2, 1fr);
+			padding: 0 1rem;
+		}
+
+		.contact-cta {
+			padding: 4rem 1.5rem;
+		}
+	}
+
+	@media (max-width: 480px) {
+		.stats-container {
+			grid-template-columns: repeat(2, 1fr);
+		}
+	}
+</style>

@@ -1,0 +1,86 @@
+---
+interface Props {
+	end: number;
+	label: string;
+	sublabel?: string;
+	suffix?: string;
+	prefix?: string;
+	decimals?: number;
+	duration?: number;
+	color?: string;
+}
+
+const {
+	end,
+	label,
+	sublabel,
+	suffix = '',
+	prefix = '',
+	decimals = 0,
+	duration = 1800,
+	color = 'var(--primary-color)',
+} = Astro.props;
+
+const initialValue = prefix + end.toFixed(decimals) + suffix;
+---
+
+<div class="stat-item">
+	<div class="stat-number" style={`color: ${color}; --stat-color: ${color};`}>
+		{prefix}<span
+			class="counter-value"
+			data-counter={end}
+			data-decimals={decimals}
+			data-suffix={suffix}
+			data-duration={duration}
+		>{end.toFixed(decimals)}</span>{suffix}
+	</div>
+	<div class="stat-label">{label}</div>
+	{sublabel && <div class="stat-sublabel">{sublabel}</div>}
+</div>
+
+<style>
+	.stat-item {
+		text-align: center;
+		padding: 1.5rem 1rem;
+		position: relative;
+	}
+
+	.stat-item::after {
+		content: '';
+		position: absolute;
+		right: 0;
+		top: 20%;
+		height: 60%;
+		width: 1px;
+		background: rgba(var(--primary-rgb), 0.15);
+	}
+
+	.stat-item:last-child::after {
+		display: none;
+	}
+
+	.stat-number {
+		font-family: 'JetBrains Mono', monospace;
+		font-size: clamp(2rem, 5vw, 3.5rem);
+		font-weight: 700;
+		line-height: 1;
+		margin-bottom: 0.5rem;
+		filter: drop-shadow(0 0 12px var(--stat-color, var(--primary-color)));
+		color: inherit;
+	}
+
+	.stat-label {
+		font-size: 0.85rem;
+		font-weight: 600;
+		letter-spacing: 0.1em;
+		text-transform: uppercase;
+		color: var(--text-light);
+	}
+
+	.stat-sublabel {
+		font-size: 0.75rem;
+		color: var(--text-muted);
+		margin-top: 0.25rem;
+		font-family: 'JetBrains Mono', monospace;
+	}
+</style>

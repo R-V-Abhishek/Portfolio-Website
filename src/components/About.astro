@@ -3,51 +3,64 @@
 
 <section id="about" class="about fade-in">
 	<div class="container">
+		<div class="section-eyebrow">[ About Me ]</div>
 		<h2 class="section-title">About Me</h2>
 		<div class="about-content">
-			<div class="about-text">
-				<p class="intro">
-					I'm a <strong>B.E. Computer Science Engineering (Data Science)</strong> student at 
-					<strong>BMS College of Engineering, Bengaluru</strong>, maintaining a stellar CGPA of 9.67.
+			<div class="intro-card hoverable-card" style="--flood-color: var(--primary-color);">
+				<h3 class="intro-title">Hi, I'm R V Abhishek 👋</h3>
+				<p class="intro-text">
+					A <strong>Full-Stack Developer</strong> and <strong>Data Science enthusiast</strong> passionate about building innovative solutions that make a difference. Currently pursuing B.E. in Computer Science Engineering (Data Science) at BMS College of Engineering, Bengaluru.
 				</p>
-				<p>
-					With a passion for both <strong>technology and music</strong>, I bring a unique perspective to 
-					problem-solving. As a <strong>professional Carnatic musician</strong>, I've performed in numerous 
-					concerts and apply the same discipline and creativity to my engineering work.
+				<p class="intro-text">
+					I bring a unique blend of technical excellence and creative artistry, being not just a developer but also a professional Carnatic musician. This combination helps me approach problems with both analytical precision and creative thinking.
 				</p>
-				<p>
-					My expertise spans <strong>full-stack development</strong>, <strong>data science</strong>, and 
-					<strong>machine learning</strong>. I've built production-ready applications like restaurant management 
-					systems, automated GST processing tools, and explored cutting-edge topics like Large Language Models.
-				</p>
-				<div class="highlights">
-					<div class="highlight-item">
-						<span class="highlight-icon">🎓</span>
-						<div>
-							<h4>Academic Excellence</h4>
-							<p>9.67 CGPA • 99% in Pre-University</p>
-						</div>
+			</div>
+
+			<div class="education-card hoverable-card" style="--flood-color: var(--secondary-color);">
+				<div class="card-icon">🎓</div>
+				<h4 class="card-title">Education</h4>
+				<p class="degree">B.E. Computer Science Engineering (Data Science)</p>
+				<p class="institution">BMS College of Engineering, Bengaluru</p>
+				<p class="cgpa">CGPA: <strong data-counter="9.67" data-decimals="2" data-duration="1400">9.67</strong> | Pre-University: <strong>99%</strong></p>
+				<span class="status-badge">Currently Pursuing</span>
+			</div>
+
+			<div class="highlights-grid">
+				<div class="highlight-card hoverable-card" style="--flood-color: var(--accent-color);">
+					<div class="highlight-icon">💻</div>
+					<h5 class="highlight-title">Technical</h5>
+					<p class="highlight-desc">Full Stack + ML/AI</p>
+				</div>
+				<div class="highlight-card hoverable-card" style="--flood-color: var(--accent-color);">
+					<div class="highlight-icon">🎵</div>
+					<h5 class="highlight-title">Creative</h5>
+					<p class="highlight-desc">Carnatic Vocalist</p>
+				</div>
+				<div class="highlight-card hoverable-card" style="--flood-color: var(--accent-color);">
+					<div class="highlight-icon">🤝</div>
+					<h5 class="highlight-title">Leadership</h5>
+					<p class="highlight-desc">Club Coordinator</p>
+				</div>
+			</div>
+
+			<div class="expertise-card hoverable-card" style="--flood-color: var(--highlight-color);">
+				<h4 class="card-title expertise-title">Areas of Expertise</h4>
+				<div class="expertise-list">
+					<div class="expertise-item">
+						<span class="expertise-icon">⚡</span>
+						<span class="expertise-text">Full-Stack Development</span>
 					</div>
-					<div class="highlight-item">
-						<span class="highlight-icon">💻</span>
-						<div>
-							<h4>Technical Skills</h4>
-							<p>Full Stack • Data Science • ML/AI</p>
-						</div>
+					<div class="expertise-item">
+						<span class="expertise-icon">📊</span>
+						<span class="expertise-text">Data Science & Analytics</span>
 					</div>
-					<div class="highlight-item">
-						<span class="highlight-icon">🎵</span>
-						<div>
-							<h4>Creative Background</h4>
-							<p>Professional Carnatic Vocalist</p>
-						</div>
+					<div class="expertise-item">
+						<span class="expertise-icon">🤖</span>
+						<span class="expertise-text">Machine Learning & AI</span>
 					</div>
-					<div class="highlight-item">
-						<span class="highlight-icon">🤝</span>
-						<div>
-							<h4>Leadership</h4>
-							<p>Club Coordinator • Volunteer</p>
-						</div>
+					<div class="expertise-item">
+						<span class="expertise-icon">☁️</span>
+						<span class="expertise-text">Cloud Computing (AWS)</span>
 					</div>
 				</div>
 			</div>
@@ -58,7 +71,7 @@
 <style>
 	.about {
 		padding: 6rem 2rem;
-		background: var(--section-bg);
+		background: var(--bg-color);
 	}
 
 	.container {
@@ -66,86 +79,227 @@
 		margin: 0 auto;
 	}
 
+	.section-eyebrow {
+		text-align: center;
+		margin-bottom: 0.75rem;
+	}
+
 	.section-title {
 		font-size: 2.5rem;
 		text-align: center;
 		margin-bottom: 3rem;
-		color: var(--heading-color);
-		position: relative;
-		padding-bottom: 1rem;
-	}
-
-	.section-title::after {
-		content: '';
-		position: absolute;
-		bottom: 0;
-		left: 50%;
-		transform: translateX(-50%);
-		width: 80px;
-		height: 4px;
-		background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
-		border-radius: 2px;
+		background: var(--gradient-hero);
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+		background-clip: text;
 	}
 
 	.about-content {
 		display: grid;
-		gap: 3rem;
-		align-items: center;
+		gap: 2rem;
 	}
 
-	.about-text {
-		font-size: 1.1rem;
-		line-height: 1.8;
-		color: var(--text-color);
-	}
-
-	.intro {
-		font-size: 1.2rem;
-		color: var(--text-light);
-		margin-bottom: 1.5rem;
-	}
-
-	.about-text p {
-		margin-bottom: 1.5rem;
-	}
-
-	.highlights {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-		gap: 1.5rem;
-		margin-top: 2rem;
-	}
-
-	.highlight-item {
-		display: flex;
-		gap: 1rem;
-		padding: 1.5rem;
+	/* ---- Intro Card ---- */
+	.intro-card {
 		background: var(--card-bg);
-		border-radius: 12px;
-		box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-		transition: transform 0.3s ease, box-shadow 0.3s ease;
+		backdrop-filter: blur(10px);
+		-webkit-backdrop-filter: blur(10px);
+		border-radius: 20px;
+		padding: 2.5rem;
+		border: 2px solid rgba(var(--primary-rgb), 0.25);
+		box-shadow: 0 0 30px rgba(var(--primary-rgb), 0.1), 0 10px 40px rgba(0, 0, 0, 0.4);
 	}
 
-	.highlight-item:hover {
-		transform: translateY(-5px);
-		box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-	}
-
-	.highlight-icon {
-		font-size: 2.5rem;
-		flex-shrink: 0;
-	}
-
-	.highlight-item h4 {
-		font-size: 1.1rem;
-		margin-bottom: 0.25rem;
+	.intro-title {
+		font-size: 2rem;
+		margin-bottom: 1.5rem;
 		color: var(--heading-color);
 	}
 
-	.highlight-item p {
-		font-size: 0.9rem;
+	.intro-text {
+		font-size: 1.1rem;
+		line-height: 1.8;
+		color: var(--text-color);
+		margin-bottom: 1rem;
+	}
+
+	.intro-text strong {
+		color: var(--primary-color);
+		font-weight: 600;
+	}
+
+	.intro-card:hover .intro-text strong {
+		color: #07071a;
+	}
+
+	/* ---- Education Card ---- */
+	.education-card {
+		background: var(--card-bg);
+		backdrop-filter: blur(10px);
+		-webkit-backdrop-filter: blur(10px);
+		border-radius: 20px;
+		padding: 2rem;
+		border: 2px solid rgba(var(--secondary-rgb), 0.25);
+		box-shadow: 0 0 30px rgba(var(--secondary-rgb), 0.1), 0 10px 40px rgba(0, 0, 0, 0.4);
+	}
+
+	.card-icon {
+		font-size: 3rem;
+		margin-bottom: 1rem;
+	}
+
+	.card-title {
+		font-size: 1.5rem;
+		color: var(--secondary-color);
+		margin-bottom: 1rem;
+		font-family: 'JetBrains Mono', monospace;
+	}
+
+	.education-card:hover .card-title {
+		color: #07071a;
+	}
+
+	.degree {
+		font-size: 1.2rem;
+		font-weight: 600;
+		color: var(--heading-color);
+		margin-bottom: 0.5rem;
+	}
+
+	.institution {
+		font-size: 1.1rem;
 		color: var(--text-light);
-		margin: 0;
+		margin-bottom: 0.75rem;
+	}
+
+	.cgpa {
+		font-size: 1rem;
+		color: var(--text-color);
+		margin-bottom: 1rem;
+		font-family: 'JetBrains Mono', monospace;
+	}
+
+	.cgpa strong {
+		color: var(--primary-color);
+	}
+
+	.education-card:hover .cgpa strong {
+		color: #07071a;
+	}
+
+	.status-badge {
+		display: inline-block;
+		padding: 0.5rem 1rem;
+		background: rgba(var(--primary-rgb), 0.1);
+		border: 1px solid var(--primary-color);
+		border-radius: 20px;
+		color: var(--primary-color);
+		font-size: 0.9rem;
+		font-weight: 600;
+		font-family: 'JetBrains Mono', monospace;
+	}
+
+	.education-card:hover .status-badge {
+		background: rgba(0, 0, 0, 0.15);
+		border-color: #07071a;
+		color: #07071a;
+	}
+
+	/* ---- Highlight Cards ---- */
+	.highlights-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+		gap: 1.5rem;
+	}
+
+	.highlight-card {
+		background: var(--card-bg);
+		backdrop-filter: blur(10px);
+		-webkit-backdrop-filter: blur(10px);
+		border-radius: 16px;
+		padding: 2rem;
+		border: 2px solid rgba(var(--accent-rgb), 0.25);
+		box-shadow: 0 0 20px rgba(var(--accent-rgb), 0.1), 0 8px 30px rgba(0, 0, 0, 0.4);
+		text-align: center;
+	}
+
+	.highlight-icon {
+		font-size: 3rem;
+		margin-bottom: 1rem;
+		filter: drop-shadow(0 0 10px rgba(var(--accent-rgb), 0.5));
+	}
+
+	.highlight-title {
+		font-size: 1.2rem;
+		color: var(--accent-color);
+		margin-bottom: 0.5rem;
+		font-family: 'JetBrains Mono', monospace;
+	}
+
+	.highlight-card:hover .highlight-title {
+		color: #07071a;
+	}
+
+	.highlight-desc {
+		color: var(--text-light);
+		font-size: 0.95rem;
+	}
+
+	/* ---- Expertise Card ---- */
+	.expertise-card {
+		background: var(--card-bg);
+		backdrop-filter: blur(10px);
+		-webkit-backdrop-filter: blur(10px);
+		border-radius: 20px;
+		padding: 2rem;
+		border: 2px solid rgba(var(--highlight-rgb), 0.25);
+		box-shadow: 0 0 30px rgba(var(--highlight-rgb), 0.1), 0 10px 40px rgba(0, 0, 0, 0.4);
+	}
+
+	.expertise-title {
+		color: var(--highlight-color);
+	}
+
+	.expertise-card:hover .expertise-title {
+		color: #07071a;
+	}
+
+	.expertise-list {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+		gap: 1.5rem;
+		margin-top: 0.5rem;
+	}
+
+	.expertise-item {
+		display: flex;
+		align-items: center;
+		gap: 1rem;
+		padding: 1rem;
+		background: rgba(var(--highlight-rgb), 0.08);
+		border-radius: 12px;
+		border: 1px solid rgba(var(--highlight-rgb), 0.15);
+		transition: background 0.3s ease, transform 0.3s ease;
+	}
+
+	.expertise-item:hover {
+		background: rgba(var(--highlight-rgb), 0.15);
+		transform: translateX(5px);
+	}
+
+	.expertise-card:hover .expertise-item {
+		background: rgba(0, 0, 0, 0.12);
+		border-color: rgba(0, 0, 0, 0.2);
+	}
+
+	.expertise-icon {
+		font-size: 2rem;
+	}
+
+	.expertise-text {
+		font-size: 1.05rem;
+		color: var(--text-color);
+		font-weight: 500;
 	}
 
 	@media (max-width: 768px) {
@@ -153,7 +307,23 @@
 			padding: 4rem 1.5rem;
 		}
 
-		.highlights {
+		.section-title {
+			font-size: 2rem;
+		}
+
+		.intro-card {
+			padding: 1.5rem;
+		}
+
+		.intro-title {
+			font-size: 1.5rem;
+		}
+
+		.highlights-grid {
+			grid-template-columns: 1fr;
+		}
+
+		.expertise-list {
 			grid-template-columns: 1fr;
 		}
 	}

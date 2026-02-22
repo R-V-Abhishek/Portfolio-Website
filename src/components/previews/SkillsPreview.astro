@@ -1,0 +1,156 @@
+---
+import { skillCategories } from '../../data/skills.js';
+// Show first 3 categories on homepage
+const previewCategories = skillCategories.slice(0, 3);
+---
+
+<section class="skills-preview fade-in">
+	<div class="container">
+		<div class="section-eyebrow">[ What I Know ]</div>
+		<h2 class="section-title">Skills</h2>
+
+		<div class="skills-grid">
+			{previewCategories.map((cat) => (
+				<div
+					class="skill-category hoverable-card"
+					style={`--category-color: ${cat.color}; --flood-color: ${cat.color};`}
+				>
+					<div class="cat-header">
+						<span class="cat-icon">{cat.icon}</span>
+						<h3 class="cat-title">{cat.title}</h3>
+					</div>
+					<div class="skill-pills">
+						{cat.skills.map(skill => (
+							<span class="skill-pill">{skill}</span>
+						))}
+					</div>
+				</div>
+			))}
+		</div>
+
+		<div class="view-more">
+			<a href="/skills" class="btn btn-secondary">View All Skills →</a>
+		</div>
+	</div>
+</section>
+
+<style>
+	.skills-preview {
+		padding: 6rem 2rem;
+		background: var(--bg-color);
+	}
+
+	.container {
+		max-width: 1200px;
+		margin: 0 auto;
+	}
+
+	.section-eyebrow {
+		text-align: center;
+		margin-bottom: 0.75rem;
+	}
+
+	.section-title {
+		font-size: 2.5rem;
+		text-align: center;
+		margin-bottom: 3rem;
+		background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+		background-clip: text;
+	}
+
+	.skills-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+		gap: 1.75rem;
+		margin-bottom: 3rem;
+	}
+
+	.skill-category {
+		background: var(--card-bg);
+		border-radius: 16px;
+		padding: 1.75rem;
+		border: 2px solid color-mix(in srgb, var(--category-color) 25%, transparent);
+		box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+		position: relative;
+	}
+
+	/* Top accent bar — uses ::after so hoverable-card's ::before flood layer isn't blocked */
+	.skill-category::after {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		height: 3px;
+		background: var(--category-color);
+		border-radius: 16px 16px 0 0;
+		z-index: 2;
+	}
+
+	.cat-header {
+		display: flex;
+		align-items: center;
+		gap: 0.75rem;
+		margin-bottom: 1.25rem;
+	}
+
+	.cat-icon {
+		font-size: 1.75rem;
+	}
+
+	.cat-title {
+		font-size: 1.1rem;
+		font-weight: 700;
+		color: var(--category-color);
+		font-family: 'JetBrains Mono', monospace;
+		margin: 0;
+	}
+
+	.skill-category:hover .cat-title {
+		color: #07071a;
+	}
+
+	.skill-pills {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.5rem;
+	}
+
+	.skill-pill {
+		font-size: 0.82rem;
+		padding: 0.3rem 0.75rem;
+		border-radius: 20px;
+		background: color-mix(in srgb, var(--category-color) 12%, transparent);
+		border: 1px solid color-mix(in srgb, var(--category-color) 30%, transparent);
+		color: var(--category-color);
+		font-family: 'JetBrains Mono', monospace;
+		font-weight: 500;
+		transition: background 0.2s ease, color 0.2s ease;
+	}
+
+	.skill-category:hover .skill-pill {
+		background: rgba(0, 0, 0, 0.15);
+		border-color: rgba(0, 0, 0, 0.25);
+		color: #07071a;
+	}
+
+	.view-more {
+		text-align: center;
+	}
+
+	@media (max-width: 768px) {
+		.skills-preview {
+			padding: 4rem 1.5rem;
+		}
+
+		.section-title {
+			font-size: 2rem;
+		}
+
+		.skills-grid {
+			grid-template-columns: 1fr;
+		}
+	}
+</style>

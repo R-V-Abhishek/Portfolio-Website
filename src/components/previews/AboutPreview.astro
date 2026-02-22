@@ -1,0 +1,167 @@
+---
+---
+
+<section class="about-preview fade-in">
+	<div class="container">
+		<div class="section-eyebrow">[ Who I Am ]</div>
+		<h2 class="section-title">About Me</h2>
+
+		<div class="preview-grid">
+			<div class="intro-col">
+				<p class="intro-text">
+					A <strong>Full-Stack Developer</strong> and <strong>Data Science enthusiast</strong> at BMS College of Engineering, Bengaluru. I build innovative solutions that blend analytical precision with creative thinking.
+				</p>
+				<p class="intro-text">
+					Beyond code, I'm a professional Carnatic vocalist — a discipline that sharpens both my creativity and my attention to detail in everything I build.
+				</p>
+				<a href="/about" class="btn btn-primary cta-link">Read More →</a>
+			</div>
+
+			<div class="stats-col">
+				<div class="stat-card hoverable-card" style="--flood-color: var(--primary-color);">
+					<div class="stat-icon">🎓</div>
+					<div class="stat-body">
+						<div class="stat-value">9.67</div>
+						<div class="stat-label">CGPA</div>
+						<div class="stat-sub">B.E. CSE (Data Science)</div>
+					</div>
+				</div>
+				<div class="stat-card hoverable-card" style="--flood-color: var(--accent-color);">
+					<div class="stat-icon">🎵</div>
+					<div class="stat-body">
+						<div class="stat-value">10+</div>
+						<div class="stat-label">Years</div>
+						<div class="stat-sub">Carnatic Vocalist</div>
+					</div>
+				</div>
+				<div class="stat-card hoverable-card" style="--flood-color: var(--secondary-color);">
+					<div class="stat-icon">🤝</div>
+					<div class="stat-body">
+						<div class="stat-value">2</div>
+						<div class="stat-label">Club Roles</div>
+						<div class="stat-sub">Coordinator & Designer</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<style>
+	.about-preview {
+		padding: 6rem 2rem;
+		background: var(--bg-secondary);
+	}
+
+	.container {
+		max-width: 1200px;
+		margin: 0 auto;
+	}
+
+	.section-eyebrow {
+		text-align: center;
+		margin-bottom: 0.75rem;
+	}
+
+	.section-title {
+		font-size: 2.5rem;
+		text-align: center;
+		margin-bottom: 3rem;
+		background: var(--gradient-hero);
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+		background-clip: text;
+	}
+
+	.preview-grid {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 3rem;
+		align-items: center;
+	}
+
+	.intro-text {
+		font-size: 1.1rem;
+		line-height: 1.8;
+		color: var(--text-light);
+		margin-bottom: 1.25rem;
+	}
+
+	.intro-text strong {
+		color: var(--primary-light);
+		font-weight: 600;
+	}
+
+	.cta-link {
+		display: inline-block;
+		margin-top: 1rem;
+	}
+
+	.stats-col {
+		display: flex;
+		flex-direction: column;
+		gap: 1.25rem;
+	}
+
+	.stat-card {
+		display: flex;
+		align-items: center;
+		gap: 1.25rem;
+		background: var(--card-bg);
+		border: 2px solid rgba(var(--primary-rgb), 0.2);
+		border-radius: 16px;
+		padding: 1.25rem 1.5rem;
+		box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+	}
+
+	.stat-icon {
+		font-size: 2.5rem;
+		flex-shrink: 0;
+	}
+
+	.stat-value {
+		font-size: 1.8rem;
+		font-weight: 700;
+		color: var(--heading-color);
+		font-family: 'JetBrains Mono', monospace;
+		line-height: 1;
+		margin-bottom: 0.15rem;
+	}
+
+	.stat-label {
+		font-size: 0.9rem;
+		color: var(--primary-light);
+		font-weight: 600;
+		font-family: 'JetBrains Mono', monospace;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+	}
+
+	.stat-sub {
+		font-size: 0.82rem;
+		color: var(--text-muted);
+		margin-top: 0.2rem;
+	}
+
+	/* Hover overrides */
+	.stat-card:hover .stat-value,
+	.stat-card:hover .stat-label,
+	.stat-card:hover .stat-sub {
+		color: #07071a;
+	}
+
+	@media (max-width: 768px) {
+		.about-preview {
+			padding: 4rem 1.5rem;
+		}
+
+		.preview-grid {
+			grid-template-columns: 1fr;
+			gap: 2rem;
+		}
+
+		.section-title {
+			font-size: 2rem;
+		}
+	}
+</style>

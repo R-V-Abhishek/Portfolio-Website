@@ -1,22 +1,20 @@
 ---
-const skills = {
-	"Programming Languages": ["Python", "JavaScript", "SQL", "R", "Java"],
-	"Data Science & ML": ["Scikit-learn", "Pandas", "NumPy", "Matplotlib", "Seaborn", "LLMs", "Deep Learning"],
-	"Web Development": ["React.js", "Node.js", "Express", "REST APIs", "HTML/CSS"],
-	"Databases": ["MongoDB Atlas", "MySQL"],
-	"Tools & Platforms": ["Git", "GitHub", "VSCode", "Vercel", "Render", "Figma", "Android Studio"]
-};
+import { skillCategories } from '../data/skills.js';
 ---
 
 <section id="skills" class="skills fade-in">
 	<div class="container">
-		<h2 class="section-title">Technical Skills</h2>
+		<div class="section-eyebrow">[ Technical Stack ]</div>
+		<h2 class="section-title">Skills & Technologies</h2>
 		<div class="skills-grid">
-			{Object.entries(skills).map(([category, items]) => (
-				<div class="skill-category">
-					<h3 class="category-title">{category}</h3>
+			{skillCategories.map((category) => (
+				<div class="skill-card hoverable-card" style={`--category-color: ${category.color}; --flood-color: ${category.color};`}>
+					<div class="skill-header">
+						<span class="skill-icon">{category.icon}</span>
+						<h3 class="skill-category-title">{category.title}</h3>
+					</div>
 					<div class="skill-tags">
-						{items.map(skill => (
+						{category.skills.map(skill => (
 							<span class="skill-tag">{skill}</span>
 						))}
 					</div>
@@ -32,29 +30,79 @@ const skills = {
 		background: var(--bg-color);
 	}
 
+	.container {
+		max-width: 1200px;
+		margin: 0 auto;
+	}
+
+	.section-title {
+		font-size: 2.5rem;
+		text-align: center;
+		margin-bottom: 3rem;
+		background: var(--gradient-primary);
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+		background-clip: text;
+	}
+
+	.section-eyebrow {
+		text-align: center;
+		margin-bottom: 0.75rem;
+	}
+
 	.skills-grid {
 		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
 		gap: 2rem;
 	}
 
-	.skill-category {
+	.skill-card {
 		background: var(--card-bg);
+		backdrop-filter: blur(25px) saturate(180%);
+		-webkit-backdrop-filter: blur(25px) saturate(180%);
+		border-radius: 20px;
 		padding: 2rem;
-		border-radius: 16px;
-		box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-		transition: transform 0.3s ease, box-shadow 0.3s ease;
+		box-shadow:
+			0 0 30px color-mix(in srgb, var(--category-color) 15%, transparent),
+			var(--shadow-card);
+		border: 2px solid color-mix(in srgb, var(--category-color) 25%, transparent);
 	}
 
-	.skill-category:hover {
-		transform: translateY(-5px);
-		box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+	/* Top accent bar — uses ::after so hoverable-card's ::before is free for the flood fill */
+	.skill-card::after {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		height: 4px;
+		background: linear-gradient(90deg, transparent, var(--category-color), transparent);
+		border-radius: 20px 20px 0 0;
+		z-index: 2;
 	}
 
-	.category-title {
-		font-size: 1.4rem;
+	.skill-card:hover {
+		box-shadow:
+			0 0 50px color-mix(in srgb, var(--category-color) 35%, transparent),
+			var(--shadow-card-hover);
+	}
+
+	.skill-header {
+		display: flex;
+		align-items: center;
+		gap: 1rem;
 		margin-bottom: 1.5rem;
-		color: var(--primary-color);
-		font-weight: 600;
+	}
+
+	.skill-icon {
+		font-size: 2.5rem;
+		filter: drop-shadow(0 0 8px var(--category-color));
+	}
+
+	.skill-category-title {
+		font-size: 1.4rem;
+		color: var(--category-color);
+		margin: 0;
 	}
 
 	.skill-tags {
@@ -64,22 +112,38 @@ const skills = {
 	}
 
 	.skill-tag {
-		background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-		color: white;
 		padding: 0.5rem 1rem;
-		border-radius: 25px;
+		background: color-mix(in srgb, var(--category-color) 12%, transparent);
+		border: 1px solid color-mix(in srgb, var(--category-color) 25%, transparent);
+		border-radius: 20px;
+		color: var(--text-color);
 		font-size: 0.9rem;
 		font-weight: 500;
-		transition: transform 0.2s ease;
+		transition: all 0.25s ease;
+		cursor: default;
 	}
 
 	.skill-tag:hover {
-		transform: scale(1.05);
+		background: color-mix(in srgb, var(--category-color) 22%, transparent);
+		border-color: var(--category-color);
+		transform: translateY(-2px);
 	}
 
 	@media (max-width: 768px) {
 		.skills {
 			padding: 4rem 1.5rem;
+		}
+
+		.section-title {
+			font-size: 2rem;
+		}
+
+		.skills-grid {
+			grid-template-columns: 1fr;
+		}
+
+		.skill-card {
+			padding: 1.5rem;
 		}
 	}
 </style>

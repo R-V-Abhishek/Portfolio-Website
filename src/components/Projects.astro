@@ -1,165 +1,290 @@
 ---
-const projects = [
-	{
-		title: "SaffronSpice",
-		description: "A full-stack restaurant management application built with the MERN stack, featuring user authentication, reservations, cart functionality, and a complete ordering system.",
-		tech: ["React", "Node.js", "Express", "MongoDB", "REST APIs"],
-		liveLink: "https://saffron-spice-restaurant-git-main-r-v-abhisheks-projects.vercel.app/",
-		githubLink: "https://github.com/R-V-Abhishek/SaffronSpice",
-		featured: true
-	},
-	{
-		title: "GST Automation",
-		description: "Python automation toolkit for processing GST reports from Tally ERP exports with interactive directory selection, multi-rate GST handling, and B2B/B2C classification.",
-		tech: ["Python", "Pandas", "Data Processing", "Automation"],
-		githubLink: "https://github.com/R-V-Abhishek/GST-Automation",
-		featured: true
-	},
-	{
-		title: "EigenLayer Restaking API",
-		description: "Backend API service that simulates/exposes restaking data related to EigenLayer protocol, providing endpoints for validator info, delegations, and aggregated rewards.",
-		tech: ["Node.js", "Express", "REST APIs", "Blockchain"],
-		githubLink: "https://github.com/R-V-Abhishek/eigen-restaking-api",
-		featured: true
-	},
-	{
-		title: "Titanic Dataset EDA",
-		description: "Comprehensive exploratory data analysis of the classic Titanic dataset, featuring data cleaning, visualization, and survival factor analysis using Python and statistical methods.",
-		tech: ["Python", "Pandas", "Seaborn", "Matplotlib", "Data Analysis"],
-		githubLink: "https://github.com/R-V-Abhishek/Titanic-Dataset-EDA",
-		featured: false
-	}
-];
+import type { Project } from '../data/projects.js';
+import { projects } from '../data/projects.js';
+
+interface Props {
+	showFilter?: boolean;
+	limit?: number;
+}
+
+const { showFilter = false, limit } = Astro.props;
+
+const displayProjects = limit ? projects.slice(0, limit) : projects;
 ---
 
 <section id="projects" class="projects fade-in">
 	<div class="container">
-		<h2 class="section-title">Featured Projects</h2>
-		<div class="projects-grid">
-			{projects.map((project) => (
-				<div class={`project-card ${project.featured ? 'featured' : ''}`}>
-					<div class="project-header">
-						<h3 class="project-title">{project.title}</h3>
-						<div class="project-links">
-							{project.githubLink && (
-								<a href={project.githubLink} target="_blank" rel="noopener noreferrer" aria-label="View on GitHub">
-									<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-										<path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
-									</svg>
-								</a>
-							)}
-							{project.liveLink && (
-								<a href={project.liveLink} target="_blank" rel="noopener noreferrer" aria-label="View Live Demo">
-									<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-										<path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
-										<polyline points="15 3 21 3 21 9"/>
-										<line x1="10" y1="14" x2="21" y2="3"/>
-									</svg>
-								</a>
-							)}
-						</div>
+		<div class="section-eyebrow">[ My Work ]</div>
+		<h2 class="section-title">Projects</h2>
+
+		{showFilter && (
+			<div class="filter-bar" id="filter-bar">
+				<button class="filter-btn active" data-filter="all">All</button>
+				<button class="filter-btn" data-filter="full-stack">Full Stack</button>
+				<button class="filter-btn" data-filter="data-science">Data Science</button>
+				<button class="filter-btn" data-filter="backend">Backend</button>
+			</div>
+		)}
+
+		<div class="projects-grid" id="projects-grid">
+			{displayProjects.map((project) => (
+				<div
+					class={`project-card hoverable-card ${project.featured ? 'featured' : ''}`}
+					data-category={project.category}
+					style="--flood-color: var(--primary-color);"
+				>
+					<div class="card-header">
+						<span class="file-icon">📁</span>
+						<span class="status-badge" data-status={project.status}>[{project.status}]</span>
 					</div>
+					<h3 class="project-title">{project.title}</h3>
 					<p class="project-description">{project.description}</p>
 					<div class="project-tech">
-						{project.tech.map(tech => (
-							<span class="tech-badge">{tech}</span>
-						))}
+						<span class="tech-label">Tech Stack</span>
+						<div class="tech-list">
+							{project.tech.map(tech => (
+								<span class="tech-badge">{tech}</span>
+							))}
+						</div>
+					</div>
+					<div class="project-links">
+						{project.githubLink && (
+							<a href={project.githubLink} target="_blank" rel="noopener noreferrer" class="project-link">
+								GitHub
+							</a>
+						)}
+						{project.liveLink && (
+							<a href={project.liveLink} target="_blank" rel="noopener noreferrer" class="project-link live">
+								Live Demo
+							</a>
+						)}
 					</div>
 				</div>
 			))}
 		</div>
+
 		<div class="view-more">
 			<a href="https://github.com/R-V-Abhishek" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
-				View All Projects on GitHub
+				View All on GitHub
 			</a>
 		</div>
 	</div>
 </section>
 
+{showFilter && (
+	<script is:inline>
+		const filterBar = document.getElementById('filter-bar');
+		const grid = document.getElementById('projects-grid');
+
+		filterBar?.addEventListener('click', (e) => {
+			const btn = e.target.closest('.filter-btn');
+			if (!btn) return;
+
+			filterBar.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+			btn.classList.add('active');
+
+			const filter = btn.dataset.filter;
+			grid?.querySelectorAll('.project-card').forEach(card => {
+				const match = filter === 'all' || card.dataset.category === filter;
+				card.style.opacity = match ? '1' : '0.2';
+				card.style.transform = match ? '' : 'scale(0.97)';
+				card.style.pointerEvents = match ? '' : 'none';
+			});
+		});
+	</script>
+)}
+
 <style>
 	.projects {
 		padding: 6rem 2rem;
-		background: var(--section-bg);
+		background: var(--bg-color);
+	}
+
+	.container {
+		max-width: 1200px;
+		margin: 0 auto;
+	}
+
+	.section-title {
+		font-size: 2.5rem;
+		text-align: center;
+		margin-bottom: 1rem;
+		background: var(--gradient-accent);
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+		background-clip: text;
+	}
+
+	.section-eyebrow {
+		text-align: center;
+		margin-bottom: 0.75rem;
+	}
+
+	/* Filter bar */
+	.filter-bar {
+		display: flex;
+		gap: 0.75rem;
+		justify-content: center;
+		flex-wrap: wrap;
+		margin: 2rem 0 2.5rem;
+	}
+
+	.filter-btn {
+		font-family: 'JetBrains Mono', monospace;
+		font-size: 0.85rem;
+		font-weight: 600;
+		padding: 0.5rem 1.25rem;
+		border-radius: 6px;
+		background: rgba(var(--primary-rgb), 0.08);
+		border: 1px solid rgba(var(--primary-rgb), 0.25);
+		color: var(--text-light);
+		cursor: pointer;
+		transition: all 0.25s ease;
+	}
+
+	.filter-btn:hover {
+		border-color: var(--primary-color);
+		color: var(--primary-light);
+	}
+
+	.filter-btn.active {
+		background: var(--primary-color);
+		border-color: var(--primary-color);
+		color: #07071a;
 	}
 
 	.projects-grid {
 		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+		grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
 		gap: 2rem;
-		margin-bottom: 3rem;
+		margin-bottom: 2rem;
 	}
 
 	.project-card {
 		background: var(--card-bg);
-		padding: 2rem;
+		backdrop-filter: blur(10px);
+		-webkit-backdrop-filter: blur(10px);
+		border: 2px solid rgba(var(--primary-rgb), 0.25);
 		border-radius: 16px;
-		box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-		transition: transform 0.3s ease, box-shadow 0.3s ease;
-		border: 2px solid transparent;
-	}
-
-	.project-card:hover {
-		transform: translateY(-8px);
-		box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+		padding: 1.5rem;
+		box-shadow: var(--shadow-card);
 	}
 
 	.project-card.featured {
-		border-color: var(--primary-color);
+		border-color: rgba(var(--primary-rgb), 0.5);
+		box-shadow: 0 0 30px rgba(var(--primary-rgb), 0.2), var(--shadow-card);
 	}
 
-	.project-header {
+	.card-header {
 		display: flex;
 		justify-content: space-between;
-		align-items: flex-start;
+		align-items: center;
 		margin-bottom: 1rem;
+		font-size: 1.2rem;
+	}
+
+	.status-badge {
+		font-family: 'JetBrains Mono', monospace;
+		font-size: 0.75rem;
+		text-transform: uppercase;
+		font-weight: 600;
+		color: var(--success-color);
+	}
+
+	.status-badge[data-status="completed"] {
+		color: var(--secondary-color);
 	}
 
 	.project-title {
-		font-size: 1.5rem;
-		color: var(--heading-color);
-		margin: 0;
-	}
-
-	.project-links {
-		display: flex;
-		gap: 0.75rem;
-	}
-
-	.project-links a {
-		color: var(--text-light);
-		transition: color 0.3s ease, transform 0.3s ease;
-		display: flex;
-		align-items: center;
-	}
-
-	.project-links a:hover {
-		color: var(--primary-color);
-		transform: translateY(-2px);
+		font-size: 1.35rem;
+		color: var(--primary-light);
+		margin: 0 0 1rem 0;
+		font-weight: 700;
+		font-family: 'JetBrains Mono', monospace;
+		text-shadow: 0 0 10px rgba(var(--primary-rgb), 0.3);
 	}
 
 	.project-description {
-		color: var(--text-color);
-		line-height: 1.6;
+		color: var(--text-light);
+		line-height: 1.7;
 		margin-bottom: 1.5rem;
+		font-size: 0.95rem;
 	}
 
 	.project-tech {
+		margin-bottom: 1.5rem;
+	}
+
+	.tech-label {
+		color: var(--text-muted);
+		font-size: 0.8rem;
+		font-family: 'JetBrains Mono', monospace;
+		font-weight: 600;
+		letter-spacing: 0.1em;
+		text-transform: uppercase;
+		display: block;
+		margin-bottom: 0.6rem;
+	}
+
+	.tech-list {
 		display: flex;
 		flex-wrap: wrap;
 		gap: 0.5rem;
 	}
 
 	.tech-badge {
-		background: rgba(99, 102, 241, 0.1);
+		color: var(--secondary-color);
+		font-size: 0.82rem;
+		font-family: 'JetBrains Mono', monospace;
+		background: rgba(var(--secondary-rgb), 0.1);
+		padding: 0.25rem 0.65rem;
+		border-radius: 4px;
+		border: 1px solid rgba(var(--secondary-rgb), 0.25);
+		transition: all 0.25s ease;
+	}
+
+	.project-links {
+		display: flex;
+		gap: 0.75rem;
+		flex-wrap: wrap;
+	}
+
+	.project-link {
 		color: var(--primary-color);
-		padding: 0.4rem 0.8rem;
-		border-radius: 15px;
-		font-size: 0.85rem;
-		font-weight: 500;
+		text-decoration: none;
+		font-family: 'JetBrains Mono', monospace;
+		font-size: 0.88rem;
+		border: 1px solid rgba(var(--primary-rgb), 0.4);
+		padding: 0.4rem 1rem;
+		border-radius: 6px;
+		background: rgba(var(--primary-rgb), 0.06);
+		transition: all 0.25s ease;
+		font-weight: 600;
+	}
+
+	.project-link:hover {
+		background: rgba(var(--primary-rgb), 0.15);
+		border-color: var(--primary-color);
+		box-shadow: var(--glow-primary);
+		transform: translateY(-2px);
+		text-shadow: none;
+	}
+
+	.project-link.live {
+		color: var(--accent-color);
+		border-color: rgba(var(--accent-rgb), 0.4);
+		background: rgba(var(--accent-rgb), 0.06);
+	}
+
+	.project-link.live:hover {
+		background: rgba(var(--accent-rgb), 0.15);
+		border-color: var(--accent-color);
+		box-shadow: var(--glow-pink);
 	}
 
 	.view-more {
 		text-align: center;
+		margin-top: 3rem;
 	}
 
 	@media (max-width: 768px) {
@@ -169,6 +294,15 @@ const projects = [
 
 		.projects-grid {
 			grid-template-columns: 1fr;
+			gap: 1.5rem;
+		}
+
+		.project-card {
+			padding: 1.25rem;
+		}
+
+		.project-title {
+			font-size: 1.2rem;
 		}
 	}
 </style>

@@ -1,0 +1,67 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+	title="404 — Page Not Found — R V Abhishek"
+	description="The page you're looking for doesn't exist."
+	rainOpacity={0.2}
+>
+	<section class="error-page">
+		<div class="container">
+			<div class="error-code">
+				<span data-counter="404" data-duration="600" data-decimals="0">4</span>
+			</div>
+			<h1 class="error-title">Page Not Found</h1>
+			<p class="error-message">Looks like this route doesn't exist in the filesystem.</p>
+			<div class="error-actions">
+				<a href="/" class="btn btn-primary">$ cd ~/ home</a>
+				<a href="/projects" class="btn btn-secondary">cat projects</a>
+			</div>
+		</div>
+	</section>
+</BaseLayout>
+
+<style>
+	.error-page {
+		min-height: 100vh;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		text-align: center;
+		padding: 2rem;
+	}
+
+	.error-code {
+		font-family: 'JetBrains Mono', monospace;
+		font-size: clamp(6rem, 20vw, 12rem);
+		font-weight: 700;
+		line-height: 1;
+		background: var(--gradient-primary);
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+		background-clip: text;
+		margin-bottom: 1.5rem;
+		filter: drop-shadow(0 0 30px rgba(var(--primary-rgb), 0.4));
+	}
+
+	.error-title {
+		font-size: clamp(1.5rem, 4vw, 2.5rem);
+		color: var(--heading-color);
+		margin-bottom: 1rem;
+	}
+
+	.error-message {
+		color: var(--text-muted);
+		font-size: 1.1rem;
+		margin-bottom: 2.5rem;
+		font-family: 'JetBrains Mono', monospace;
+	}
+
+	.error-actions {
+		display: flex;
+		gap: 1rem;
+		justify-content: center;
+		flex-wrap: wrap;
+	}
+</style>

@@ -1,0 +1,92 @@
+---
+interface Props {
+	title: string;
+	subtitle?: string;
+	gradient?: string;
+	breadcrumb?: string;
+}
+
+const {
+	title,
+	subtitle,
+	gradient = 'var(--gradient-hero)',
+	breadcrumb = title.toLowerCase(),
+} = Astro.props;
+---
+
+<section class="page-hero fade-in">
+	<div class="container">
+		<div class="breadcrumb">
+			<a href="/" class="breadcrumb-home">~/</a>
+			<span class="breadcrumb-sep">›</span>
+			<span class="breadcrumb-current">{breadcrumb}</span>
+		</div>
+		<h1 class="page-title" style={`background-image: ${gradient};`}>{title}</h1>
+		{subtitle && <p class="page-subtitle">{subtitle}</p>}
+		<div class="hero-line" style={`background: ${gradient};`}></div>
+	</div>
+</section>
+
+<style>
+	.page-hero {
+		padding-top: 8rem;
+		padding-bottom: 3rem;
+		position: relative;
+	}
+
+	.breadcrumb {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+		margin-bottom: 1.5rem;
+		font-family: 'JetBrains Mono', monospace;
+		font-size: 0.85rem;
+	}
+
+	.breadcrumb-home {
+		color: var(--primary-color);
+		text-decoration: none;
+		transition: color 0.2s ease;
+	}
+
+	.breadcrumb-home:hover {
+		color: var(--primary-light);
+		text-shadow: none;
+	}
+
+	.breadcrumb-sep {
+		color: var(--text-muted);
+	}
+
+	.breadcrumb-current {
+		color: var(--text-light);
+	}
+
+	.page-title {
+		font-size: clamp(2.5rem, 6vw, 4.5rem);
+		font-weight: 700;
+		font-family: 'JetBrains Mono', monospace;
+		background-image: var(--gradient-hero);
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+		background-clip: text;
+		margin-bottom: 1rem;
+		line-height: 1.1;
+		text-shadow: none;
+	}
+
+	.page-subtitle {
+		font-size: 1.1rem;
+		color: var(--text-light);
+		max-width: 600px;
+		margin-bottom: 2rem;
+		line-height: 1.7;
+	}
+
+	.hero-line {
+		width: 80px;
+		height: 4px;
+		border-radius: 2px;
+		margin-top: 1rem;
+	}
+</style>
