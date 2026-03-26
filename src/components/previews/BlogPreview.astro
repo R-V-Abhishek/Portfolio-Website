@@ -1,0 +1,213 @@
+---
+import { getCollection } from 'astro:content';
+
+const allPosts = await getCollection('blog', ({ data }) => data.draft !== true);
+const posts = allPosts
+	.sort((a, b) => new Date(b.data.publishDate).valueOf() - new Date(a.data.publishDate).valueOf())
+	.slice(0, 3);
+
+function readingTime(body: string): number {
+	return Math.max(1, Math.ceil(body.trim().split(/\s+/).length / 200));
+}
+
+function fmt(d: Date): string {
+	return d.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+}
+
+const blogColors = [
+	'var(--secondary-color)',
+	'var(--accent-color)',
+	'var(--primary-color)',
+	'var(--highlight-color)'
+];
+---
+
+<section class="blog-preview fade-in">
+	<div class="container">
+		<div class="section-eyebrow section-eyebrow-center">
+			[ <span class="symbol symbol-blog">✦</span> Writing ]
+		</div>
+		<h2 class="section-title">From the Blog</h2>
+
+		<ul class="post-list stagger-grid" role="list">
+			{posts.map((post, index) => {
+				const rt = readingTime(post.body);
+				return (
+					<li
+						class="post-card hoverable-card"
+						style={`--flood-color: ${blogColors[index % blogColors.length]};`}
+					>
+						<a href={`/blog/${post.slug}`} class="post-link">
+							<div class="post-card-inner">
+								<div class="post-card-meta">
+									<time datetime={post.data.publishDate.toISOString()} class="post-date">
+										{fmt(post.data.publishDate)}
+									</time>
+									<span class="reading-time">{rt} min read</span>
+									{post.data.featured && (
+										<span class="featured-badge">featured</span>
+									)}
+								</div>
+
+								<h3 class="post-card-title">{post.data.title}</h3>
+								<p class="post-card-desc">{post.data.description}</p>
+
+								{post.data.tags.length > 0 && (
+									<div class="post-tags" aria-label="Tags">
+										{post.data.tags.map(tag => (
+											<span class="tag">{tag}</span>
+										))}
+									</div>
+								)}
+
+								<span class="read-more" aria-hidden="true">Read post →</span>
+							</div>
+						</a>
+					</li>
+				);
+			})}
+		</ul>
+
+		<div class="view-more" style="margin-top: 2.5rem;">
+			<a href="/blog" class="btn btn-secondary">View All Posts →</a>
+		</div>
+	</div>
+</section>
+
+<style>
+	.blog-preview {
+		background: var(--bg-secondary);
+	}
+
+	.section-title {
+		background: var(--gradient-primary);
+	}
+
+	.post-list {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+		display: flex;
+		flex-direction: column;
+		gap: 1.25rem;
+	}
+
+	.post-card {
+		background: var(--card-bg);
+		border: 2px solid rgba(var(--primary-rgb), 0.18);
+		border-radius: 14px;
+		overflow: hidden;
+		box-shadow: var(--shadow-card);
+		transition: border-color 0.25s ease, box-shadow 0.25s ease;
+	}
+
+	.post-card:hover {
+		border-color: rgba(var(--primary-rgb), 0.45);
+		box-shadow: 0 0 28px rgba(var(--primary-rgb), 0.1), var(--shadow-card-hover);
+	}
+
+	.post-link {
+		display: block;
+		text-decoration: none;
+		color: inherit;
+	}
+
+	.post-card-inner {
+		padding: 1.5rem 1.75rem;
+		position: relative;
+		z-index: 1;
+	}
+
+	.post-card-meta {
+		display: flex;
+		align-items: center;
+		gap: 0.875rem;
+		flex-wrap: wrap;
+		margin-bottom: 0.6rem;
+	}
+
+	.post-date {
+		font-family: 'JetBrains Mono', monospace;
+		font-size: 0.78rem;
+		color: var(--secondary-color);
+	}
+
+	.reading-time {
+		font-family: 'JetBrains Mono', monospace;
+		font-size: 0.75rem;
+		color: var(--text-muted);
+	}
+
+	.featured-badge {
+		font-family: 'JetBrains Mono', monospace;
+		font-size: 0.68rem;
+		font-weight: 700;
+		text-transform: uppercase;
+		letter-spacing: 0.07em;
+		padding: 0.12rem 0.5rem;
+		background: rgba(var(--secondary-rgb), 0.12);
+		border: 1px solid rgba(var(--secondary-rgb), 0.35);
+		border-radius: 20px;
+		color: var(--secondary-color);
+	}
+
+	.post-card-title {
+		font-size: 1.1rem;
+		font-weight: 700;
+		color: var(--heading-color);
+		margin: 0 0 0.45rem 0;
+		line-height: 1.35;
+		transition: color 0.2s ease;
+	}
+
+	.post-card:hover .post-card-title {
+		color: var(--card-hover-fg);
+	}
+
+	.post-card-desc {
+		font-size: 0.88rem;
+		color: var(--text-light);
+		line-height: 1.6;
+		margin: 0 0 0.75rem 0;
+	}
+
+	.post-tags {
+		display: flex;
+		gap: 0.4rem;
+		flex-wrap: wrap;
+		margin-bottom: 0.6rem;
+	}
+
+	.tag {
+		font-family: 'JetBrains Mono', monospace;
+		font-size: 0.68rem;
+		padding: 0.15rem 0.5rem;
+		border-radius: 20px;
+		background: rgba(var(--primary-rgb), 0.1);
+		border: 1px solid rgba(var(--primary-rgb), 0.2);
+		color: var(--primary-light);
+	}
+
+	.post-card:hover .tag {
+		background: rgba(var(--primary-rgb), 0.14);
+		border-color: rgba(var(--primary-rgb), 0.32);
+		color: var(--card-hover-fg);
+	}
+
+	.read-more {
+		font-family: 'JetBrains Mono', monospace;
+		font-size: 0.78rem;
+		color: var(--primary-color);
+		font-weight: 600;
+	}
+
+	.post-card:hover .read-more {
+		color: var(--card-hover-fg);
+	}
+
+	@media (max-width: 768px) {
+		.post-card-inner {
+			padding: 1.1rem 1.25rem;
+		}
+	}
+</style>

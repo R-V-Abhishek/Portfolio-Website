@@ -1,0 +1,51 @@
+---
+---
+
+<div id="scroll-progress" class="scroll-progress" aria-hidden="true"></div>
+
+<style>
+	.scroll-progress {
+		position: fixed;
+		top: 0;
+		left: 0;
+		height: 3px;
+		width: 0%;
+		z-index: 9999;
+		background: var(--gradient-primary);
+		box-shadow: 0 0 8px rgba(var(--primary-rgb), 0.5);
+		pointer-events: none;
+		opacity: 0;
+		transition: opacity 0.3s ease;
+	}
+
+	.scroll-progress.active {
+		opacity: 1;
+	}
+</style>
+
+<script is:inline>
+(function () {
+	const bar = document.getElementById('scroll-progress');
+	if (!bar) return;
+
+	function updateBar() {
+		const scrolled  = window.scrollY;
+		const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+		const pct       = maxScroll > 0 ? (scrolled / maxScroll) * 100 : 0;
+
+		bar.style.width = pct + '%';
+		bar.classList.toggle('active', scrolled > 10);
+	}
+
+	// Guard against duplicate listeners across ViewTransition navigations
+	if (window.__scrollProgressUpdate) {
+		window.removeEventListener('scroll', window.__scrollProgressUpdate);
+		window.removeEventListener('resize', window.__scrollProgressUpdate);
+	}
+	window.__scrollProgressUpdate = updateBar;
+
+	window.addEventListener('scroll', updateBar, { passive: true });
+	window.addEventListener('resize', updateBar, { passive: true });
+	updateBar();
+})();
+</script>

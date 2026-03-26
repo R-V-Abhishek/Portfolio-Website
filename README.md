@@ -6,9 +6,9 @@ A modern, fast, and responsive portfolio website built with **Astro** - perfect 
 
 - ⚡ **Blazing Fast** - Built with Astro for optimal performance
 - 🎨 **Modern Design** - Clean, professional, and attractive UI
-- 🌓 **Dark/Light Mode** - Theme toggle for better user experience
+- 🌙 **Dark Theme Experience** - Terminal-inspired visual language with accent gradients
 - 📱 **Fully Responsive** - Works perfectly on all devices
-- ♿ **Accessible** - WCAG compliant with proper ARIA labels
+- ♿ **Accessibility Focused** - Skip link, semantic landmarks, and keyboard-visible focus styles
 - 🎯 **SEO Optimized** - Meta tags and sitemap included
 - 🔧 **Easy to Customize** - Clean code structure
 - ☁️ **Cloud-Ready** - Optimized for deployment on Vercel/Netlify
@@ -120,21 +120,22 @@ Astro builds to static files in the `dist/` folder. You can deploy this folder t
 ```
 /
 ├── public/              # Static assets
-│   └── favicon.svg
+│   └── fonts/
 ├── src/
-│   ├── components/      # Astro components
-│   │   ├── Navbar.astro
-│   │   ├── Hero.astro
-│   │   ├── About.astro
-│   │   ├── Skills.astro
-│   │   ├── Projects.astro
-│   │   ├── Experience.astro
-│   │   ├── Contact.astro
-│   │   └── Footer.astro
+│   ├── components/      # Astro components + homepage previews
+│   │   ├── previews/
+│   │   └── *.astro
+│   ├── data/            # Typed content sources (skills/projects/experience)
 │   ├── layouts/
 │   │   └── BaseLayout.astro
 │   ├── pages/
-│   │   └── index.astro
+│   │   ├── index.astro
+│   │   ├── about.astro
+│   │   ├── skills.astro
+│   │   ├── projects.astro
+│   │   ├── experience.astro
+│   │   ├── contact.astro
+│   │   └── 404.astro
 │   └── styles/
 │       └── global.css
 ├── astro.config.mjs     # Astro configuration
@@ -144,9 +145,9 @@ Astro builds to static files in the `dist/` folder. You can deploy this folder t
 
 ## 🎯 Performance
 
-- **Lighthouse Score**: 100/100 (Performance, Accessibility, Best Practices, SEO)
+- **Lighthouse Score**: High scores targeted (varies by content and hosting environment)
 - **Zero JS by default**: Only hydrates interactive components
-- **Optimized images**: Automatic image optimization
+- **Optimized assets**: Static output with Astro build optimizations
 - **Fast page loads**: < 1s First Contentful Paint
 
 ## 🤝 Contributing

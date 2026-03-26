@@ -3,23 +3,23 @@
 
 <section class="about-preview fade-in">
 	<div class="container">
-		<div class="section-eyebrow">[ Who I Am ]</div>
+		<div class="section-eyebrow section-eyebrow-center">[ <span class="symbol symbol-about">◉</span>About Me ]</div>
 		<h2 class="section-title">About Me</h2>
 
 		<div class="preview-grid">
 			<div class="intro-col">
 				<p class="intro-text">
-					A <strong>Full-Stack Developer</strong> and <strong>Data Science enthusiast</strong> at BMS College of Engineering, Bengaluru. I build innovative solutions that blend analytical precision with creative thinking.
+					A <strong>Full-Stack Developer</strong> and <strong>Data Science enthusiast</strong> at BMS College of Engineering, Bengaluru, building innovative solutions that blend analytical precision with creative thinking.
 				</p>
 				<p class="intro-text">
 					Beyond code, I'm a professional Carnatic vocalist — a discipline that sharpens both my creativity and my attention to detail in everything I build.
 				</p>
-				<a href="/about" class="btn btn-primary cta-link">Read More →</a>
+				<a href="/about" class="btn btn-primary cta-link">View Full About →</a>
 			</div>
 
 			<div class="stats-col">
 				<div class="stat-card hoverable-card" style="--flood-color: var(--primary-color);">
-					<div class="stat-icon">🎓</div>
+					<div class="stat-icon" aria-hidden="true">🎓</div>
 					<div class="stat-body">
 						<div class="stat-value">9.67</div>
 						<div class="stat-label">CGPA</div>
@@ -27,19 +27,19 @@
 					</div>
 				</div>
 				<div class="stat-card hoverable-card" style="--flood-color: var(--accent-color);">
-					<div class="stat-icon">🎵</div>
+					<div class="stat-icon" aria-hidden="true">🎵</div>
 					<div class="stat-body">
-						<div class="stat-value">10+</div>
-						<div class="stat-label">Years</div>
-						<div class="stat-sub">Carnatic Vocalist</div>
+						<div class="stat-value">15+</div>
+						<div class="stat-label">Creative</div>
+						<div class="stat-sub">Years of Carnatic Training</div>
 					</div>
 				</div>
 				<div class="stat-card hoverable-card" style="--flood-color: var(--secondary-color);">
-					<div class="stat-icon">🤝</div>
+					<div class="stat-icon" aria-hidden="true">🤝</div>
 					<div class="stat-body">
 						<div class="stat-value">2</div>
-						<div class="stat-label">Club Roles</div>
-						<div class="stat-sub">Coordinator & Designer</div>
+						<div class="stat-label">Leadership</div>
+						<div class="stat-sub">Club Coordinator Roles</div>
 					</div>
 				</div>
 			</div>
@@ -49,28 +49,11 @@
 
 <style>
 	.about-preview {
-		padding: 6rem 2rem;
 		background: var(--bg-secondary);
 	}
 
-	.container {
-		max-width: 1200px;
-		margin: 0 auto;
-	}
-
-	.section-eyebrow {
-		text-align: center;
-		margin-bottom: 0.75rem;
-	}
-
 	.section-title {
-		font-size: 2.5rem;
-		text-align: center;
-		margin-bottom: 3rem;
-		background: var(--gradient-hero);
-		-webkit-background-clip: text;
-		-webkit-text-fill-color: transparent;
-		background-clip: text;
+		background: var(--gradient-section-about);
 	}
 
 	.preview-grid {
@@ -147,21 +130,13 @@
 	.stat-card:hover .stat-value,
 	.stat-card:hover .stat-label,
 	.stat-card:hover .stat-sub {
-		color: #07071a;
+		color: var(--card-hover-fg);
 	}
 
 	@media (max-width: 768px) {
-		.about-preview {
-			padding: 4rem 1.5rem;
-		}
-
 		.preview-grid {
 			grid-template-columns: 1fr;
 			gap: 2rem;
-		}
-
-		.section-title {
-			font-size: 2rem;
 		}
 	}
 </style>

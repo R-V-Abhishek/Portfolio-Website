@@ -1,9 +1,11 @@
 ---
-import { ViewTransitions } from 'astro:transitions';
 import '../styles/global.css';
 import Navbar from '../components/Navbar.astro';
 import Footer from '../components/Footer.astro';
 import MatrixRain from '../components/MatrixRain.astro';
+import CustomCursor from '../components/CustomCursor.astro';
+import CommandPalette from '../components/CommandPalette';
+import ProgressBar from '../components/ProgressBar.astro';
 
 interface Props {
 	title: string;
@@ -11,7 +13,11 @@ interface Props {
 	rainOpacity?: number;
 }
 
-const { title, description = "Full-stack developer and Data Science enthusiast specializing in React, Python, and Machine Learning", rainOpacity = 0.15 } = Astro.props;
+const {
+	title,
+	description = "Full-stack developer and Data Science enthusiast specializing in React, Python, and Machine Learning",
+	rainOpacity = 0.08,
+} = Astro.props;
 ---
 
 <!doctype html>
@@ -24,118 +30,167 @@ const { title, description = "Full-stack developer and Data Science enthusiast s
 		<meta name="generator" content={Astro.generator} />
 		<meta name="author" content="R V Abhishek" />
 		<meta name="keywords" content="Full Stack Developer, Data Science, Machine Learning, React, Python, Portfolio" />
-
+		
 		<!-- Open Graph / Social Media -->
 		<meta property="og:type" content="website" />
 		<meta property="og:title" content={title} />
 		<meta property="og:description" content={description} />
 		<meta property="og:url" content="https://rvabhishek.dev" />
-
+		
 		<title>{title}</title>
-		<ViewTransitions />
 	</head>
 	<body>
-		<MatrixRain opacity={rainOpacity} transition:persist />
-		<Navbar transition:persist />
-		<main transition:animate="fade">
+		<ProgressBar />
+		<CustomCursor />
+		<MatrixRain opacity={rainOpacity} />
+		<Navbar />
+		<CommandPalette client:only="react" />
+		<main>
 			<slot />
 		</main>
 		<Footer />
-
+		
 		<script>
-			function initPage() {
-				// Intersection Observer for fade-in scroll animations
-				const observer = new IntersectionObserver((entries) => {
-					entries.forEach(entry => {
-						if (entry.isIntersecting) {
-							entry.target.classList.add('animate-in');
-						}
-					});
-				}, { threshold: 0.1, rootMargin: '0px 0px -80px 0px' });
-
-				document.querySelectorAll('.fade-in').forEach(el => {
-					el.classList.remove('animate-in');
-					observer.observe(el);
-				});
-
-				// Animated counters
-				initCounters();
-
-				// Active nav link marking
-				markActiveNavLink();
-
-				// Magnetic effect for buttons and links
-				const magneticElements = document.querySelectorAll('.btn, .project-link, .action-link');
-				magneticElements.forEach(el => {
-					el.addEventListener('mousemove', function(e) {
-						const rect = el.getBoundingClientRect();
-						const x = e.clientX - rect.left - rect.width / 2;
-						const y = e.clientY - rect.top - rect.height / 2;
-						const distance = Math.sqrt(x * x + y * y);
-						const maxDistance = 50;
-						if (distance < maxDistance) {
-							const strength = (maxDistance - distance) / maxDistance;
-							el.style.transform = 'translate(' + (x * strength * 0.3) + 'px, ' + (y * strength * 0.3) + 'px)';
-						}
-					});
-					el.addEventListener('mouseleave', function() {
-						el.style.transform = 'translate(0, 0)';
-					});
-				});
-			}
-
-			function initCounters() {
-				const counters = document.querySelectorAll('[data-counter]');
-				const obs = new IntersectionObserver((entries) => {
-					entries.forEach(entry => {
-						if (!entry.isIntersecting) return;
-						const el = entry.target;
-						if (el.dataset.animated === 'true') return;
-						el.dataset.animated = 'true';
-						const target = parseFloat(el.dataset.counter);
-						const duration = parseInt(el.dataset.duration || '1800');
-						const decimals = parseInt(el.dataset.decimals || '0');
-						const suffix = el.dataset.suffix || '';
-						animateCount(el, target, duration, decimals, suffix);
-						obs.unobserve(el);
-					});
-				}, { threshold: 0.6 });
-				counters.forEach(el => {
-					el.dataset.animated = 'false';
-					obs.observe(el);
-				});
-			}
-
-			function animateCount(el, target, duration, decimals, suffix) {
-				const start = performance.now();
-				function tick(now) {
-					const elapsed = now - start;
-					const progress = Math.min(elapsed / duration, 1);
-					const eased = 1 - Math.pow(1 - progress, 3);
-					const value = target * eased;
-					el.textContent = value.toFixed(decimals) + suffix;
-					if (progress < 1) requestAnimationFrame(tick);
-					else el.textContent = target.toFixed(decimals) + suffix;
+			(function initLayoutEnhancements() {
+				function normalizePath(path: string): string {
+					return (path || '/').replace(/\/+$/, '') || '/';
 				}
-				requestAnimationFrame(tick);
-			}
 
-			function markActiveNavLink() {
-				const path = window.location.pathname;
-				document.querySelectorAll('.nav-links a').forEach(link => {
-					const href = link.getAttribute('href');
-					const isActive = href === '/' ? path === '/' : (href !== null && path.startsWith(href));
-					link.classList.toggle('active', isActive);
-					if (isActive) link.setAttribute('aria-current', 'page');
-					else link.removeAttribute('aria-current');
-				});
-			}
+				function smoothScrollToHash(hash: string) {
+					if (!hash) return;
+					const target = document.querySelector<HTMLElement>(hash);
+					if (!target) return;
 
-			// Run on initial page load
-			document.addEventListener('DOMContentLoaded', initPage);
-			// Re-run after every View Transition navigation
-			document.addEventListener('astro:page-load', initPage);
+					target.scrollIntoView({ behavior: 'auto', block: 'start' });
+				}
+
+				function bindGlobalHashHandler() {
+					if ((window as { __rvaHashHandlerBound?: boolean }).__rvaHashHandlerBound) return;
+					(window as { __rvaHashHandlerBound?: boolean }).__rvaHashHandlerBound = true;
+
+					document.addEventListener('click', (e: Event) => {
+						const target = e.target as Element | null;
+						if (!target) return;
+
+						const anchor = target.closest('a[href*="#"]') as HTMLAnchorElement | null;
+						if (!anchor) return;
+
+						const url = new URL(anchor.href, window.location.href);
+						if (!url.hash) return;
+
+						const samePath = normalizePath(url.pathname) === normalizePath(window.location.pathname);
+						if (!samePath) return;
+
+						e.preventDefault();
+						history.replaceState(null, '', url.hash);
+						smoothScrollToHash(url.hash);
+					});
+				}
+
+				function initScrollAnimations() {
+					const observerOptions = {
+						threshold: 0.1,
+						rootMargin: '0px 0px -100px 0px'
+					};
+
+					const globalRef = window as { __rvaObserver?: IntersectionObserver };
+					if (!globalRef.__rvaObserver) {
+						globalRef.__rvaObserver = new IntersectionObserver((entries: IntersectionObserverEntry[]) => {
+							entries.forEach((entry) => {
+								if (entry.isIntersecting) {
+									entry.target.classList.add('animate-in');
+								}
+							});
+						}, observerOptions);
+					}
+
+					document.querySelectorAll<HTMLElement>('.fade-in, .stagger-grid').forEach((el) => {
+						if (el.dataset.rvaObserved === 'true') return;
+						el.dataset.rvaObserved = 'true';
+						globalRef.__rvaObserver?.observe(el);
+					});
+				}
+
+				// ── Performance: Smart will-change ──────────────────────────
+				function initPerformanceOptimizations() {
+					// Only apply on hover-capable devices
+					if (!window.matchMedia('(hover: hover)').matches) return;
+
+					const hoverElements = document.querySelectorAll<HTMLElement>(
+						'.hoverable-card, .btn, .project-card, .skill-card'
+					);
+
+					hoverElements.forEach((el) => {
+						if (el.dataset.rvaWillChangeBound === 'true') return;
+						el.dataset.rvaWillChangeBound = 'true';
+
+						let timeoutId: ReturnType<typeof setTimeout> | null = null;
+
+						const applyWillChange = () => {
+							el.style.willChange = 'transform, box-shadow, background-color, border-color';
+						};
+
+						const removeWillChange = () => {
+							if (timeoutId) clearTimeout(timeoutId);
+							timeoutId = setTimeout(() => {
+								el.style.willChange = 'auto';
+							}, 450); // Match transition duration
+						};
+
+						el.addEventListener('mouseenter', applyWillChange);
+						el.addEventListener('mouseleave', removeWillChange);
+						el.addEventListener('focusin', applyWillChange);
+						el.addEventListener('focusout', removeWillChange);
+					});
+				}
+
+				// ── Lazy Loading Images ─────────────────────────────────────
+				function initLazyLoading() {
+					if (typeof IntersectionObserver === 'undefined') return;
+
+					const images = document.querySelectorAll<HTMLImageElement>('img[data-src], img[loading="lazy"]');
+					if (images.length === 0) return;
+
+					const imageObserver = new IntersectionObserver(
+						(entries, observer) => {
+							entries.forEach((entry) => {
+								if (entry.isIntersecting) {
+									const img = entry.target as HTMLImageElement;
+									const src = img.dataset.src || img.src;
+
+									if (src) {
+										img.src = src;
+										delete img.dataset.src;
+										img.classList.add('lazy-loaded');
+									}
+
+									observer.unobserve(img);
+								}
+							});
+						},
+						{
+							threshold: 0.01,
+							rootMargin: '50px 0px',
+						}
+					);
+
+					images.forEach((img) => imageObserver.observe(img));
+				}
+
+				function onPageReady() {
+					initScrollAnimations();
+					initPerformanceOptimizations();
+					initLazyLoading();
+
+					if (window.location.hash) {
+						setTimeout(() => smoothScrollToHash(window.location.hash), 60);
+					}
+				}
+
+				bindGlobalHashHandler();
+				onPageReady();
+				document.addEventListener('astro:page-load', onPageReady);
+			})();
 		</script>
 	</body>
 </html>
-

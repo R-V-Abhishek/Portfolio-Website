@@ -1,0 +1,225 @@
+---
+import { init3DCardEffect } from '../../utils/card3d';
+---
+
+<section id="music-arts" class="music-preview fade-in">
+	<div class="container">
+		<div class="section-header">
+			<div class="section-eyebrow">[ <span class="symbol">🎵</span> Creative Side ]</div>
+			<div class="title-wrapper">
+				<h2 class="section-title">Music & Arts</h2>
+				<a href="/about#music" class="view-all-link">Read more <span class="arrow">→</span></a>
+			</div>
+		</div>
+
+		<div class="music-content">
+			<div class="music-card hoverable-card" style="--flood-color: var(--accent-color);">
+				<div class="card-content">
+					<div class="icon-wrapper">
+						<span class="music-icon">🎤</span>
+					</div>
+					<div class="text-content">
+						<h3 class="card-title">Carnatic Vocalist</h3>
+						<p class="card-description">
+							Trained in the classical art form of Carnatic Music. I perform vocal duets and participate in various concerts alongside talented musicians. 
+							Music has been an integral part of my journey, shaping my creativity and discipline.
+						</p>
+						<ul class="highlights-list">
+							<li><span class="bullet">•</span> Perform vocal duets</li>
+							<li><span class="bullet">•</span> Concert experience with Vaachana</li>
+							<li><span class="bullet">•</span> Participated in Padmanotsava</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<style>
+	.music-preview {
+		padding: 6rem 2rem;
+		background: var(--bg-secondary);
+		position: relative;
+		overflow: hidden;
+	}
+
+	.container {
+		max-width: 1200px;
+		margin: 0 auto;
+	}
+
+	.section-header {
+		margin-bottom: 3rem;
+	}
+
+	.section-eyebrow {
+		font-family: 'JetBrains Mono', monospace;
+		color: var(--text-muted);
+		font-size: 0.9rem;
+		margin-bottom: 1rem;
+		letter-spacing: 0.05em;
+	}
+
+	.symbol {
+		color: var(--accent-color);
+	}
+
+	.title-wrapper {
+		display: flex;
+		justify-content: space-between;
+		align-items: flex-end;
+		border-bottom: 1px solid rgba(var(--accent-rgb), 0.2);
+		padding-bottom: 1rem;
+	}
+
+	.section-title {
+		font-size: clamp(2rem, 4vw, 3rem);
+		color: var(--heading-color);
+		margin: 0;
+	}
+
+	.view-all-link {
+		color: var(--accent-color);
+		text-decoration: none;
+		font-family: 'JetBrains Mono', monospace;
+		font-size: 0.95rem;
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+		transition: all 0.3s ease;
+	}
+
+	.view-all-link:hover {
+		color: var(--secondary-color);
+	}
+
+	.view-all-link:hover .arrow {
+		transform: translateX(4px);
+	}
+
+	.arrow {
+		transition: transform 0.3s ease;
+	}
+
+	.music-content {
+		display: flex;
+		justify-content: center;
+	}
+
+	.music-card {
+		background: var(--card-bg);
+		backdrop-filter: blur(25px) saturate(180%);
+		-webkit-backdrop-filter: blur(25px) saturate(180%);
+		border: 1px solid rgba(var(--accent-rgb), 0.2);
+		border-radius: 16px;
+		padding: 3rem;
+		max-width: 800px;
+		width: 100%;
+		transition: all 0.4s ease;
+		box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+		position: relative;
+		overflow: hidden;
+	}
+
+	.music-card:hover {
+		border-color: rgba(var(--accent-rgb), 0.5);
+		box-shadow: 0 15px 40px rgba(var(--accent-rgb), 0.15);
+	}
+
+	.card-content {
+		display: flex;
+		gap: 2.5rem;
+		align-items: flex-start;
+	}
+
+	.icon-wrapper {
+		flex-shrink: 0;
+		width: 80px;
+		height: 80px;
+		background: rgba(var(--accent-rgb), 0.1);
+		border-radius: 50%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		border: 1px solid rgba(var(--accent-rgb), 0.3);
+		box-shadow: 0 0 20px rgba(var(--accent-rgb), 0.2);
+	}
+
+	.music-icon {
+		font-size: 2.5rem;
+	}
+
+	.text-content {
+		flex-grow: 1;
+	}
+
+	.card-title {
+		font-size: 1.8rem;
+		color: var(--heading-color);
+		margin-bottom: 1rem;
+	}
+
+	.card-description {
+		font-size: 1.1rem;
+		color: var(--text-color);
+		line-height: 1.7;
+		margin-bottom: 1.5rem;
+	}
+
+	.highlights-list {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+		display: flex;
+		flex-direction: column;
+		gap: 0.75rem;
+	}
+
+	.highlights-list li {
+		display: flex;
+		align-items: center;
+		gap: 0.75rem;
+		color: var(--text-light);
+		font-size: 1.05rem;
+	}
+
+	.bullet {
+		color: var(--accent-color);
+		font-weight: bold;
+	}
+
+	@media (max-width: 768px) {
+		.music-preview {
+			padding: 4rem 1.5rem;
+		}
+
+		.title-wrapper {
+			flex-direction: column;
+			align-items: flex-start;
+			gap: 1rem;
+		}
+
+		.card-content {
+			flex-direction: column;
+			gap: 1.5rem;
+			text-align: center;
+		}
+
+		.icon-wrapper {
+			margin: 0 auto;
+		}
+
+		.highlights-list li {
+			justify-content: center;
+		}
+	}
+</style>
+
+<script>
+	import { init3DCardEffect } from '../../utils/card3d';
+	// We'll initialize it safely when the DOM is ready in BaseLayout
+	document.addEventListener('astro:page-load', () => {
+		init3DCardEffect('.music-card', 10);
+	});
+</script>

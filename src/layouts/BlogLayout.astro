@@ -1,0 +1,170 @@
+---
+import BaseLayout from './BaseLayout.astro';
+
+interface Props {
+	title:        string;
+	description?: string;
+	publishDate:  Date;
+	updatedDate?: Date;
+	tags?:        string[];
+	readingTime:  number;
+}
+
+const { title, description, publishDate, updatedDate, tags = [], readingTime } = Astro.props;
+
+const fmt = (d: Date) =>
+	d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+---
+
+<BaseLayout title={`${title} | R V Abhishek`} description={description} rainOpacity={0.06}>
+	<article class="blog-post fade-in">
+		<div class="container post-container">
+
+			<a href="/blog" class="back-link">← all posts</a>
+
+			<header class="post-header">
+				<div class="section-eyebrow section-eyebrow-center">
+					[ <span class="symbol symbol-blog">✦</span> Writing ]
+				</div>
+
+				<h1 class="post-title">{title}</h1>
+
+				<div class="post-meta">
+					<time datetime={publishDate.toISOString()} class="post-date">{fmt(publishDate)}</time>
+					{updatedDate && (
+						<span class="post-updated">
+							· Updated {fmt(updatedDate)}
+						</span>
+					)}
+					<span class="reading-time">· {readingTime} min read</span>
+				</div>
+
+				{tags.length > 0 && (
+					<div class="post-tags" aria-label="Post tags">
+						{tags.map(tag => (
+							<span class="tag">{tag}</span>
+						))}
+					</div>
+				)}
+			</header>
+
+			<hr class="post-divider" />
+
+			<div class="prose">
+				<slot />
+			</div>
+
+			<footer class="post-footer">
+				<div class="post-footer-inner">
+					<a href="/blog" class="btn btn-secondary">← Back to Blog</a>
+					<a href="/contact" class="btn btn-primary">Discuss this post →</a>
+				</div>
+			</footer>
+
+		</div>
+	</article>
+</BaseLayout>
+
+<style>
+	.blog-post {
+		padding-top: 7rem;
+		padding-bottom: 6rem;
+	}
+
+	.post-container {
+		max-width: 780px;
+	}
+
+	/* Back link */
+	.back-link {
+		display: inline-block;
+		font-family: 'JetBrains Mono', monospace;
+		font-size: 0.85rem;
+		color: var(--text-muted);
+		text-decoration: none;
+		margin-bottom: 2rem;
+		transition: color 0.2s ease;
+	}
+
+	.back-link:hover {
+		color: var(--primary-color);
+	}
+
+	/* Post header */
+	.post-header {
+		margin-bottom: 2.5rem;
+		text-align: center;
+	}
+
+	.post-title {
+		font-size: clamp(1.9rem, 5vw, 2.8rem);
+		font-weight: 700;
+		line-height: 1.2;
+		margin-bottom: 1rem;
+		background: var(--gradient-primary);
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+		background-clip: text;
+	}
+
+	.post-meta {
+		font-family: 'JetBrains Mono', monospace;
+		font-size: 0.85rem;
+		color: var(--text-muted);
+		margin-bottom: 1rem;
+	}
+
+	.post-date { color: var(--secondary-color); }
+
+	.post-tags {
+		display: flex;
+		gap: 0.5rem;
+		flex-wrap: wrap;
+		justify-content: center;
+	}
+
+	.tag {
+		font-family: 'JetBrains Mono', monospace;
+		font-size: 0.75rem;
+		padding: 0.2rem 0.65rem;
+		border-radius: 20px;
+		background: rgba(var(--primary-rgb), 0.1);
+		border: 1px solid rgba(var(--primary-rgb), 0.25);
+		color: var(--primary-light);
+		font-weight: 500;
+	}
+
+	/* Divider */
+	.post-divider {
+		border: none;
+		border-top: 1px solid rgba(var(--primary-rgb), 0.15);
+		margin: 0 0 2.5rem;
+	}
+
+	/* Post footer */
+	.post-footer {
+		margin-top: 4rem;
+		padding-top: 2rem;
+		border-top: 1px solid rgba(var(--primary-rgb), 0.12);
+	}
+
+	.post-footer-inner {
+		display: flex;
+		gap: 1rem;
+		flex-wrap: wrap;
+	}
+
+	@media (max-width: 768px) {
+		.blog-post {
+			padding-top: 6rem;
+		}
+
+		.post-footer-inner {
+			flex-direction: column;
+		}
+
+		.post-footer-inner .btn {
+			text-align: center;
+		}
+	}
+</style>

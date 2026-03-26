@@ -1,13 +1,14 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import Projects from '../components/Projects.astro';
+import ProjectsSection from '../components/Projects.astro';
+import PageHero from '../components/PageHero.astro';
 ---
 
 <BaseLayout
-	title="Projects — R V Abhishek"
+	title="Projects | R V Abhishek"
 	description="Full-stack, data science, and API projects by R V Abhishek — MERN apps, Python automation, blockchain APIs, and more."
 	rainOpacity={0.10}
 >
-	<div style="height: 4rem;"></div>
-	<Projects showFilter={true} />
+	<PageHero title="Projects" subtitle="A selection of full-stack, backend, and data projects." breadcrumb="projects" />
+	<ProjectsSection showFilter={true} />
 </BaseLayout>

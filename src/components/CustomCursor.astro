@@ -1,0 +1,145 @@
+---
+---
+
+<div id="cursor-outer" class="cursor-outer" aria-hidden="true"></div>
+<div id="cursor-inner" class="cursor-inner" aria-hidden="true"></div>
+
+<style>
+	.cursor-outer {
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 30px;
+		height: 30px;
+		border: 1.5px solid var(--primary-color);
+		border-radius: 50%;
+		pointer-events: none;
+		z-index: 99998;
+		transform: translate(-50%, -50%);
+		opacity: 0.55;
+		box-shadow: 0 0 8px rgba(var(--primary-rgb), 0.25);
+		transition: width 0.18s ease, height 0.18s ease, border-color 0.18s ease, opacity 0.3s ease, box-shadow 0.18s ease;
+		will-change: left, top;
+	}
+
+	.cursor-inner {
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 5px;
+		height: 5px;
+		background: var(--primary-color);
+		border-radius: 50%;
+		pointer-events: none;
+		z-index: 99999;
+		transform: translate(-50%, -50%);
+		box-shadow: 0 0 6px var(--primary-color), 0 0 10px rgba(var(--primary-rgb), 0.4);
+		transition: width 0.1s ease, height 0.1s ease, background-color 0.18s ease, box-shadow 0.18s ease;
+		will-change: left, top;
+	}
+
+	/* Hover state — triggered by JS adding .is-hovering */
+	.cursor-outer.is-hovering {
+		width: 44px;
+		height: 44px;
+		border-color: var(--secondary-color);
+		opacity: 0.35;
+		box-shadow: 0 0 14px rgba(var(--secondary-rgb), 0.3);
+	}
+
+	.cursor-inner.is-hovering {
+		width: 7px;
+		height: 7px;
+		background: var(--secondary-color);
+		box-shadow: 0 0 8px var(--secondary-color), 0 0 14px rgba(var(--secondary-rgb), 0.5);
+	}
+
+	/* Click burst */
+	.cursor-outer.is-clicking {
+		width: 18px;
+		height: 18px;
+		opacity: 0.9;
+		transition-duration: 0.05s;
+	}
+
+	.cursor-inner.is-clicking {
+		width: 9px;
+		height: 9px;
+		transition-duration: 0.05s;
+	}
+
+	/* Hide on touch devices */
+	@media (hover: none) and (pointer: coarse) {
+		.cursor-outer,
+		.cursor-inner {
+			display: none;
+		}
+	}
+</style>
+
+<script is:inline>
+	(function () {
+		const outer = document.getElementById('cursor-outer');
+		const inner = document.getElementById('cursor-inner');
+		if (!outer || !inner) return;
+
+		/* Skip on touch-only devices */
+		if (window.matchMedia('(hover: none) and (pointer: coarse)').matches) return;
+
+		let outerX = window.innerWidth / 2;
+		let outerY = window.innerHeight / 2;
+		let targetX = outerX;
+		let targetY = outerY;
+
+		function lerp(a, b, t) { return a + (b - a) * t; }
+
+		/* Inner dot: instant | Outer ring: lagged */
+		document.addEventListener('mousemove', function (e) {
+			targetX = e.clientX;
+			targetY = e.clientY;
+			inner.style.left = targetX + 'px';
+			inner.style.top  = targetY + 'px';
+		});
+
+		(function animate() {
+			outerX = lerp(outerX, targetX, 0.14);
+			outerY = lerp(outerY, targetY, 0.14);
+			outer.style.left = outerX + 'px';
+			outer.style.top  = outerY + 'px';
+			requestAnimationFrame(animate);
+		})();
+
+		/* Hover detection via delegation */
+		const INTERACTIVE = 'a, button, [role="button"], input, textarea, select, label, .btn, .project-link';
+
+		document.addEventListener('mouseover', function (e) {
+			if (e.target && e.target.closest && e.target.closest(INTERACTIVE)) {
+				outer.classList.add('is-hovering');
+				inner.classList.add('is-hovering');
+			} else {
+				outer.classList.remove('is-hovering');
+				inner.classList.remove('is-hovering');
+			}
+		});
+
+		/* Click burst */
+		document.addEventListener('mousedown', function () {
+			outer.classList.add('is-clicking');
+			inner.classList.add('is-clicking');
+		});
+		document.addEventListener('mouseup', function () {
+			outer.classList.remove('is-clicking');
+			inner.classList.remove('is-clicking');
+		});
+
+		/* Fade out when cursor leaves the viewport */
+		document.addEventListener('mouseleave', function () {
+			outer.style.opacity = '0';
+			inner.style.opacity = '0';
+		});
+		document.addEventListener('mouseenter', function () {
+			outer.style.opacity = '';
+			inner.style.opacity = '';
+		});
+	})();
+</script>

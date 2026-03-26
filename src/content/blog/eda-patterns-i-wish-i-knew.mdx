@@ -1,0 +1,99 @@
+---
+title: "Exploratory Data Analysis: Patterns I Wish I Knew Earlier"
+description: "A practical guide to EDA techniques that actually matter — from handling missing data to finding hidden correlations in messy real-world datasets."
+publishDate: 2025-11-15
+tags: ["data-science", "python", "tutorial"]
+featured: true
+---
+
+When I first started working with datasets, I treated EDA as a checkbox — run `.describe()`, plot a histogram, move on. It took a few painful projects to realise that EDA is where the real analysis actually happens. The model is just the last step.
+
+Here are the patterns I now run on every dataset before touching a single feature.
+
+## Start with shape, not statistics
+
+Before any plots, get a structural picture of what you're dealing with:
+
+```python
+df.shape               # (rows, columns)
+df.dtypes              # column types — surprises here are common
+df.isnull().mean()     # fraction of missing values per column
+df.duplicated().sum()  # silent duplicates skew everything
+```
+
+The `isnull().mean()` line is especially useful. Anything above 40% missing needs a decision before you proceed — impute, drop, or flag. Don't just let the model handle it silently.
+
+## Distributions before correlations
+
+A Pearson correlation between two skewed variables is mathematically valid but practically misleading. Check distributions first:
+
+```python
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+fig, axes = plt.subplots(1, 2, figsize=(12, 4))
+sns.histplot(df['target'], ax=axes[0], kde=True)
+sns.boxplot(y=df['target'], ax=axes[1])
+plt.tight_layout()
+```
+
+The boxplot shows you outlier scale immediately. One data point at 10× the median will dominate any model trained on raw values.
+
+## Categorical cardinality matters
+
+High-cardinality categoricals — product IDs, usernames, postcodes — are often accidentally included and cause quiet model bloat or data leakage:
+
+```python
+for col in df.select_dtypes('object').columns:
+    n = df[col].nunique()
+    print(f"{col:30s}: {n} unique values")
+```
+
+If a column has as many unique values as rows, it's an identifier. Drop it as a feature; use it only for joins or grouping.
+
+## Correlation heatmaps are just a starting point
+
+The classic heatmap shows linear relationships. Non-linear patterns, threshold effects, and interaction terms are invisible to it:
+
+```python
+import numpy as np
+
+corr = df.corr(numeric_only=True)
+mask = np.triu(np.ones_like(corr, dtype=bool))
+sns.heatmap(corr, mask=mask, annot=True, fmt=".2f", cmap="coolwarm", center=0)
+```
+
+When you spot a high correlation, always plot the actual scatter. The Anscombe quartet exists for exactly this reason.
+
+## Pairplots are expensive but revealing
+
+For datasets with under 10 numeric features, nothing beats a pairplot for spotting clusters, outliers, and unexpected relationships all at once:
+
+```python
+sns.pairplot(
+    df[numeric_cols + ['target']],
+    hue='target',
+    plot_kws={'alpha': 0.4, 's': 20}
+)
+```
+
+The `alpha=0.4` matters on any overplotted dataset — without it, dense areas look like solid blobs.
+
+## Time-based columns need separate treatment
+
+If there's a datetime column, temporal patterns are often the most predictive signal and the easiest to miss with standard EDA:
+
+```python
+df['date'] = pd.to_datetime(df['date'])
+df.set_index('date').resample('W')['value'].mean().plot(figsize=(14, 4))
+```
+
+Weekly resampling usually reveals seasonality in seconds. Monthly shows longer trends. Always look at both before deciding what aggregation your model should see.
+
+---
+
+EDA isn't about running every possible plot — it's about building an accurate mental model of your data before committing to any approach. The hour spent here consistently saves three hours debugging a model trained on quietly bad data.
+
+The questions worth answering before modelling: *What is the actual distribution of my target? Which features are actually numeric vs. disguised categoricals? Where is the data fundamentally incomplete?*
+
+Answer those first, and the modelling decisions become much easier.

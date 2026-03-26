@@ -4,6 +4,8 @@ interface Props {
 	subtitle?: string;
 	gradient?: string;
 	breadcrumb?: string;
+	symbol?: string;
+	symbolClass?: string;
 }
 
 const {
@@ -11,17 +13,37 @@ const {
 	subtitle,
 	gradient = 'var(--gradient-hero)',
 	breadcrumb = title.toLowerCase(),
+	symbol,
+	symbolClass,
 } = Astro.props;
+
+const sectionSymbols: Record<string, { glyph: string; className: string }> = {
+	about: { glyph: '◉', className: 'symbol-about' },
+	skills: { glyph: '◈', className: 'symbol-skills' },
+	projects: { glyph: '⌘', className: 'symbol-projects' },
+	experience: { glyph: '⌬', className: 'symbol-experience' },
+	contact: { glyph: '✦', className: 'symbol-contact' },
+};
+
+const symbolMeta = sectionSymbols[breadcrumb] ?? { glyph: '◉', className: 'symbol-about' };
+const heroSymbol = symbol ?? symbolMeta.glyph;
+const heroSymbolClass = symbolClass ?? symbolMeta.className;
 ---
 
 <section class="page-hero fade-in">
 	<div class="container">
-		<div class="breadcrumb">
+		<nav class="breadcrumb" aria-label="Breadcrumb">
 			<a href="/" class="breadcrumb-home">~/</a>
 			<span class="breadcrumb-sep">›</span>
-			<span class="breadcrumb-current">{breadcrumb}</span>
-		</div>
-		<h1 class="page-title" style={`background-image: ${gradient};`}>{title}</h1>
+			<span class="breadcrumb-current" aria-current="page">
+				<span class={`symbol ${heroSymbolClass}`} aria-hidden="true">{heroSymbol}</span>
+				{breadcrumb}
+			</span>
+		</nav>
+		<h1 class="page-title" style={`background-image: ${gradient};`}>
+			<span class={`page-title-symbol ${heroSymbolClass}`}>{heroSymbol}</span>
+			{title}
+		</h1>
 		{subtitle && <p class="page-subtitle">{subtitle}</p>}
 		<div class="hero-line" style={`background: ${gradient};`}></div>
 	</div>
@@ -60,19 +82,31 @@ const {
 
 	.breadcrumb-current {
 		color: var(--text-light);
+		display: inline-flex;
+		align-items: center;
+		gap: 0.25rem;
 	}
 
 	.page-title {
 		font-size: clamp(2.5rem, 6vw, 4.5rem);
 		font-weight: 700;
 		font-family: 'JetBrains Mono', monospace;
-		background-image: var(--gradient-hero);
 		-webkit-background-clip: text;
 		-webkit-text-fill-color: transparent;
 		background-clip: text;
 		margin-bottom: 1rem;
 		line-height: 1.1;
 		text-shadow: none;
+	}
+
+	.page-title-symbol {
+		background: none !important;
+		-webkit-text-fill-color: currentColor !important;
+		color: var(--primary-light);
+		text-shadow: 0 0 10px currentColor;
+		font-size: 0.78em;
+		margin-right: 0.4rem;
+		vertical-align: 0.08em;
 	}
 
 	.page-subtitle {

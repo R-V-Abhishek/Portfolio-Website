@@ -2,7 +2,7 @@
 ---
 
 <section id="hero" class="hero">
-	<div class="hero-container fade-in">
+	<div class="hero-container hoverable-card fade-in" style="--flood-color: var(--primary-color);">
 		<div class="hero-content">
 			<h1 class="hero-title">
 				<span class="title-line">Hi, I'm</span>
@@ -14,17 +14,17 @@
 				<span class="role-secondary">Data Science & AI/ML Enthusiast</span>
 			</p>
 			<p class="hero-description">
-				Building innovative solutions at BMS College of Engineering.
+				Building innovative solutions at BMS College of Engineering. 
 				Passionate about creating seamless digital experiences and exploring the frontiers of artificial intelligence.
 			</p>
 			<div class="hero-badges">
-				<span class="badge badge-primary">🎓 B.E. CSE</span>
+				<span class="badge badge-primary">🎓 B.Tech CSE</span>
 				<span class="badge badge-secondary">💻 9.67 CGPA</span>
 				<span class="badge badge-accent">✨ Available for opportunities</span>
 			</div>
 			<div class="cta-buttons">
-				<a href="/projects" class="btn btn-primary">View Projects</a>
-				<a href="/contact" class="btn btn-secondary">Get In Touch</a>
+				<a href="#projects" class="btn btn-primary">View Projects</a>
+				<a href="#contact" class="btn btn-secondary">Get In Touch</a>
 			</div>
 			<div class="social-links">
 				<a href="https://github.com/R-V-Abhishek" target="_blank" rel="noopener noreferrer" aria-label="GitHub" title="GitHub" class="social-link">
@@ -55,7 +55,7 @@
 		justify-content: center;
 		align-items: center;
 		padding: 6rem 2rem 4rem;
-		background: radial-gradient(ellipse at center, rgba(15, 10, 40, 0.5) 0%, var(--bg-color) 70%);
+		background: radial-gradient(ellipse at center, rgba(var(--primary-rgb), 0.14) 0%, var(--bg-color) 70%);
 		position: relative;
 		overflow: hidden;
 	}
@@ -64,16 +64,37 @@
 		max-width: 900px;
 		width: 100%;
 		background: var(--card-bg);
-		backdrop-filter: blur(20px);
-		-webkit-backdrop-filter: blur(20px);
+		backdrop-filter: blur(25px) saturate(180%);
+		-webkit-backdrop-filter: blur(25px) saturate(180%);
 		border-radius: 24px;
-		box-shadow:
-			0 0 50px rgba(var(--primary-rgb), 0.2),
-			0 30px 80px rgba(0, 0, 0, 0.7);
-		border: 2px solid rgba(var(--primary-rgb), 0.25);
+		box-shadow: 
+			0 0 40px rgba(var(--secondary-rgb), 0.3),
+			0 30px 80px rgba(0, 0, 0, 0.9),
+			inset 0 0 40px rgba(255, 255, 255, 0.05);
+		border: 2px solid rgba(var(--secondary-rgb), 0.3);
 		overflow: hidden;
 		animation: hero-entrance 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 		position: relative;
+		transform-style: preserve-3d;
+		will-change: transform;
+	}
+
+	.hero-container::after {
+		content: '';
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		width: 300px;
+		height: 300px;
+		background: radial-gradient(circle, var(--secondary-color), transparent 70%);
+		opacity: 0;
+		transform: translate(-50%, -50%);
+		transition: opacity 0.6s ease;
+		pointer-events: none;
+	}
+
+	.hero-container:hover::after {
+		opacity: 0.15;
 	}
 
 	@keyframes hero-entrance {
@@ -90,6 +111,7 @@
 	.hero-content {
 		padding: 3rem 2.5rem;
 		text-align: center;
+		font-family: system-ui, -apple-system, sans-serif;
 	}
 
 	.hero-title {
@@ -103,19 +125,18 @@
 		font-size: 1.5rem;
 		color: var(--text-muted);
 		font-weight: 400;
-		font-family: 'JetBrains Mono', monospace;
 	}
 
 	.name-highlight {
 		font-size: 3.5rem;
 		font-weight: 700;
-		background: var(--gradient-hero);
+		background: linear-gradient(135deg, var(--primary-color), var(--secondary-color), var(--accent-color));
 		-webkit-background-clip: text;
 		-webkit-text-fill-color: transparent;
 		background-clip: text;
 		background-size: 200% auto;
 		animation: gradient-flow 3s ease infinite;
-		font-family: 'JetBrains Mono', monospace;
+		text-shadow: 0 0 20px rgba(var(--primary-rgb), 0.5);
 	}
 
 	@keyframes gradient-flow {
@@ -170,38 +191,40 @@
 		border-radius: 20px;
 		font-size: 0.9rem;
 		font-weight: 600;
-		font-family: 'JetBrains Mono', monospace;
-		transition: box-shadow 0.3s ease;
+		transition: all 0.3s ease;
 	}
 
 	.badge-primary {
-		background: rgba(var(--primary-rgb), 0.12);
+		background: rgba(var(--primary-rgb), 0.15);
 		border: 2px solid rgba(var(--primary-rgb), 0.4);
 		color: var(--primary-color);
 	}
 
 	.badge-primary:hover {
-		box-shadow: 0 0 20px rgba(var(--primary-rgb), 0.35);
+		background: rgba(var(--primary-rgb), 0.25);
+		box-shadow: 0 0 20px rgba(var(--primary-rgb), 0.4);
 	}
 
 	.badge-secondary {
-		background: rgba(var(--secondary-rgb), 0.12);
+		background: rgba(var(--secondary-rgb), 0.15);
 		border: 2px solid rgba(var(--secondary-rgb), 0.4);
 		color: var(--secondary-color);
 	}
 
 	.badge-secondary:hover {
-		box-shadow: 0 0 20px rgba(var(--secondary-rgb), 0.35);
+		background: rgba(var(--secondary-rgb), 0.25);
+		box-shadow: 0 0 20px rgba(var(--secondary-rgb), 0.4);
 	}
 
 	.badge-accent {
-		background: rgba(var(--accent-rgb), 0.12);
+		background: rgba(var(--accent-rgb), 0.15);
 		border: 2px solid rgba(var(--accent-rgb), 0.4);
 		color: var(--accent-color);
 	}
 
 	.badge-accent:hover {
-		box-shadow: 0 0 20px rgba(var(--accent-rgb), 0.35);
+		background: rgba(var(--accent-rgb), 0.25);
+		box-shadow: 0 0 20px rgba(var(--accent-rgb), 0.4);
 	}
 
 	.cta-buttons {
@@ -228,20 +251,20 @@
 		align-items: center;
 		gap: 0.5rem;
 		padding: 0.75rem 1.25rem;
-		background: rgba(var(--primary-rgb), 0.06);
-		border: 2px solid rgba(var(--primary-rgb), 0.25);
+		background: color-mix(in srgb, var(--card-bg) 90%, var(--bg-color) 10%);
+		border: 2px solid rgba(var(--secondary-rgb), 0.3);
 		border-radius: 12px;
 		color: var(--text-color);
 		text-decoration: none;
-		transition: background 0.3s ease, border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+		transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 		font-weight: 500;
 	}
 
 	.social-link:hover {
-		background: rgba(var(--primary-rgb), 0.12);
-		border-color: var(--primary-color);
+		background: rgba(var(--secondary-rgb), 0.12);
+		border-color: var(--secondary-color);
 		transform: translateY(-3px);
-		box-shadow: var(--glow-primary);
+		box-shadow: 0 8px 25px rgba(var(--secondary-rgb), 0.3);
 	}
 
 	.link-icon {
@@ -250,7 +273,6 @@
 
 	.link-text {
 		font-weight: 600;
-		font-family: 'JetBrains Mono', monospace;
 	}
 
 	.scroll-indicator {
@@ -259,14 +281,15 @@
 		animation: bounce 2s infinite;
 		font-size: 1rem;
 		color: var(--secondary-color);
-		font-family: 'JetBrains Mono', monospace;
+		font-family: system-ui, -apple-system, sans-serif;
 		text-shadow: 0 0 10px var(--secondary-color);
 		cursor: pointer;
-		transition: transform 0.3s ease;
+		transition: all 0.3s ease;
 	}
 
 	.scroll-indicator:hover {
 		transform: scale(1.1) translateY(5px);
+		text-shadow: 0 0 20px var(--secondary-color);
 	}
 
 	@keyframes bounce {
@@ -337,3 +360,8 @@
 		}
 	}
 </style>
+
+<script>
+	import { init3DCardEffect } from '../utils/card3d';
+	init3DCardEffect('.hero-container', 15);
+</script>

@@ -12,6 +12,9 @@ export interface Certification {
 	issuer: string;
 	date: string;
 	icon: string;
+	status?: 'completed' | 'in-progress';
+	/** Paste your personal credential verification URL here (from Coursera/NPTEL profile) */
+	credentialUrl?: string;
 }
 
 export const experiences: Experience[] = [
@@ -19,7 +22,7 @@ export const experiences: Experience[] = [
 		title: "Club Coordinator",
 		organization: "Ninaad - Indian Music Club",
 		location: "BMS College of Engineering",
-		description: "Leading the Indian music club, organizing events and competitions, managing performances, and coordinating with various stakeholders to promote Indian classical music culture on campus.",
+		description: "Leading the Indian music club, organizing events and competitions, managing performances and coordinating with various stakeholders to promote Indian classical music culture on campus.",
 		duration: "2024-Present",
 		icon: "🎵"
 	},
@@ -34,7 +37,28 @@ export const experiences: Experience[] = [
 ];
 
 export const certifications: Certification[] = [
-	{ name: "IBM Exploratory Data Analysis Course", issuer: "Coursera", date: "July 2025", icon: "📊" },
-	{ name: "Introduction to Large Language Models", issuer: "NPTEL (IIT New Delhi)", date: "August 2025", icon: "🤖" },
-	{ name: "HTML + CSS in Depth", issuer: "Meta (Coursera)", date: "July 2024", icon: "💻" }
+	{
+		name: "IBM Exploratory Data Analysis Course",
+		issuer: "Coursera",
+		date: "July 2025",
+		icon: "📊",
+		status: "in-progress",
+		// credentialUrl: "https://coursera.org/verify/YOUR_ID",
+	},
+	{
+		name: "Introduction to Large Language Models",
+		issuer: "NPTEL (IIT New Delhi)",
+		date: "August 2025",
+		icon: "🤖",
+		status: "in-progress",
+		// credentialUrl: "https://nptel.ac.in/noc/Ecertificate/?q=YOUR_ID",
+	},
+	{
+		name: "HTML + CSS in Depth",
+		issuer: "Meta (Coursera)",
+		date: "July 2024",
+		icon: "💻",
+		status: "completed",
+		// credentialUrl: "https://coursera.org/verify/YOUR_ID",
+	}
 ];

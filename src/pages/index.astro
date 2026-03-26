@@ -6,6 +6,8 @@ import AboutPreview from '../components/previews/AboutPreview.astro';
 import SkillsPreview from '../components/previews/SkillsPreview.astro';
 import ProjectsPreview from '../components/previews/ProjectsPreview.astro';
 import ExperiencePreview from '../components/previews/ExperiencePreview.astro';
+import BlogPreview from '../components/previews/BlogPreview.astro';
+import MusicPreview from '../components/previews/MusicPreview.astro';
 ---
 
 <BaseLayout
@@ -51,11 +53,13 @@ import ExperiencePreview from '../components/previews/ExperiencePreview.astro';
 	<SkillsPreview />
 	<ProjectsPreview />
 	<ExperiencePreview />
+	<MusicPreview />
+	<BlogPreview />
 
 	<!-- Contact CTA strip -->
 	<section class="contact-cta fade-in">
-		<div class="cta-container">
-			<div class="cta-eyebrow">[ Let's Talk ]</div>
+		<div class="container cta-container">
+			<div class="section-eyebrow section-eyebrow-center cta-eyebrow">[ <span class="symbol symbol-contact">✦</span>Let's Talk ]</div>
 			<h2 class="cta-title">Ready to build something together?</h2>
 			<p class="cta-body">
 				I'm open to full-time roles, freelance projects, and interesting collaborations.<br />
@@ -87,7 +91,6 @@ import ExperiencePreview from '../components/previews/ExperiencePreview.astro';
 
 	/* ---- Contact CTA ---- */
 	.contact-cta {
-		padding: 6rem 2rem;
 		background: var(--bg-secondary);
 		text-align: center;
 		border-top: 1px solid rgba(var(--primary-rgb), 0.12);
@@ -95,16 +98,12 @@ import ExperiencePreview from '../components/previews/ExperiencePreview.astro';
 
 	.cta-container {
 		max-width: 700px;
-		margin: 0 auto;
+		padding-top: 6rem;
+		padding-bottom: 6rem;
 	}
 
 	.cta-eyebrow {
-		font-family: 'JetBrains Mono', monospace;
-		font-size: 0.9rem;
-		color: var(--primary-color);
-		font-weight: 600;
 		margin-bottom: 1rem;
-		letter-spacing: 0.08em;
 	}
 
 	.cta-title {
@@ -135,8 +134,9 @@ import ExperiencePreview from '../components/previews/ExperiencePreview.astro';
 			padding: 0 1rem;
 		}
 
-		.contact-cta {
-			padding: 4rem 1.5rem;
+		.cta-container {
+			padding-top: 4rem;
+			padding-bottom: 4rem;
 		}
 	}
 

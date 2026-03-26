@@ -1,0 +1,293 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+
+const allPosts = await getCollection('blog', ({ data }) =>
+	import.meta.env.PROD ? data.draft !== true : true
+);
+
+const posts = allPosts.sort(
+	(a, b) => new Date(b.data.publishDate).valueOf() - new Date(a.data.publishDate).valueOf()
+);
+
+function readingTime(body: string): number {
+	return Math.max(1, Math.ceil(body.trim().split(/\s+/).length / 200));
+}
+
+function fmt(d: Date): string {
+	return d.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+}
+
+// Collect all unique tags
+const allTags = [...new Set(posts.flatMap(p => p.data.tags))].sort();
+
+const blogColors = [
+	'var(--secondary-color)',
+	'var(--accent-color)',
+	'var(--primary-color)',
+	'var(--highlight-color)'
+];
+---
+
+<BaseLayout
+	title="Blog | R V Abhishek"
+	description="Thoughts on data science, machine learning, web development, and building things."
+	rainOpacity={0.08}
+>
+	<PageHero
+		title="Blog"
+		subtitle="Thoughts on data science, web development, and the occasional deep dive."
+		symbol="✦"
+		symbolClass="symbol-blog"
+	/>
+
+	<section class="blog fade-in">
+		<div class="container blog-container">
+
+			<!-- Tag filter row -->
+			{allTags.length > 0 && (
+				<div class="tag-row" aria-label="Filter by tag">
+					<span class="tag-label">topics:</span>
+					{allTags.map(tag => (
+						<a href={`#${tag}`} class="tag-filter">{tag}</a>
+					))}
+				</div>
+			)}
+
+			<!-- Post list -->
+			<ul class="post-list stagger-grid" role="list">
+				{posts.map((post, index) => {
+					const rt = readingTime(post.body);
+					return (
+						<li
+							class="post-card hoverable-card"
+							style={`--flood-color: ${blogColors[index % blogColors.length]};`}
+						>
+							<a href={`/blog/${post.slug}`} class="post-link" aria-label={post.data.title}>
+								<div class="post-card-inner">
+									<div class="post-card-meta">
+										<time datetime={post.data.publishDate.toISOString()} class="post-date">
+											{fmt(post.data.publishDate)}
+										</time>
+										<span class="reading-time">{rt} min read</span>
+										{post.data.featured && (
+											<span class="featured-badge">featured</span>
+										)}
+									</div>
+
+									<h2 class="post-card-title">{post.data.title}</h2>
+									<p class="post-card-desc">{post.data.description}</p>
+
+									{post.data.tags.length > 0 && (
+										<div class="post-card-tags" aria-label="Tags">
+											{post.data.tags.map(tag => (
+												<span class="tag" id={tag}>{tag}</span>
+											))}
+										</div>
+									)}
+
+									<span class="read-more">Read post →</span>
+								</div>
+							</a>
+						</li>
+					);
+				})}
+			</ul>
+
+			{posts.length === 0 && (
+				<div class="empty-state">
+					<p class="empty-icon">✦</p>
+					<p>No posts yet — check back soon.</p>
+				</div>
+			)}
+
+		</div>
+	</section>
+</BaseLayout>
+
+<style>
+	.blog {
+		padding-bottom: 6rem;
+	}
+
+	.blog-container {
+		max-width: 860px;
+	}
+
+	/* Tag filter */
+	.tag-row {
+		display: flex;
+		align-items: center;
+		gap: 0.6rem;
+		flex-wrap: wrap;
+		margin-bottom: 2.5rem;
+		font-family: 'JetBrains Mono', monospace;
+		font-size: 0.8rem;
+	}
+
+	.tag-label {
+		color: var(--text-muted);
+		font-weight: 600;
+	}
+
+	.tag-filter {
+		padding: 0.2rem 0.65rem;
+		border-radius: 20px;
+		background: rgba(var(--primary-rgb), 0.08);
+		border: 1px solid rgba(var(--primary-rgb), 0.2);
+		color: var(--text-muted);
+		text-decoration: none;
+		transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+	}
+
+	.tag-filter:hover {
+		background: rgba(var(--primary-rgb), 0.18);
+		color: var(--primary-light);
+		border-color: var(--primary-color);
+	}
+
+	/* Post list */
+	.post-list {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+		display: flex;
+		flex-direction: column;
+		gap: 1.5rem;
+	}
+
+	.post-card {
+		background: var(--card-bg);
+		backdrop-filter: var(--backdrop-card);
+		-webkit-backdrop-filter: var(--backdrop-card);
+		border: 2px solid rgba(var(--primary-rgb), 0.2);
+		border-radius: 16px;
+		overflow: hidden;
+		transition: border-color 0.25s ease, box-shadow 0.25s ease;
+		box-shadow: var(--shadow-card);
+	}
+
+	.post-card:hover {
+		border-color: rgba(var(--primary-rgb), 0.5);
+		box-shadow: 0 0 30px rgba(var(--primary-rgb), 0.12), var(--shadow-card-hover);
+	}
+
+	.post-link {
+		display: block;
+		text-decoration: none;
+		color: inherit;
+	}
+
+	.post-card-inner {
+		padding: 1.75rem 2rem;
+		position: relative;
+		z-index: 1;
+	}
+
+	.post-card-meta {
+		display: flex;
+		align-items: center;
+		gap: 1rem;
+		flex-wrap: wrap;
+		margin-bottom: 0.75rem;
+	}
+
+	.post-date {
+		font-family: 'JetBrains Mono', monospace;
+		font-size: 0.8rem;
+		color: var(--secondary-color);
+	}
+
+	.reading-time {
+		font-family: 'JetBrains Mono', monospace;
+		font-size: 0.78rem;
+		color: var(--text-muted);
+	}
+
+	.featured-badge {
+		font-family: 'JetBrains Mono', monospace;
+		font-size: 0.7rem;
+		font-weight: 700;
+		text-transform: uppercase;
+		letter-spacing: 0.08em;
+		padding: 0.15rem 0.55rem;
+		background: rgba(var(--secondary-rgb), 0.15);
+		border: 1px solid rgba(var(--secondary-rgb), 0.4);
+		border-radius: 20px;
+		color: var(--secondary-color);
+	}
+
+	.post-card-title {
+		font-size: 1.35rem;
+		font-weight: 700;
+		color: var(--heading-color);
+		margin: 0 0 0.6rem 0;
+		line-height: 1.35;
+		transition: color 0.2s ease;
+	}
+
+	.post-card:hover .post-card-title {
+		color: var(--primary-light);
+	}
+
+	.post-card-desc {
+		color: var(--text-light);
+		font-size: 0.95rem;
+		line-height: 1.65;
+		margin: 0 0 1rem 0;
+	}
+
+	.post-card-tags {
+		display: flex;
+		gap: 0.5rem;
+		flex-wrap: wrap;
+		margin-bottom: 1rem;
+	}
+
+	.tag {
+		font-family: 'JetBrains Mono', monospace;
+		font-size: 0.72rem;
+		padding: 0.18rem 0.55rem;
+		border-radius: 20px;
+		background: rgba(var(--primary-rgb), 0.1);
+		border: 1px solid rgba(var(--primary-rgb), 0.2);
+		color: var(--primary-light);
+	}
+
+	.read-more {
+		font-family: 'JetBrains Mono', monospace;
+		font-size: 0.82rem;
+		color: var(--primary-color);
+		font-weight: 600;
+		transition: color 0.2s ease;
+	}
+
+	.post-card:hover .read-more {
+		color: var(--card-hover-fg);
+	}
+
+	/* Empty state */
+	.empty-state {
+		text-align: center;
+		padding: 4rem 0;
+		color: var(--text-muted);
+		font-family: 'JetBrains Mono', monospace;
+	}
+
+	.empty-icon {
+		font-size: 2rem;
+		margin-bottom: 1rem;
+		opacity: 0.3;
+	}
+
+	@media (max-width: 768px) {
+		.post-card-inner {
+			padding: 1.25rem 1.25rem;
+		}
+
+		.post-card-title {
+			font-size: 1.15rem;
+		}
+	}
+</style>

@@ -1,0 +1,81 @@
+---
+title: "Why I Built My Portfolio with Astro"
+description: "Performance, simplicity, and just enough JavaScript — why Astro was the right pick for a portfolio that feels dynamic but ships as plain HTML."
+publishDate: 2026-01-20
+tags: ["web-dev", "astro", "javascript"]
+featured: false
+---
+
+Most portfolio advice boils down to "clone a template and swap the text." I tried that. It felt wrong to have a portfolio I couldn't fully explain. So I rebuilt it from scratch with Astro, and it's been the most instructive project I've worked on this year.
+
+## What Astro does differently
+
+Astro ships **zero JavaScript by default**. Every page is statically generated at build time and delivered as plain HTML. If you want interactivity, you opt in explicitly per component:
+
+```astro
+<!-- Runs at build time — no JS shipped -->
+<StaticCard title="Skills" />
+
+<!-- Hydrated client-side — React bundle only for this one island -->
+<CommandPalette client:only="react" />
+```
+
+Compare that to Next.js, where even a completely static page carries the React runtime. My portfolio has roughly 7 pages and almost no runtime JS outside the two interactive widgets. A Lighthouse audit returns 98–100 on performance across the board.
+
+## Islands architecture in practice
+
+The only place I needed React was the `Ctrl+K` command palette. With Astro's islands, I loaded that single component client-side while everything else stays static:
+
+```astro
+<CommandPalette client:only="react" />
+```
+
+React ships *only for that component*. The rest of the page — nav, hero, project cards, skills grid — is all plain HTML generated at build time. No hydration, no layout shift, no unused bundle weight.
+
+## Content collections for type-safe MDX
+
+Astro's content collections give you Zod-validated frontmatter. If I typo a key or pass a string where a date is expected, the build fails loudly:
+
+```ts
+const blog = defineCollection({
+  type: 'content',
+  schema: z.object({
+    title:       z.string(),
+    publishDate: z.coerce.date(),
+    tags:        z.array(z.string()).default([]),
+    featured:    z.boolean().default(false),
+  }),
+});
+```
+
+No silent data issues, no runtime surprises. The schema is the single source of truth for every post.
+
+## View Transitions without a full SPA
+
+Smooth page transitions used to mean adopting a full single-page-app architecture. Astro's `<ViewTransitions />` wires the browser's native View Transitions API to its router with two lines:
+
+```astro
+import { ViewTransitions } from 'astro:transitions';
+
+<head>
+  <ViewTransitions />
+</head>
+```
+
+Page navigations feel instant. Persistent elements like the navbar and matrix rain background stay mounted across navigations without re-rendering. The experience feels like a full SPA with none of the client-side routing overhead.
+
+## The tradeoffs worth knowing
+
+Astro isn't the right choice for everything:
+
+- **Highly dynamic content** — dashboards, real-time feeds, and auth-heavy apps are awkward to build
+- **Teams deep in Next.js** — the migration cost isn't worth it unless performance is a serious problem
+- **Complex cross-island state** — sharing state across multiple React islands requires a separate store (Nanostores, Zustand, etc.)
+
+For a portfolio or technical blog, though, the tradeoffs are entirely in your favour. Fast builds, excellent DX, and output you could read and debug without any tooling.
+
+---
+
+The full source for this portfolio is on [GitHub](https://github.com/R-V-Abhishek). The entire build — 7 pages, all static assets — runs in under 4 seconds locally. That kind of feedback loop makes iterating on design genuinely enjoyable.
+
+If you're starting a new portfolio or blog in 2025, Astro is the first thing I'd reach for.

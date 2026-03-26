@@ -1,13 +1,14 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import About from '../components/About.astro';
+import AboutSection from '../components/About.astro';
+import PageHero from '../components/PageHero.astro';
 ---
 
 <BaseLayout
-	title="About — R V Abhishek"
+	title="About | R V Abhishek"
 	description="Full-Stack Developer and Data Science enthusiast pursuing B.E. CSE at BMS College of Engineering, Bengaluru."
 	rainOpacity={0.12}
 >
-	<div style="height: 4rem;"></div>
-	<About />
+	<PageHero title="About" subtitle="Background, journey, and what I’m building." breadcrumb="about" />
+	<AboutSection />
 </BaseLayout>

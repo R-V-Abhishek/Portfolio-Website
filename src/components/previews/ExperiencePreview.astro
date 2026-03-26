@@ -1,35 +1,49 @@
 ---
 import { experiences, certifications } from '../../data/experience.js';
-const recentExp = experiences[0];
+
+const previewColors = [
+	'var(--highlight-color)',
+	'var(--secondary-color)',
+	'var(--accent-color)',
+	'var(--primary-color)'
+];
 ---
 
 <section class="exp-preview fade-in">
 	<div class="container">
-		<div class="section-eyebrow">[ My Journey ]</div>
-		<h2 class="section-title">Experience</h2>
+		<div class="section-eyebrow section-eyebrow-center">[ <span class="symbol symbol-experience">⌬</span>My Journey ]</div>
+		<h2 class="section-title">Experience & Certifications</h2>
 
 		<div class="preview-grid">
 			<div class="exp-col">
 				<h3 class="col-label">// Roles</h3>
-				{experiences.map((exp) => (
-					<div class="exp-card hoverable-card" style="--flood-color: var(--primary-color);">
+				{experiences.map((exp, index) => (
+					<div
+						class="exp-card hoverable-card"
+						style={`--flood-color: ${previewColors[index % previewColors.length]};`}
+					>
 						<div class="exp-header">
-							<span class="exp-icon">{exp.icon}</span>
+							<span class="exp-icon" aria-hidden="true">{exp.icon}</span>
 							<div class="exp-meta">
 								<div class="exp-title">{exp.title}</div>
 								<div class="exp-org">{exp.organization}</div>
+								<div class="exp-location"><span aria-hidden="true">📍</span> {exp.location}</div>
 							</div>
 							<span class="exp-duration">{exp.duration}</span>
 						</div>
+						<p class="exp-description">{exp.description}</p>
 					</div>
 				))}
 			</div>
 
 			<div class="cert-col">
 				<h3 class="col-label">// Certifications</h3>
-				{certifications.map((cert) => (
-					<div class="cert-card hoverable-card" style="--flood-color: var(--highlight-color);">
-						<span class="cert-icon">{cert.icon}</span>
+				{certifications.map((cert, index) => (
+					<div
+						class="cert-card hoverable-card"
+						style={`--flood-color: ${previewColors[index % previewColors.length]};`}
+					>
+						<span class="cert-icon" aria-hidden="true">{cert.icon}</span>
 						<div class="cert-body">
 							<div class="cert-name">{cert.name}</div>
 							<div class="cert-meta">{cert.issuer} · {cert.date}</div>
@@ -40,35 +54,18 @@ const recentExp = experiences[0];
 		</div>
 
 		<div class="view-more">
-			<a href="/experience" class="btn btn-secondary">View Full Experience →</a>
+			<a href="/experience" class="btn btn-secondary">View Full Experience & Certifications →</a>
 		</div>
 	</div>
 </section>
 
 <style>
 	.exp-preview {
-		padding: 6rem 2rem;
 		background: var(--bg-color);
 	}
 
-	.container {
-		max-width: 1200px;
-		margin: 0 auto;
-	}
-
-	.section-eyebrow {
-		text-align: center;
-		margin-bottom: 0.75rem;
-	}
-
 	.section-title {
-		font-size: 2.5rem;
-		text-align: center;
-		margin-bottom: 3rem;
-		background: linear-gradient(135deg, var(--highlight-color), var(--accent-color));
-		-webkit-background-clip: text;
-		-webkit-text-fill-color: transparent;
-		background-clip: text;
+		background: var(--gradient-section-experience);
 	}
 
 	.preview-grid {
@@ -126,6 +123,13 @@ const recentExp = experiences[0];
 		color: var(--primary-light);
 	}
 
+	.exp-location {
+		font-size: 0.8rem;
+		color: var(--text-muted);
+		font-family: 'JetBrains Mono', monospace;
+		margin-top: 0.35rem;
+	}
+
 	.exp-duration {
 		font-size: 0.78rem;
 		color: var(--text-muted);
@@ -134,11 +138,20 @@ const recentExp = experiences[0];
 		flex-shrink: 0;
 	}
 
+	.exp-description {
+		margin-top: 0.9rem;
+		font-size: 0.88rem;
+		line-height: 1.55;
+		color: var(--text-light);
+	}
+
 	/* Hover overrides */
 	.exp-card:hover .exp-title,
 	.exp-card:hover .exp-org,
+	.exp-card:hover .exp-location,
+	.exp-card:hover .exp-description,
 	.exp-card:hover .exp-duration {
-		color: #07071a;
+		color: var(--card-hover-fg);
 	}
 
 	/* Cert cards */
@@ -175,29 +188,13 @@ const recentExp = experiences[0];
 
 	.cert-card:hover .cert-name,
 	.cert-card:hover .cert-meta {
-		color: #07071a;
-	}
-
-	.view-more {
-		text-align: center;
+		color: var(--card-hover-fg);
 	}
 
 	@media (max-width: 768px) {
-		.exp-preview {
-			padding: 4rem 1.5rem;
-		}
-
-		.section-title {
-			font-size: 2rem;
-		}
-
 		.preview-grid {
 			grid-template-columns: 1fr;
-			gap: 0;
-		}
-
-		.cert-col {
-			margin-top: 2rem;
+			gap: 2rem;
 		}
 	}
 </style>

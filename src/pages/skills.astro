@@ -1,13 +1,14 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import Skills from '../components/Skills.astro';
+import SkillsSection from '../components/Skills.astro';
+import PageHero from '../components/PageHero.astro';
 ---
 
 <BaseLayout
-	title="Skills — R V Abhishek"
+	title="Skills | R V Abhishek"
 	description="Technical skills in Full-Stack Development, Data Science, Machine Learning, and Cloud Computing."
 	rainOpacity={0.10}
 >
-	<div style="height: 4rem;"></div>
-	<Skills />
+	<PageHero title="Skills" subtitle="Technologies and tools I work with." breadcrumb="skills" />
+	<SkillsSection />
 </BaseLayout>

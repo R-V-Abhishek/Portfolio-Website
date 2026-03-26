@@ -1,98 +1,98 @@
 ---
-import type { Project } from '../data/projects.js';
-import { projects } from '../data/projects.js';
+const projects = [
+	{
+		title: "SaffronSpice",
+		description: "A full-stack restaurant management application built with the MERN stack, featuring user authentication, reservations, cart functionality, and a complete ordering system.",
+		tech: ["React", "Node.js", "Express", "MongoDB", "REST APIs"],
+		liveLink: "https://saffron-spice-restaurant-git-main-r-v-abhisheks-projects.vercel.app/",
+		githubLink: "https://github.com/R-V-Abhishek/SaffronSpice",
+		status: "deployed",
+		featured: true
+	},
+	{
+		title: "GST Automation",
+		description: "Python automation toolkit for processing GST reports from Tally ERP exports with interactive directory selection, multi-rate GST handling, and B2B/B2C classification.",
+		tech: ["Python", "Pandas", "Data Processing", "Automation"],
+		githubLink: "https://github.com/R-V-Abhishek/GST-Automation",
+		status: "completed",
+		featured: true
+	},
+	{
+		title: "EigenLayer Restaking API",
+		description: "Backend API service that simulates/exposes restaking data related to EigenLayer protocol, providing endpoints for validator info, delegations, and aggregated rewards.",
+		tech: ["Node.js", "Express", "REST APIs", "Blockchain"],
+		githubLink: "https://github.com/R-V-Abhishek/eigen-restaking-api",
+		status: "completed",
+		featured: true
+	},
+	{
+		title: "Titanic Dataset EDA",
+		description: "Comprehensive exploratory data analysis of the classic Titanic dataset, featuring data cleaning, visualization, and survival factor analysis using Python and statistical methods.",
+		tech: ["Python", "Pandas", "Seaborn", "Matplotlib", "Data Analysis"],
+		githubLink: "https://github.com/R-V-Abhishek/Titanic-Dataset-EDA",
+		status: "completed",
+		featured: false
+	}
+];
 
-interface Props {
-	showFilter?: boolean;
-	limit?: number;
-}
-
-const { showFilter = false, limit } = Astro.props;
-
-const displayProjects = limit ? projects.slice(0, limit) : projects;
+const projectColors = [
+	'var(--accent-color)',
+	'var(--secondary-color)',
+	'var(--primary-color)',
+	'var(--highlight-color)'
+];
 ---
 
 <section id="projects" class="projects fade-in">
 	<div class="container">
-		<div class="section-eyebrow">[ My Work ]</div>
-		<h2 class="section-title">Projects</h2>
-
-		{showFilter && (
-			<div class="filter-bar" id="filter-bar">
-				<button class="filter-btn active" data-filter="all">All</button>
-				<button class="filter-btn" data-filter="full-stack">Full Stack</button>
-				<button class="filter-btn" data-filter="data-science">Data Science</button>
-				<button class="filter-btn" data-filter="backend">Backend</button>
-			</div>
-		)}
-
-		<div class="projects-grid" id="projects-grid">
-			{displayProjects.map((project) => (
+		<div class="terminal-header-section">
+			<span class="prompt">guest@portfolio</span>:<span class="path">~</span><span class="symbol">$</span> ls -la projects/
+		</div>
+		<div class="projects-grid">
+			{projects.map((project, index) => (
 				<div
 					class={`project-card hoverable-card ${project.featured ? 'featured' : ''}`}
-					data-category={project.category}
-					style="--flood-color: var(--primary-color);"
+					style={`--flood-color: ${projectColors[index % projectColors.length]};`}
 				>
 					<div class="card-header">
 						<span class="file-icon">📁</span>
 						<span class="status-badge" data-status={project.status}>[{project.status}]</span>
 					</div>
-					<h3 class="project-title">{project.title}</h3>
+					<h3 class="project-title">&gt; {project.title}</h3>
 					<p class="project-description">{project.description}</p>
 					<div class="project-tech">
-						<span class="tech-label">Tech Stack</span>
+						<span class="tech-label">// Tech Stack:</span>
 						<div class="tech-list">
 							{project.tech.map(tech => (
-								<span class="tech-badge">{tech}</span>
+								<span class="tech-badge">• {tech}</span>
 							))}
 						</div>
 					</div>
 					<div class="project-links">
 						{project.githubLink && (
 							<a href={project.githubLink} target="_blank" rel="noopener noreferrer" class="project-link">
-								GitHub
+								[ GitHub ]
 							</a>
 						)}
 						{project.liveLink && (
 							<a href={project.liveLink} target="_blank" rel="noopener noreferrer" class="project-link live">
-								Live Demo
+								[ Live Demo ]
 							</a>
 						)}
 					</div>
 				</div>
 			))}
 		</div>
-
+		<div class="terminal-footer-section">
+			<span class="status-ok">[✓]</span> {projects.length} projects found
+		</div>
 		<div class="view-more">
 			<a href="https://github.com/R-V-Abhishek" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
-				View All on GitHub
+				&gt; View All on GitHub
 			</a>
 		</div>
 	</div>
 </section>
-
-{showFilter && (
-	<script is:inline>
-		const filterBar = document.getElementById('filter-bar');
-		const grid = document.getElementById('projects-grid');
-
-		filterBar?.addEventListener('click', (e) => {
-			const btn = e.target.closest('.filter-btn');
-			if (!btn) return;
-
-			filterBar.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-			btn.classList.add('active');
-
-			const filter = btn.dataset.filter;
-			grid?.querySelectorAll('.project-card').forEach(card => {
-				const match = filter === 'all' || card.dataset.category === filter;
-				card.style.opacity = match ? '1' : '0.2';
-				card.style.transform = match ? '' : 'scale(0.97)';
-				card.style.pointerEvents = match ? '' : 'none';
-			});
-		});
-	</script>
-)}
 
 <style>
 	.projects {
@@ -105,52 +105,30 @@ const displayProjects = limit ? projects.slice(0, limit) : projects;
 		margin: 0 auto;
 	}
 
-	.section-title {
-		font-size: 2.5rem;
-		text-align: center;
-		margin-bottom: 1rem;
-		background: var(--gradient-accent);
-		-webkit-background-clip: text;
-		-webkit-text-fill-color: transparent;
-		background-clip: text;
-	}
-
-	.section-eyebrow {
-		text-align: center;
-		margin-bottom: 0.75rem;
-	}
-
-	/* Filter bar */
-	.filter-bar {
-		display: flex;
-		gap: 0.75rem;
-		justify-content: center;
-		flex-wrap: wrap;
-		margin: 2rem 0 2.5rem;
-	}
-
-	.filter-btn {
+	.terminal-header-section {
+		background: linear-gradient(to bottom, var(--terminal-bg-start), var(--terminal-bg-end));
+		padding: 0.75rem 1.5rem;
+		border: 2px solid var(--accent-color);
+		border-radius: 8px 8px 0 0;
+		box-shadow: 0 2px 10px rgba(var(--accent-rgb), 0.2);
 		font-family: 'JetBrains Mono', monospace;
-		font-size: 0.85rem;
-		font-weight: 600;
-		padding: 0.5rem 1.25rem;
-		border-radius: 6px;
-		background: rgba(var(--primary-rgb), 0.08);
-		border: 1px solid rgba(var(--primary-rgb), 0.25);
+		font-size: 0.9rem;
 		color: var(--text-light);
-		cursor: pointer;
-		transition: all 0.25s ease;
+		margin-bottom: 2rem;
 	}
 
-	.filter-btn:hover {
-		border-color: var(--primary-color);
-		color: var(--primary-light);
+	.prompt {
+		color: var(--prompt-user);
+		font-weight: 600;
 	}
 
-	.filter-btn.active {
-		background: var(--primary-color);
-		border-color: var(--primary-color);
-		color: #07071a;
+	.path {
+		color: var(--prompt-path);
+	}
+
+	.symbol {
+		color: var(--prompt-symbol);
+		margin: 0 0.5rem;
 	}
 
 	.projects-grid {
@@ -161,18 +139,26 @@ const displayProjects = limit ? projects.slice(0, limit) : projects;
 	}
 
 	.project-card {
-		background: var(--card-bg);
+		background: color-mix(in srgb, var(--card-bg) 92%, var(--bg-color) 8%);
 		backdrop-filter: blur(10px);
 		-webkit-backdrop-filter: blur(10px);
-		border: 2px solid rgba(var(--primary-rgb), 0.25);
+		border: 2px solid var(--accent-color);
 		border-radius: 16px;
 		padding: 1.5rem;
-		box-shadow: var(--shadow-card);
+		transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+		box-shadow:
+			0 0 20px rgba(var(--accent-rgb), 0.2),
+			0 8px 32px rgba(0, 0, 0, 0.6);
+		position: relative;
+		overflow: hidden;
 	}
 
 	.project-card.featured {
-		border-color: rgba(var(--primary-rgb), 0.5);
-		box-shadow: 0 0 30px rgba(var(--primary-rgb), 0.2), var(--shadow-card);
+		border-color: var(--primary-color);
+		background: color-mix(in srgb, var(--card-bg) 84%, rgba(var(--primary-rgb), 0.22) 16%);
+		box-shadow:
+			0 0 30px rgba(var(--primary-rgb), 0.4),
+			0 8px 32px rgba(0, 0, 0, 0.6);
 	}
 
 	.card-header {
@@ -183,12 +169,21 @@ const displayProjects = limit ? projects.slice(0, limit) : projects;
 		font-size: 1.2rem;
 	}
 
+	.file-icon {
+		filter: drop-shadow(0 0 5px var(--accent-color));
+	}
+
 	.status-badge {
 		font-family: 'JetBrains Mono', monospace;
 		font-size: 0.75rem;
+		color: var(--primary-color);
 		text-transform: uppercase;
 		font-weight: 600;
-		color: var(--success-color);
+	}
+
+	.status-badge[data-status="deployed"] {
+		color: var(--primary-color);
+		text-shadow: var(--glow-green);
 	}
 
 	.status-badge[data-status="completed"] {
@@ -196,12 +191,12 @@ const displayProjects = limit ? projects.slice(0, limit) : projects;
 	}
 
 	.project-title {
-		font-size: 1.35rem;
-		color: var(--primary-light);
+		font-size: 1.4rem;
+		color: var(--accent-color);
 		margin: 0 0 1rem 0;
 		font-weight: 700;
 		font-family: 'JetBrains Mono', monospace;
-		text-shadow: 0 0 10px rgba(var(--primary-rgb), 0.3);
+		text-shadow: 0 0 10px rgba(var(--accent-rgb), 0.3);
 	}
 
 	.project-description {
@@ -217,13 +212,10 @@ const displayProjects = limit ? projects.slice(0, limit) : projects;
 
 	.tech-label {
 		color: var(--text-muted);
-		font-size: 0.8rem;
-		font-family: 'JetBrains Mono', monospace;
-		font-weight: 600;
-		letter-spacing: 0.1em;
-		text-transform: uppercase;
+		font-size: 0.85rem;
 		display: block;
-		margin-bottom: 0.6rem;
+		margin-bottom: 0.5rem;
+		font-style: italic;
 	}
 
 	.tech-list {
@@ -234,18 +226,24 @@ const displayProjects = limit ? projects.slice(0, limit) : projects;
 
 	.tech-badge {
 		color: var(--secondary-color);
-		font-size: 0.82rem;
+		font-size: 0.85rem;
 		font-family: 'JetBrains Mono', monospace;
 		background: rgba(var(--secondary-rgb), 0.1);
-		padding: 0.25rem 0.65rem;
+		padding: 0.25rem 0.75rem;
 		border-radius: 4px;
-		border: 1px solid rgba(var(--secondary-rgb), 0.25);
-		transition: all 0.25s ease;
+		border: 1px solid rgba(var(--secondary-rgb), 0.3);
+		transition: all 0.3s ease;
+	}
+
+	.tech-badge:hover {
+		background: rgba(var(--secondary-rgb), 0.2);
+		border-color: var(--secondary-color);
+		box-shadow: 0 0 15px rgba(var(--secondary-rgb), 0.4);
 	}
 
 	.project-links {
 		display: flex;
-		gap: 0.75rem;
+		gap: 1rem;
 		flex-wrap: wrap;
 	}
 
@@ -253,33 +251,49 @@ const displayProjects = limit ? projects.slice(0, limit) : projects;
 		color: var(--primary-color);
 		text-decoration: none;
 		font-family: 'JetBrains Mono', monospace;
-		font-size: 0.88rem;
-		border: 1px solid rgba(var(--primary-rgb), 0.4);
+		font-size: 0.9rem;
+		border: 1px solid var(--primary-color);
 		padding: 0.4rem 1rem;
-		border-radius: 6px;
-		background: rgba(var(--primary-rgb), 0.06);
-		transition: all 0.25s ease;
+		border-radius: 4px;
+		background: rgba(var(--primary-rgb), 0.05);
+		transition: all 0.3s ease;
 		font-weight: 600;
 	}
 
 	.project-link:hover {
-		background: rgba(var(--primary-rgb), 0.15);
-		border-color: var(--primary-color);
-		box-shadow: var(--glow-primary);
-		transform: translateY(-2px);
-		text-shadow: none;
+		background: var(--primary-color);
+		color: var(--bg-color);
+		box-shadow: 0 0 25px rgba(var(--primary-rgb), 0.6);
 	}
 
 	.project-link.live {
 		color: var(--accent-color);
-		border-color: rgba(var(--accent-rgb), 0.4);
-		background: rgba(var(--accent-rgb), 0.06);
+		border-color: var(--accent-color);
+		background: rgba(var(--accent-rgb), 0.05);
 	}
 
 	.project-link.live:hover {
-		background: rgba(var(--accent-rgb), 0.15);
-		border-color: var(--accent-color);
-		box-shadow: var(--glow-pink);
+		background: var(--accent-color);
+		color: var(--bg-color);
+		box-shadow: 0 0 25px rgba(var(--accent-rgb), 0.6);
+	}
+
+	.terminal-footer-section {
+		background: linear-gradient(to bottom, var(--terminal-bg-end), var(--terminal-bg-start));
+		padding: 0.75rem 1.5rem;
+		border: 2px solid var(--accent-color);
+		border-radius: 0 0 8px 8px;
+		box-shadow: 0 -2px 10px rgba(var(--accent-rgb), 0.2);
+		font-family: 'JetBrains Mono', monospace;
+		font-size: 0.9rem;
+		color: var(--text-light);
+		margin-bottom: 2rem;
+	}
+
+	.status-ok {
+		color: var(--primary-color);
+		font-weight: 600;
+		text-shadow: var(--glow-green);
 	}
 
 	.view-more {
@@ -306,3 +320,8 @@ const displayProjects = limit ? projects.slice(0, limit) : projects;
 		}
 	}
 </style>
+
+<script>
+	import { init3DCardEffect } from '../utils/card3d';
+	init3DCardEffect('.project-card', 10);
+</script>

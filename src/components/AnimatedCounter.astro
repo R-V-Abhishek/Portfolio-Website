@@ -20,8 +20,6 @@ const {
 	duration = 1800,
 	color = 'var(--primary-color)',
 } = Astro.props;
-
-const initialValue = prefix + end.toFixed(decimals) + suffix;
 ---
 
 <div class="stat-item">
@@ -84,3 +82,49 @@ const initialValue = prefix + end.toFixed(decimals) + suffix;
 		font-family: 'JetBrains Mono', monospace;
 	}
 </style>
+
+<script>
+	function runCounter(el: HTMLElement) {
+		const end      = parseFloat(el.dataset.counter   ?? '0');
+		const decimals = parseInt(el.dataset.decimals    ?? '0', 10);
+		const suffix   = el.dataset.suffix               ?? '';
+		const duration = parseInt(el.dataset.duration    ?? '1800', 10);
+
+		const start     = 0;
+		const startTime = performance.now();
+
+		function easeOutQuart(t: number): number {
+			return 1 - Math.pow(1 - t, 4);
+		}
+
+		function step(now: number) {
+			const elapsed  = now - startTime;
+			const progress = Math.min(elapsed / duration, 1);
+			const current  = start + (end - start) * easeOutQuart(progress);
+
+			el.textContent = current.toFixed(decimals) + suffix;
+
+			if (progress < 1) {
+				requestAnimationFrame(step);
+			} else {
+				el.textContent = end.toFixed(decimals) + suffix;
+			}
+		}
+
+		requestAnimationFrame(step);
+	}
+
+	// Trigger each counter when it scrolls into view
+	const counters = document.querySelectorAll<HTMLElement>('.counter-value');
+
+	const io = new IntersectionObserver((entries) => {
+		entries.forEach(entry => {
+			if (entry.isIntersecting) {
+				runCounter(entry.target as HTMLElement);
+				io.unobserve(entry.target);
+			}
+		});
+	}, { threshold: 0.4 });
+
+	counters.forEach(el => io.observe(el));
+</script>

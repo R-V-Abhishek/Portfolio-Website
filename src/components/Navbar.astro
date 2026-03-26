@@ -1,70 +1,24 @@
 ---
-const path = Astro.url.pathname;
-const isActive = (href: string) => href === '/' ? path === '/' : path.startsWith(href);
-const links = [
-	{ href: '/about',      cmd: 'cd',   label: 'about/'     },
-	{ href: '/skills',     cmd: 'ls',   label: 'skills/'    },
-	{ href: '/projects',   cmd: 'cat',  label: 'projects'   },
-	{ href: '/experience', cmd: 'vim',  label: 'experience' },
-	{ href: '/contact',    cmd: 'mail', label: 'contact'    },
-];
 ---
 
-<nav class="navbar" id="navbar">
+<nav class="navbar">
 	<div class="nav-container">
-		<a href="/" class="logo" aria-label="Home">
-			<span class="prompt-symbol">$</span>
-			<span class="logo-name">RVA</span>
+		<a href="/" class="logo">
+			<span class="prompt-symbol">$</span> <span class="glitch-text">RVA</span>
 		</a>
-
-		<button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
-			<span></span>
-			<span></span>
-			<span></span>
-		</button>
-
-		<ul class="nav-links" id="nav-menu" role="list">
-			{links.map(link => (
-				<li>
-					<a
-						href={link.href}
-						class={isActive(link.href) ? 'active' : ''}
-						aria-current={isActive(link.href) ? 'page' : undefined}
-					>
-						<span class="cmd">{link.cmd}</span> {link.label}
-					</a>
-				</li>
-			))}
+		<ul class="nav-links">
+			<li><a href="/about"><span class="cmd">cd</span> about/</a></li>
+			<li><a href="/skills"><span class="cmd">ls</span> skills/</a></li>
+			<li><a href="/projects"><span class="cmd">cat</span> projects</a></li>
+			<li><a href="/experience"><span class="cmd">vim</span> experience</a></li>
+			<li><a href="/contact"><span class="cmd">mail</span> contact</a></li>
 		</ul>
+		<button class="palette-toggle" aria-label="Open command palette">[ cmd+k ]</button>
+		<button class="theme-toggle" aria-label="Toggle theme">
+			<span class="theme-text">[ theme ]</span>
+		</button>
 	</div>
 </nav>
-
-<script is:inline>
-	// Hamburger toggle
-	const hamburger = document.getElementById('hamburger');
-	const menu = document.getElementById('nav-menu');
-	hamburger?.addEventListener('click', () => {
-		const expanded = hamburger.getAttribute('aria-expanded') === 'true';
-		hamburger.setAttribute('aria-expanded', String(!expanded));
-		menu?.classList.toggle('open');
-		hamburger.classList.toggle('open');
-	});
-
-	// Close menu on nav link click (mobile)
-	menu?.querySelectorAll('a').forEach(link => {
-		link.addEventListener('click', () => {
-			menu.classList.remove('open');
-			hamburger?.setAttribute('aria-expanded', 'false');
-			hamburger?.classList.remove('open');
-		});
-	});
-
-	// Navbar scroll shrink
-	const navbar = document.getElementById('navbar');
-	window.addEventListener('scroll', () => {
-		navbar?.classList.toggle('scrolled', window.scrollY > 40);
-	}, { passive: true });
-</script>
 
 <style>
 	.navbar {
@@ -72,19 +26,14 @@ const links = [
 		top: 0;
 		left: 0;
 		right: 0;
-		background: rgba(7, 7, 26, 0.85);
-		backdrop-filter: blur(20px);
-		-webkit-backdrop-filter: blur(20px);
-		border-bottom: 1px solid rgba(var(--primary-rgb), 0.18);
-		box-shadow: 0 2px 20px rgba(0, 0, 0, 0.5);
+		background: var(--card-bg);
+		backdrop-filter: blur(15px);
+		-webkit-backdrop-filter: blur(15px);
+		box-shadow: var(--glow-green);
+		border-bottom: 2px solid var(--primary-color);
 		z-index: 1000;
-		padding: 1rem 0;
-		transition: padding 0.3s ease, box-shadow 0.3s ease;
-	}
-
-	.navbar.scrolled {
-		padding: 0.6rem 0;
-		box-shadow: 0 4px 30px rgba(0, 0, 0, 0.7), 0 0 20px rgba(var(--primary-rgb), 0.08);
+		padding: 0.75rem 0;
+		transition: all 0.3s ease;
 	}
 
 	.nav-container {
@@ -101,34 +50,25 @@ const links = [
 		font-weight: 700;
 		color: var(--primary-color);
 		text-decoration: none;
+		transition: all 0.3s ease;
 		font-family: 'JetBrains Mono', monospace;
 		display: flex;
 		align-items: center;
-		gap: 0.4rem;
-		transition: all 0.3s ease;
+		gap: 0.5rem;
 	}
 
 	.prompt-symbol {
 		color: var(--prompt-symbol);
-		opacity: 0.8;
-	}
-
-	.logo-name {
-		background: var(--gradient-primary);
-		-webkit-background-clip: text;
-		-webkit-text-fill-color: transparent;
-		background-clip: text;
 	}
 
 	.logo:hover {
-		text-shadow: none;
+		text-shadow: var(--glow-green);
 		transform: translateY(-2px);
-		opacity: 0.9;
 	}
 
 	.nav-links {
 		display: flex;
-		gap: 1.8rem;
+		gap: 2rem;
 		list-style: none;
 		margin: 0;
 		padding: 0;
@@ -138,115 +78,120 @@ const links = [
 		color: var(--text-light);
 		text-decoration: none;
 		font-weight: 500;
-		font-family: 'JetBrains Mono', monospace;
-		font-size: 0.875rem;
-		transition: color 0.3s ease;
+		transition: all 0.3s ease;
 		position: relative;
-		padding-bottom: 4px;
+		font-family: 'JetBrains Mono', monospace;
+		font-size: 0.9rem;
 	}
 
 	.cmd {
-		color: var(--primary-light);
+		color: var(--secondary-color);
 		font-weight: 600;
-		margin-right: 0.25rem;
-		opacity: 0.85;
+		margin-right: 0.3rem;
+	}
+
+	.nav-links a:hover {
+		color: var(--primary-color);
+		text-shadow: var(--glow-cyan);
 	}
 
 	.nav-links a::after {
 		content: '';
 		position: absolute;
-		bottom: -2px;
+		bottom: -5px;
 		left: 0;
 		width: 0;
 		height: 2px;
-		background: var(--gradient-primary);
-		border-radius: 1px;
+		background: var(--primary-color);
 		transition: width 0.3s ease;
+		box-shadow: var(--glow-green);
 	}
 
-	.nav-links a:hover {
-		color: var(--primary-light);
-		text-shadow: none;
-	}
-
-	.nav-links a:hover::after,
-	.nav-links a.active::after {
+	.nav-links a:hover::after {
 		width: 100%;
 	}
 
-	.nav-links a.active {
-		color: var(--primary-light);
-	}
-
-	.nav-links a.active .cmd {
-		opacity: 1;
-	}
-
-	/* Hamburger button */
-	.hamburger {
-		display: none;
-		flex-direction: column;
-		gap: 5px;
-		background: none;
-		border: none;
+	.theme-toggle {
+		background: transparent;
+		border: 2px solid var(--border-color);
+		font-size: 0.85rem;
 		cursor: pointer;
-		padding: 4px;
-		z-index: 1001;
+		padding: 0.5rem 1rem;
+		border-radius: 4px;
+		transition: all 0.3s ease;
+		font-family: 'JetBrains Mono', monospace;
+		color: var(--text-muted);
 	}
 
-	.hamburger span {
-		display: block;
-		width: 24px;
-		height: 2px;
-		background: var(--primary-color);
-		border-radius: 2px;
-		transition: transform 0.3s ease, opacity 0.3s ease;
+	.palette-toggle {
+		background: transparent;
+		border: 2px solid var(--border-color);
+		font-size: 0.85rem;
+		cursor: pointer;
+		padding: 0.5rem 0.85rem;
+		border-radius: 4px;
+		transition: all 0.3s ease;
+		font-family: 'JetBrains Mono', monospace;
+		color: var(--text-muted);
 	}
 
-	.hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
-	.hamburger.open span:nth-child(2) { opacity: 0; }
-	.hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+	.palette-toggle:hover,
+	.theme-toggle:hover {
+		border-color: var(--primary-color);
+		color: var(--primary-color);
+		box-shadow: var(--glow-green);
+	}
 
 	@media (max-width: 768px) {
-		.hamburger {
-			display: flex;
-		}
-
 		.nav-links {
-			display: none;
-			position: absolute;
-			top: 100%;
-			left: 0;
-			right: 0;
-			flex-direction: column;
-			gap: 0;
-			background: rgba(7, 7, 26, 0.97);
-			backdrop-filter: blur(20px);
-			border-bottom: 1px solid rgba(var(--primary-rgb), 0.2);
-			padding: 1rem 0;
+			gap: 1rem;
+			font-size: 0.8rem;
 		}
 
-		.nav-links.open {
-			display: flex;
-		}
-
-		.nav-links li {
-			padding: 0;
-		}
-
-		.nav-links a {
-			display: block;
-			padding: 0.75rem 2rem;
-			font-size: 0.9rem;
-		}
-
-		.nav-links a::after {
+		.palette-toggle {
 			display: none;
 		}
-
-		.nav-links a.active {
-			background: rgba(var(--primary-rgb), 0.08);
-			border-left: 3px solid var(--primary-color);
+		
+		.cmd {
+			display: none;
 		}
 	}
 </style>
+
+<script>
+	const themeToggle = document.querySelector('.theme-toggle');
+	const themeText = document.querySelector('.theme-text');
+	const paletteToggle = document.querySelector('.palette-toggle');
+	
+	// Get theme from localStorage or default to dark
+	const getTheme = () => {
+		return localStorage.getItem('theme') || 'dark';
+	};
+	
+	// Set theme
+	const setTheme = (theme: string) => {
+		document.documentElement.setAttribute('data-theme', theme);
+		localStorage.setItem('theme', theme);
+		
+		// Update button text
+		if (themeText) {
+			themeText.textContent = theme === 'dark' ? '[ light ]' : '[ dark ]';
+		}
+		
+		// Matrix rain stays visible in both themes, colors will auto-adjust
+	};
+	
+	// Initialize theme on page load
+	setTheme(getTheme());
+	
+	// Toggle theme on button click
+	themeToggle?.addEventListener('click', () => {
+		const currentTheme = getTheme();
+		const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+		setTheme(newTheme);
+	});
+
+	paletteToggle?.addEventListener('click', () => {
+		window.dispatchEvent(new Event('cp:open'));
+	});
+</script>

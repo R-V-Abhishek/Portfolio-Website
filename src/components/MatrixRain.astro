@@ -2,10 +2,11 @@
 interface Props {
 	opacity?: number;
 }
-const { opacity = 0.15 } = Astro.props;
+
+const { opacity = 0.08 } = Astro.props;
 ---
 
-<canvas id="matrix-canvas" class="matrix-rain" style={`opacity: ${opacity}`}></canvas>
+<canvas id="matrix-canvas" class="matrix-rain" style={`--matrix-opacity: ${opacity};`}></canvas>
 
 <style>
 	#matrix-canvas {
@@ -14,7 +15,8 @@ const { opacity = 0.15 } = Astro.props;
 		left: 0;
 		width: 100%;
 		height: 100%;
-		z-index: 1;
+		z-index: 2;
+		opacity: var(--matrix-opacity, 0.08);
 		background: transparent;
 		pointer-events: none;
 		mix-blend-mode: screen;
@@ -24,6 +26,7 @@ const { opacity = 0.15 } = Astro.props;
 
 <script is:inline>
 	(function() {
+		if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 		const canvas = document.getElementById('matrix-canvas');
 		if (!canvas) return;
 		const ctx = canvas.getContext('2d');
@@ -34,56 +37,81 @@ const { opacity = 0.15 } = Astro.props;
 
 		const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$%^&*()_+-=[]{}|;:,.<>?/~`';
 		const charArray = chars.split('');
-
+		
 		const fontSize = 16;
 		let columns = Math.floor(canvas.width / fontSize);
-
+		
 		const drops = [];
 		const speeds = [];
-
+		
 		function seedDrops() {
 			columns = Math.floor(canvas.width / fontSize);
 			drops.length = 0;
 			speeds.length = 0;
 			for (let i = 0; i < columns; i++) {
 				drops[i] = Math.floor(Math.random() * (canvas.height / fontSize));
-				speeds[i] = Math.random() * 0.5 + 0.5;
+				speeds[i] = Math.random() * 0.23 + 0.12;
 			}
 		}
 
 		seedDrops();
 
+		function getThemeColors() {
+			const theme = document.documentElement.getAttribute('data-theme') || 'dark';
+			if (theme === 'light') {
+				return {
+					fade: 'rgba(255, 255, 255, 0.06)',
+					color: { r: 0, g: 180, b: 50 } // Darker green for light theme
+				};
+			} else {
+				return {
+					fade: 'rgba(0, 0, 0, 0.05)',
+					color: { r: 0, g: 255, b: 65 } // Bright green for dark theme
+				};
+			}
+		}
+
 		function draw() {
-			// Use new dark navy background color for trail fade
-			ctx.fillStyle = 'rgba(7, 7, 26, 0.1)';
+			const colors = getThemeColors();
+			ctx.fillStyle = colors.fade;
 			ctx.fillRect(0, 0, canvas.width, canvas.height);
-
+			
 			for (let i = 0; i < drops.length; i++) {
-				// Low brightness range — subtle texture, not dominant
-				const brightness = Math.random() * 0.3 + 0.2;
-				// Alternate between purple and cyan for new palette
-				const isPurple = Math.random() > 0.4;
-				ctx.fillStyle = isPurple
-					? `rgba(167, 139, 250, ${brightness * 0.8})`
-					: `rgba(34, 211, 238, ${brightness * 0.5})`;
+				const brightness = Math.random() * 0.3 + 0.7;
+				const c = colors.color;
+				ctx.fillStyle = `rgba(${c.r}, ${c.g}, ${c.b}, ${brightness})`;
 				ctx.font = fontSize + 'px monospace';
-
+				
 				const text = charArray[Math.floor(Math.random() * charArray.length)];
 				ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-
+				
 				if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
 					drops[i] = 0;
 				}
-
+				
 				drops[i] += speeds[i];
 			}
 		}
 
+		let paused = document.hidden;
+
 		function animate() {
+			if (paused) return;
 			draw();
 			requestAnimationFrame(animate);
 		}
-		animate();
+
+		function onVisibilityChange() {
+			paused = document.hidden;
+			if (!paused) {
+				requestAnimationFrame(animate);
+			}
+		}
+
+		document.addEventListener('visibilitychange', onVisibilityChange);
+		if (!paused) {
+			animate();
+		}
 
 		window.addEventListener('resize', function() {
 			canvas.width = window.innerWidth;
