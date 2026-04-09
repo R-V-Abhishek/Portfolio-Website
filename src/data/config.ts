@@ -8,7 +8,7 @@ export const SITE = {
 	email:             'rvabhi2504@gmail.com',
 	github:            'https://github.com/R-V-Abhishek',
 	linkedin:          'https://www.linkedin.com/in/r-v-abhishek',
-	domain:            'https://rvabhishek.dev',
+	domain:            '',
 	college:           'BMS College of Engineering',
 	location:          'Bengaluru, India',
 	available:         true,
