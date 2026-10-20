@@ -1,14 +1,101 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import SkillsSection from '../components/Skills.astro';
-import PageHero from '../components/PageHero.astro';
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageIntro from "../components/design/PageIntro.astro";
+import SectionHeading from "../components/design/SectionHeading.astro";
+import { capabilities, toolGroups } from "../data/skills";
+import { credentials, achievements } from "../data/experience";
+import { url } from "../data/config";
 ---
 
-<BaseLayout
-	title="Skills | R V Abhishek"
-	description="Technical skills in Full-Stack Development, Data Science, Machine Learning, and Cloud Computing."
-	rainOpacity={0.10}
->
-	<PageHero title="Skills" subtitle="Technologies and tools I work with." breadcrumb="skills" />
-	<SkillsSection />
+<BaseLayout title="Skills & Credentials | R V Abhishek">
+  <PageIntro
+    label="Capabilities, with context"
+    title="Skills, tools & foundations."
+    description="The techniques and tools I use to move from a question to something useful. Grounded in projects, coursework, and industry practice."
+  />
+  <section class="section">
+    <div class="container">
+      <SectionHeading number="01" label="What I work on" title="Capabilities" />
+      <div class="grid-two">
+        {capabilities.map((c) => (
+          <div class="panel">
+            <h3>{c.title}</h3>
+            <p>{c.text}</p>
+            <div class="tags">
+              {c.tools.map((t) => (
+                <span>{t}</span>
+              ))}
+            </div>
+            <a class="text-link" href={url(c.href)}>
+              {c.link} →
+            </a>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+  <section class="section">
+    <div class="container">
+      <SectionHeading
+        number="02"
+        label="The working toolkit"
+        title="Tools index"
+      />
+      {toolGroups.map((g) => (
+        <div class="tool-row">
+          <h3>{g.name}</h3>
+          <p>{g.tools.join(" · ")}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+  <section class="section">
+    <div class="container">
+      <SectionHeading
+        number="03"
+        label="Structured learning"
+        title="Credentials"
+      />
+      <div class="credential-recognition">
+        <p class="eyebrow">NPTEL recognition</p>
+        <h3>Elite · Top 1%</h3>
+        <p>Recognition in NPTEL coursework.</p>
+      </div>
+      {credentials.map((c, i) => (
+        <article class="ledger-row">
+          <span class="mono">0{i + 1}</span>
+          <div>
+            <h3>{c.name}</h3>
+            <p>{c.issuer}</p>
+            {c.distinction && (
+              <div class="tags">
+                <span>{c.distinction}</span>
+              </div>
+            )}
+          </div>
+          <p>{c.date}</p>
+          {c.certificate && (
+            <a class="text-link" href={c.certificate}>
+              View certificate ↗
+            </a>
+          )}
+        </article>
+      ))}
+    </div>
+  </section>
+  <section class="section">
+    <div class="container">
+      <SectionHeading number="04" label="Recognition" title="Achievements" />
+      {achievements.map((a, i) => (
+        <article class="ledger-row">
+          <span class="mono">0{i + 1}</span>
+          <div>
+            <h3>{a.title}</h3>
+            <p>{a.organization}</p>
+          </div>
+          <p>{a.summary}</p>
+        </article>
+      ))}
+    </div>
+  </section>
 </BaseLayout>

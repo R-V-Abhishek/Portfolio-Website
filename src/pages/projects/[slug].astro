@@ -1,0 +1,125 @@
+---
+import { getCollection, render } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Diagram from "../../components/design/Diagram.astro";
+import ProjectCard from "../../components/design/ProjectCard.astro";
+import Simulation from "../../components/design/Simulation.astro";
+import { projects } from "../../data/projects";
+import { url } from "../../data/config";
+export async function getStaticPaths() {
+  const entries = await getCollection("projects", ({ data }) => data.published);
+  return entries.map((entry) => {
+    const project = projects.find((p) => p.slug === entry.data.projectSlug);
+    if (!project || project.detail !== entry.slug)
+      throw new Error(
+        `Published project ${entry.slug} must be explicitly assigned in src/data/projects.ts`,
+      );
+    if (entry.data.walkthrough && project.slug !== "expense-logger")
+      throw new Error(
+        "Expense walkthrough is only supported for Expense Logger",
+      );
+    return { params: { slug: entry.slug }, props: { entry, project } };
+  });
+}
+const { entry, project } = Astro.props;
+const { Content, headings } = await render(entry);
+const related = projects
+  .filter((p) => p.collection === project.collection && p.slug !== project.slug)
+  .slice(0, 2);
+---
+
+<BaseLayout
+  title={`${project.title} | R V Abhishek`}
+  description={project.summary}
+>
+  <div class="page-intro container">
+    <a class="text-link" href={url("projects/")}>
+      ← Work & explorations
+    </a>
+    <p class="eyebrow" style="margin-top:30px">
+      {entry.data.format === "note" ? "Project note" : "Case study"} /{" "}
+      {project.topics.join(" · ")}
+    </p>
+    <h1>{project.title}</h1>
+    <p class="lede">{project.summary}</p>
+    <div class="tags">
+      <span>{entry.data.role}</span>
+      <span>{entry.data.status}</span>
+      {project.technologies.map((t) => (
+        <span>{t}</span>
+      ))}
+    </div>
+    <div class="actions">
+      {project.repository && (
+        <a class="button primary" href={project.repository}>
+          Repository ↗
+        </a>
+      )}
+      {project.demo && (
+        <a class="button" href={project.demo}>
+          Live demo ↗
+        </a>
+      )}
+    </div>
+  </div>
+  {entry.data.format === "case-study" && headings.length > 0 && (
+    <>
+      <nav class="chapter-nav" aria-label="Contents">
+        <div class="container">
+          {headings
+            .filter((h) => h.depth === 2)
+            .map((h) => (
+              <a href={`#${h.slug}`}>{h.text}</a>
+            ))}
+        </div>
+      </nav>
+      <details class="mobile-contents container">
+        <summary>Contents</summary>
+        <nav>
+          {headings
+            .filter((h) => h.depth === 2)
+            .map((h) => (
+              <a href={`#${h.slug}`}>{h.text}</a>
+            ))}
+        </nav>
+      </details>
+    </>
+  )}
+  <section class="section">
+    <div class="container">
+      <div class="reading">
+        <Diagram
+          kind={project.figure}
+          label="Conceptual architecture illustration"
+        />
+        <div class="panel" style="margin-top:30px">
+          <h2>My contribution</h2>
+          <p>{entry.data.contribution}</p>
+        </div>
+        <div class="prose">
+          <Content />
+        </div>
+        {entry.data.walkthrough && <Simulation />}
+        <div class="panel" style="margin-top:35px">
+          <h2>Status & limitations</h2>
+          <p>{entry.data.limitations}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="section">
+    <div class="container">
+      <h2 style="margin-bottom:30px">Related work</h2>
+      <div class="grid-two">
+        {related.map((p) => (
+          <ProjectCard project={p} compact />
+        ))}
+      </div>
+      <div class="actions">
+        <a class="button" href={url("projects/")}>
+          ← Return to library
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

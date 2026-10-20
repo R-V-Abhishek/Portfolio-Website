@@ -1,24 +1,21 @@
-import rss from '@astrojs/rss';
-import { getCollection } from 'astro:content';
-import { SITE } from '../data/config';
-
+import rss from "@astrojs/rss";
+import { getCollection } from "astro:content";
+import { SITE, url } from "../data/config";
 export async function GET(context: { site: URL }) {
-	const posts = await getCollection('blog', ({ data }) => data.draft !== true);
-
-	const sorted = posts.sort(
-		(a, b) => new Date(b.data.publishDate).valueOf() - new Date(a.data.publishDate).valueOf()
-	);
-
-	return rss({
-		title:       `${SITE.owner} — Blog`,
-		description: 'Thoughts on data science, machine learning, web development, and building things.',
-		site:        context.site,
-		items: sorted.map(post => ({
-			title:       post.data.title,
-			pubDate:     post.data.publishDate,
-			description: post.data.description,
-			link:        `/blog/${post.slug}/`,
-		})),
-		customData: `<language>en-us</language>`,
-	});
+  const posts = (await getCollection("blog", ({ data }) => !data.draft)).sort(
+    (a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf(),
+  );
+  return rss({
+    title: `${SITE.owner} — Writing & notes`,
+    description:
+      "Notes on data science, machine learning, and useful software.",
+    site: context.site,
+    items: posts.map((post) => ({
+      title: post.data.title,
+      pubDate: post.data.publishDate,
+      description: post.data.description,
+      link: url(`blog/${post.slug}/`),
+    })),
+    customData: "<language>en-us</language>",
+  });
 }

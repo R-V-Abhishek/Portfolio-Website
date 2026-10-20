@@ -1,0 +1,50 @@
+<svg
+  viewBox="0 0 460 300"
+  role="img"
+  aria-label="An illustrative cycle of eight beats above a pitch contour and a finite-state grammar"
+>
+  <text x="20" y="28">
+    A REPEATING RHYTHM
+  </text>
+  {Array.from({ length: 8 }, (_, i) => (
+    <g>
+      <rect
+        x={20 + i * 53}
+        y="46"
+        width="45"
+        height="48"
+        fill={i === 0 || i === 4 ? "var(--soft-coral)" : "var(--secondary)"}
+        stroke={i === 0 || i === 4 ? "var(--coral)" : "var(--line)"}
+      />
+      <text x={38 + i * 53} y="75" style="font-size:14px">
+        {i + 1}
+      </text>
+    </g>
+  ))}
+  <text x="20" y="135">
+    PITCH, WITH ROOM TO MOVE
+  </text>
+  <path d="M20 177H438" class="connector" />
+  <path
+    d="M20 188C45 188 46 155 72 157S110 195 137 180S170 147 196 155S225 189 250 179S280 151 305 159S345 184 370 165S407 148 438 163"
+    class="wave"
+  />
+  <text x="20" y="233">
+    OBSERVE → VALIDATE → RESPOND
+  </text>
+  {["Pitch", "Grammar", "Feedback"].map((label, i) => (
+    <g>
+      <rect
+        x={20 + i * 145}
+        y="250"
+        width="128"
+        height="32"
+        fill="var(--secondary)"
+        stroke="var(--line)"
+      />
+      <text x={35 + i * 145} y="271" style="font-size:13px">
+        {label}
+      </text>
+    </g>
+  ))}
+</svg>

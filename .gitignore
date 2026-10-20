@@ -22,3 +22,10 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# Reference export stays local and is never deployed
+stitch_r_v_abhishek_portfolio_homepage.zip
+# Browser and performance reports
+playwright-report/
+test-results/
+reports/

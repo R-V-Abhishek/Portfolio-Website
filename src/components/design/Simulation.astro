@@ -1,0 +1,95 @@
+---
+interface Props {
+  kind?: "expense" | "media";
+}
+const { kind = "expense" } = Astro.props;
+const steps =
+  kind === "expense"
+    ? ["Input", "Intent router", "Tools & ledger", "Response"]
+    : [
+        "Render begins",
+        "First segment",
+        "Preview available",
+        "Render completes",
+      ];
+---
+
+<div class="simulation" data-simulation={kind}>
+  <p class="eyebrow">Illustrative simulation / runs in your browser</p>
+  <p>
+    {kind === "expense"
+      ? "Example: “Add ₹120 for lunch.” Follow a deterministic path from message to ledger."
+      : "Compare a complete-file preview with progressive segments. Relative stages only; no measured timings."}
+  </p>
+  <div class="simulation-steps">
+    {steps.map((step, i) => (
+      <span data-step={i} data-active={i === 0 ? "true" : "false"}>
+        {step}
+      </span>
+    ))}
+  </div>
+  <p class="simulation-status" role="status" aria-live="polite">
+    {kind === "expense"
+      ? "Input received. Ledger: empty."
+      : "Complete file: waiting. Progressive preview: waiting."}
+  </p>
+  <div class="actions" data-simulation-controls hidden>
+    <button data-prev>Previous</button>
+    <button data-next>Next step</button>
+    <button data-reset>Reset</button>
+  </div>
+  <noscript>
+    <p>
+      Static walkthrough: {steps.join(" → ")}.{" "}
+      {kind === "expense"
+        ? "The final illustrative ledger contains lunch, ₹120."
+        : "Progressive rendering can expose a preview before the complete file is ready."}
+    </p>
+  </noscript>
+</div>
+<script>
+  document
+    .querySelectorAll<HTMLElement>("[data-simulation]")
+    .forEach((root) => {
+      let step = 0;
+      const labels =
+        root.dataset.simulation === "expense"
+          ? [
+              "Input received. Ledger: empty.",
+              "Intent router selects add_expense. Ledger: empty.",
+              "Validated expense appended. Ledger: lunch · ₹120.",
+              "Response confirms the entry. Ledger: lunch · ₹120.",
+            ]
+          : [
+              "Complete file: waiting. Progressive preview: waiting.",
+              "Complete file: waiting. Progressive: first segment available.",
+              "Complete file: waiting. Progressive: preview playable while rendering continues.",
+              "Complete file: preview available. Progressive: all segments available.",
+            ];
+      const previous = root.querySelector<HTMLButtonElement>("[data-prev]")!;
+      const next = root.querySelector<HTMLButtonElement>("[data-next]")!;
+      const render = () => {
+        root
+          .querySelectorAll<HTMLElement>("[data-step]")
+          .forEach((node, i) => (node.dataset.active = String(i === step)));
+        root.querySelector("[role=status]")!.textContent = labels[step];
+        previous.disabled = step === 0;
+        next.disabled = step === 3;
+      };
+      previous.addEventListener("click", () => {
+        step--;
+        render();
+      });
+      next.addEventListener("click", () => {
+        step++;
+        render();
+      });
+      root.querySelector("[data-reset]")!.addEventListener("click", () => {
+        step = 0;
+        render();
+      });
+      root.querySelector<HTMLElement>("[data-simulation-controls]")!.hidden =
+        false;
+      render();
+    });
+</script>

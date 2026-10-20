@@ -2,9 +2,12 @@
 title: "Why I Built My Portfolio with Astro"
 description: "Performance, simplicity, and just enough JavaScript — why Astro was the right pick for a portfolio that feels dynamic but ships as plain HTML."
 publishDate: 2026-01-20
+updatedDate: 2026-10-20
 tags: ["web-dev", "astro", "javascript"]
 featured: false
 ---
+
+> **Edition note:** This article describes an earlier version of this portfolio. The current redesign retains Astro and MDX, with a new visual system and a smaller set of browser interactions.
 
 Most portfolio advice boils down to "clone a template and swap the text." I tried that. It felt wrong to have a portfolio I couldn't fully explain. So I rebuilt it from scratch with Astro, and it's been the most instructive project I've worked on this year.
 
@@ -20,7 +23,7 @@ Astro ships **zero JavaScript by default**. Every page is statically generated a
 <CommandPalette client:only="react" />
 ```
 
-Compare that to Next.js, where even a completely static page carries the React runtime. My portfolio has roughly 7 pages and almost no runtime JS outside the two interactive widgets. A Lighthouse audit returns 98–100 on performance across the board.
+Compare that to Next.js, where even a completely static page carries the React runtime. The earlier version had very little runtime JavaScript outside its interactive widgets. I use Lighthouse audits to check the result rather than treating framework choice as a performance guarantee.
 
 ## Islands architecture in practice
 
@@ -76,6 +79,6 @@ For a portfolio or technical blog, though, the tradeoffs are entirely in your fa
 
 ---
 
-The full source for this portfolio is on [GitHub](https://github.com/R-V-Abhishek). The entire build — 7 pages, all static assets — runs in under 4 seconds locally. That kind of feedback loop makes iterating on design genuinely enjoyable.
+The full source for this portfolio is on [GitHub](https://github.com/R-V-Abhishek). The build produces static pages and assets that can be inspected and hosted without an application server. A short feedback loop makes iterating on design enjoyable.
 
 If you're starting a new portfolio or blog in 2025, Astro is the first thing I'd reach for.

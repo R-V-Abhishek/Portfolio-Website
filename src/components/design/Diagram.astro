@@ -1,0 +1,174 @@
+---
+import MusicDiagram from "./MusicDiagram.astro";
+interface Props {
+  kind?: string;
+  label?: string;
+}
+const { kind = "signal", label = "Conceptual illustration" } = Astro.props;
+const flow =
+  kind === "agent"
+    ? ["Input", "Intent router", "Tools & ledger", "Response"]
+    : kind === "network"
+      ? ["Records", "Binary model", "Attack type", "Dashboard"]
+      : kind === "coverage"
+        ? ["Evaluate", "Find gaps", "Add samples", "Retrain"]
+        : kind === "evaluation"
+          ? ["Context", "Generate", "Evaluate", "Iterate"]
+          : kind === "media"
+            ? ["Render", "Segment", "Preview", "Continue"]
+            : ["Frame", "Compare", "Select", "Refine"];
+const isFlow = [
+  "agent",
+  "network",
+  "coverage",
+  "evaluation",
+  "media",
+  "vision",
+].includes(kind);
+const points = Array.from({ length: 23 }, (_, i) => ({
+  x: 62 + ((i * 41) % 133),
+  y: 221 + ((i * 29) % 65),
+}));
+---
+
+<figure class:list={["diagram", `diagram-${kind}`]}>
+  <div class="figure-label">
+    <span>
+      {kind === "signal"
+        ? "FIG. 01 / SIGNAL → STRUCTURE"
+        : kind === "music"
+          ? "PITCH / RHYTHM / GRAMMAR"
+          : `${kind.toUpperCase()} / SYSTEM SKETCH`}
+    </span>
+    <span aria-hidden="true">↗</span>
+  </div>
+  {isFlow ? (
+    <div class="flow-art">
+      <div class="flow-nodes">
+        {flow.map((text, i) => (
+          <div class="flow-node">
+            <span class="mono">0{i + 1}</span>
+            <strong>{text}</strong>
+            {i < flow.length - 1 && (
+              <span class="flow-arrow" aria-hidden="true">
+                ↓
+              </span>
+            )}
+          </div>
+        ))}
+      </div>
+      {kind === "vision" && (
+        <div class="broadcast">
+          <span>Illustrative broadcast frame</span>
+          <div class="detection-box">Overlay</div>
+          <div class="broadcast-bar"></div>
+        </div>
+      )}
+      {kind === "coverage" && (
+        <div class="cluster-strip" aria-hidden="true">
+          {Array.from({ length: 18 }, (_, i) => (
+            <i style={`--i:${i}`} />
+          ))}
+        </div>
+      )}
+      {kind === "agent" && (
+        <div class="code-caption mono">
+          <span>state.messages</span>
+          <span>thread memory ↔ persistent ledger</span>
+        </div>
+      )}
+    </div>
+  ) : kind === "art" ? (
+    <div class="art-composition" aria-hidden="true">
+      <span>Aa</span>
+      <div class="art-circle"></div>
+      <div class="art-line"></div>
+      <span class="mono">a space for expression.</span>
+    </div>
+  ) : kind === "study" ? (
+    <div class="study-art">
+      <span class="mono">LEARN / RECALL / CONNECT</span>
+      {[
+        "A question worth asking",
+        "A pattern worth remembering",
+        "A little more understanding",
+      ].map((t, i) => (
+        <div>
+          <span class="mono">0{i + 1}</span>
+          <span>{t}</span>
+          <span>↗</span>
+        </div>
+      ))}
+    </div>
+  ) : kind === "spice" ? (
+    <div class="spice-art">
+      <span class="spice-word">
+        Saffron
+        <br />
+        <em>Spice.</em>
+      </span>
+      <span class="mono">GOOD FOOD. THOUGHTFUL SOFTWARE.</span>
+    </div>
+  ) : kind === "music" ? (
+    <MusicDiagram />
+  ) : (
+    <svg
+      viewBox="0 0 460 340"
+      role="img"
+      aria-label="A conceptual waveform becomes pitch observations and two groups of patterns"
+    >
+      <g class="grid-lines">
+        {[50, 80, 110, 140, 170].map((y) => (
+          <path d={`M30 ${y} H430`} />
+        ))}
+        {[30, 80, 130, 180, 230, 280, 330, 380, 430].map((x) => (
+          <path d={`M${x} 38 V180`} />
+        ))}
+      </g>
+      <text x="30" y="25">
+        CONTINUOUS SIGNAL
+      </text>
+      <text x="300" y="25">
+        DISCRETE OBSERVATIONS
+      </text>
+      <path
+        class="wave"
+        d="M30 108 C48 108 50 65 72 65 S97 147 119 147 S145 55 169 55 S194 150 218 150 S243 67 267 67 S293 133 317 133 S342 77 365 77 S397 126 430 99"
+      />
+      <path
+        class="wave coral"
+        d="M30 124 C90 124 112 77 167 94 S240 127 284 99 S352 86 430 109"
+      />
+      {[72, 119, 169, 218, 267, 317, 365].map((x, i) => (
+        <g>
+          <path class="sample-line" d={`M${x} 45 V175`} />
+          <circle
+            class="sample"
+            cx={x}
+            cy={[65, 147, 55, 150, 67, 133, 77][i]}
+            r="4"
+          />
+        </g>
+      ))}
+      <text x="30" y="202">
+        OBSERVATION → PATTERN → STRUCTURE
+      </text>
+      <ellipse class="cluster" cx="129" cy="253" rx="89" ry="50" />
+      <ellipse class="cluster warm" cx="341" cy="253" rx="75" ry="50" />
+      {points.map((p) => (
+        <circle class="sample" cx={p.x} cy={p.y} r="3" />
+      ))}
+      {points.slice(0, 13).map((p) => (
+        <circle class="coral-dot" cx={p.x + 205} cy={p.y} r="3" />
+      ))}
+      <path class="connector" d="M220 253 H263" />
+      <text x="48" y="326">
+        LISTEN CLOSELY.
+      </text>
+      <text x="296" y="326">
+        LOOK FOR CONNECTIONS.
+      </text>
+    </svg>
+  )}
+  <figcaption>{label}</figcaption>
+</figure>
