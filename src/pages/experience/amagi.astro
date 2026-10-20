@@ -91,7 +91,6 @@ const chapters = [
             {c.paragraphs.map((p) => (
               <p>{p}</p>
             ))}
-            <p class="contribution">{c.contribution}</p>
           </div>
           <div class="chapter-figure">
             <Diagram
@@ -112,6 +111,7 @@ const chapters = [
           </div>
         )}
         {c.id === "media" && <Simulation kind="media" />}
+        <p class="contribution">{c.contribution}</p>
       </div>
     </section>
   ))}
