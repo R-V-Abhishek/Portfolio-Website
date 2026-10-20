@@ -1,0 +1,47 @@
+---
+import type { Project } from "../../data/projects";
+import { url } from "../../data/config";
+import Diagram from "./Diagram.astro";
+interface Props {
+  project: Project;
+  featured?: boolean;
+  compact?: boolean;
+}
+const { project: p, featured = false, compact = false } = Astro.props;
+const href = p.detail ? url(`projects/${p.detail}/`) : p.repository;
+---
+
+<article
+  class:list={["project-card", { featured, compact }]}
+  data-filter-item
+  data-topics={JSON.stringify(p.topics)}
+>
+  {!compact && <Diagram kind={p.figure} label="Conceptual illustration" />}
+  <div class="project-copy">
+    <p class="eyebrow">
+      {p.topics[0]}
+      {p.status && <span class="status"> / {p.status}</span>}
+    </p>
+    <h3>{p.title}</h3>
+    <p>{p.summary}</p>
+    <div class="tags">
+      {p.technologies.map((tag) => (
+        <span>{tag}</span>
+      ))}
+    </div>
+    {href ? (
+      <a class="text-link" href={href}>
+        {p.detail ? "Read case study →" : "Explore repository ↗"}
+      </a>
+    ) : (
+      <a class="text-link" href={url("about/#music")}>
+        The story behind the project →
+      </a>
+    )}
+    {p.demo && (
+      <a class="text-link" href={p.demo}>
+        Visit demo ↗
+      </a>
+    )}
+  </div>
+</article>

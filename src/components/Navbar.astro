@@ -1,197 +1,123 @@
 ---
+import { SITE, url } from "../data/config";
+const links = [
+  { title: "Work", path: "projects/" },
+  { title: "Experience", path: "experience/" },
+  { title: "About", path: "about/" },
+  { title: "Writing", path: "blog/" },
+];
+const active = (path: string) => Astro.url.pathname.startsWith(url(path));
 ---
 
-<nav class="navbar">
-	<div class="nav-container">
-		<a href="/" class="logo">
-			<span class="prompt-symbol">$</span> <span class="glitch-text">RVA</span>
-		</a>
-		<ul class="nav-links">
-			<li><a href="/about"><span class="cmd">cd</span> about/</a></li>
-			<li><a href="/skills"><span class="cmd">ls</span> skills/</a></li>
-			<li><a href="/projects"><span class="cmd">cat</span> projects</a></li>
-			<li><a href="/experience"><span class="cmd">vim</span> experience</a></li>
-			<li><a href="/contact"><span class="cmd">mail</span> contact</a></li>
-		</ul>
-		<button class="palette-toggle" aria-label="Open command palette">[ cmd+k ]</button>
-		<button class="theme-toggle" aria-label="Toggle theme">
-			<span class="theme-text">[ theme ]</span>
-		</button>
-	</div>
-</nav>
-
-<style>
-	.navbar {
-		position: fixed;
-		top: 0;
-		left: 0;
-		right: 0;
-		background: var(--card-bg);
-		backdrop-filter: blur(15px);
-		-webkit-backdrop-filter: blur(15px);
-		box-shadow: var(--glow-green);
-		border-bottom: 2px solid var(--primary-color);
-		z-index: 1000;
-		padding: 0.75rem 0;
-		transition: all 0.3s ease;
-	}
-
-	.nav-container {
-		max-width: 1200px;
-		margin: 0 auto;
-		padding: 0 2rem;
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-	}
-
-	.logo {
-		font-size: 1.3rem;
-		font-weight: 700;
-		color: var(--primary-color);
-		text-decoration: none;
-		transition: all 0.3s ease;
-		font-family: 'JetBrains Mono', monospace;
-		display: flex;
-		align-items: center;
-		gap: 0.5rem;
-	}
-
-	.prompt-symbol {
-		color: var(--prompt-symbol);
-	}
-
-	.logo:hover {
-		text-shadow: var(--glow-green);
-		transform: translateY(-2px);
-	}
-
-	.nav-links {
-		display: flex;
-		gap: 2rem;
-		list-style: none;
-		margin: 0;
-		padding: 0;
-	}
-
-	.nav-links a {
-		color: var(--text-light);
-		text-decoration: none;
-		font-weight: 500;
-		transition: all 0.3s ease;
-		position: relative;
-		font-family: 'JetBrains Mono', monospace;
-		font-size: 0.9rem;
-	}
-
-	.cmd {
-		color: var(--secondary-color);
-		font-weight: 600;
-		margin-right: 0.3rem;
-	}
-
-	.nav-links a:hover {
-		color: var(--primary-color);
-		text-shadow: var(--glow-cyan);
-	}
-
-	.nav-links a::after {
-		content: '';
-		position: absolute;
-		bottom: -5px;
-		left: 0;
-		width: 0;
-		height: 2px;
-		background: var(--primary-color);
-		transition: width 0.3s ease;
-		box-shadow: var(--glow-green);
-	}
-
-	.nav-links a:hover::after {
-		width: 100%;
-	}
-
-	.theme-toggle {
-		background: transparent;
-		border: 2px solid var(--border-color);
-		font-size: 0.85rem;
-		cursor: pointer;
-		padding: 0.5rem 1rem;
-		border-radius: 4px;
-		transition: all 0.3s ease;
-		font-family: 'JetBrains Mono', monospace;
-		color: var(--text-muted);
-	}
-
-	.palette-toggle {
-		background: transparent;
-		border: 2px solid var(--border-color);
-		font-size: 0.85rem;
-		cursor: pointer;
-		padding: 0.5rem 0.85rem;
-		border-radius: 4px;
-		transition: all 0.3s ease;
-		font-family: 'JetBrains Mono', monospace;
-		color: var(--text-muted);
-	}
-
-	.palette-toggle:hover,
-	.theme-toggle:hover {
-		border-color: var(--primary-color);
-		color: var(--primary-color);
-		box-shadow: var(--glow-green);
-	}
-
-	@media (max-width: 768px) {
-		.nav-links {
-			gap: 1rem;
-			font-size: 0.8rem;
-		}
-
-		.palette-toggle {
-			display: none;
-		}
-		
-		.cmd {
-			display: none;
-		}
-	}
-</style>
-
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="wordmark" href={url()} aria-label="R V Abhishek — Home">
+      R V Abhishek
+      <span class="brand-mark" aria-hidden="true">
+        ✳
+      </span>
+    </a>
+    <nav class="desktop-nav" aria-label="Main navigation">
+      {links.map((link) => (
+        <a
+          href={url(link.path)}
+          aria-current={active(link.path) ? "page" : undefined}
+        >
+          {link.title}
+        </a>
+      ))}
+    </nav>
+    <div class="header-actions">
+      <button class="theme-toggle" data-theme-toggle aria-label="Switch theme">
+        ◐
+      </button>
+      <a class="contact-nav" href={url("contact/")}>
+        Contact <span aria-hidden="true">↗</span>
+      </a>
+      <button
+        class="menu-toggle"
+        aria-controls="mobile-menu"
+        aria-expanded="false"
+      >
+        Menu <span aria-hidden="true">☰</span>
+      </button>
+    </div>
+  </div>
+  <dialog id="mobile-menu" aria-label="Navigation">
+    <div class="menu-heading">
+      <span class="mono">INDEX / NAVIGATION</span>
+      <button data-menu-close aria-label="Close menu">
+        Close ×
+      </button>
+    </div>
+    <nav aria-label="Mobile navigation">
+      {[{ title: "Home", path: "" }, ...links].map((link, i) => (
+        <a
+          href={url(link.path)}
+          aria-current={
+            (link.path ? active(link.path) : Astro.url.pathname === url())
+              ? "page"
+              : undefined
+          }
+        >
+          <span class="mono">0{i + 1}</span>
+          {link.title}
+          <span aria-hidden="true">↗</span>
+        </a>
+      ))}
+    </nav>
+    <div class="menu-bottom">
+      <a href={url("contact/")}>Let’s connect →</a>
+      <a href={SITE.github}>GitHub ↗</a>
+      <a href={SITE.linkedin}>LinkedIn ↗</a>
+    </div>
+  </dialog>
+  <noscript>
+    <nav class="nojs-nav" aria-label="Page links">
+      {links.map((link) => (
+        <a href={url(link.path)}>{link.title}</a>
+      ))}
+      <a href={url("contact/")}>Contact</a>
+    </nav>
+  </noscript>
+</header>
 <script>
-	const themeToggle = document.querySelector('.theme-toggle');
-	const themeText = document.querySelector('.theme-text');
-	const paletteToggle = document.querySelector('.palette-toggle');
-	
-	// Get theme from localStorage or default to dark
-	const getTheme = () => {
-		return localStorage.getItem('theme') || 'dark';
-	};
-	
-	// Set theme
-	const setTheme = (theme: string) => {
-		document.documentElement.setAttribute('data-theme', theme);
-		localStorage.setItem('theme', theme);
-		
-		// Update button text
-		if (themeText) {
-			themeText.textContent = theme === 'dark' ? '[ light ]' : '[ dark ]';
-		}
-		
-		// Matrix rain stays visible in both themes, colors will auto-adjust
-	};
-	
-	// Initialize theme on page load
-	setTheme(getTheme());
-	
-	// Toggle theme on button click
-	themeToggle?.addEventListener('click', () => {
-		const currentTheme = getTheme();
-		const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-		setTheme(newTheme);
-	});
-
-	paletteToggle?.addEventListener('click', () => {
-		window.dispatchEvent(new Event('cp:open'));
-	});
+  const dialog = document.querySelector<HTMLDialogElement>("#mobile-menu")!;
+  const trigger = document.querySelector<HTMLButtonElement>(".menu-toggle")!;
+  const restore = () => {
+    document.body.style.overflow = "";
+    trigger.setAttribute("aria-expanded", "false");
+    trigger.focus();
+  };
+  const close = () => {
+    dialog.close();
+    restore();
+  };
+  dialog.addEventListener("cancel", (event) => {
+    event.preventDefault();
+    close();
+  });
+  trigger.addEventListener("click", () => {
+    dialog.showModal();
+    document.body.style.overflow = "hidden";
+    trigger.setAttribute("aria-expanded", "true");
+  });
+  dialog.querySelector("[data-menu-close]")!.addEventListener("click", close);
+  dialog
+    .querySelectorAll("a")
+    .forEach((link) => link.addEventListener("click", close));
+  dialog.addEventListener("close", restore);
+  dialog.addEventListener("keydown", (event) => {
+    if (event.key !== "Tab") return;
+    const items = [...dialog.querySelectorAll<HTMLElement>("button, a[href]")];
+    const first = items[0],
+      last = items[items.length - 1];
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault();
+      last.focus();
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault();
+      first.focus();
+    }
+  });
 </script>

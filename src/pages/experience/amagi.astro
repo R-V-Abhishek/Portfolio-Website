@@ -1,0 +1,136 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PageIntro from "../../components/design/PageIntro.astro";
+import Diagram from "../../components/design/Diagram.astro";
+import Simulation from "../../components/design/Simulation.astro";
+import { url } from "../../data/config";
+const chapters = [
+  {
+    id: "coverage",
+    title: "Vision & dataset coverage",
+    figure: "coverage",
+    paragraphs: [
+      "A detector can look convincing on its training distribution and still miss patterns it encounters in practice. I used clustering to compare training and production imagery and identify underrepresented visual layouts.",
+      "The work became an iterative loop: evaluate failures, investigate coverage gaps, expand the relevant samples, and fine-tune successive detector generations. The data was part of the model decision, rather than an afterthought.",
+    ],
+    contribution:
+      "Contribution: distribution analysis, targeted dataset expansion, and iterative detector training.",
+  },
+  {
+    id: "detection",
+    title: "Overlay detection & inference",
+    figure: "vision",
+    paragraphs: [
+      "Broadcast overlays vary in layout, scale, and visual context. I explored detection architectures and loss experiments, comparing options against the actual task rather than assuming a newer model would be the better choice.",
+      "Model selection and inference refinement went together: inspect where a candidate fails, make a focused change, and evaluate it again. Public illustrations here are synthetic and contain no proprietary assets.",
+    ],
+    contribution:
+      "Contribution: architecture exploration, loss experiments, model comparison, and inference refinement.",
+  },
+  {
+    id: "evaluation",
+    title: "AI evaluation in context",
+    figure: "evaluation",
+    paragraphs: [
+      "Useful AI output has constraints beyond fluency. My evaluation work covered timestamp correction, contextual emotion annotation, and adherence to character limits.",
+      "Hybrid evaluation makes room for both mechanical checks and contextual judgment. A short output can satisfy a character limit while missing the meaning; a plausible annotation can still conflict with the surrounding context. Those failure modes need different checks.",
+    ],
+    contribution:
+      "Contribution: evaluation workflows for contextual quality and explicit output constraints.",
+  },
+  {
+    id: "media",
+    title: "Progressive media rendering",
+    figure: "media",
+    paragraphs: [
+      "A preview is most useful while there is still time to act on it. I reworked an FFmpeg-based CPU rendering flow to expose HLS playlists and media segments incrementally, rather than waiting for the entire render.",
+      "This involved tradeoffs around CPU rendering, segment availability, and audio/video separation. The conceptual comparison below shows why progressive output can make a pipeline feel more responsive without claiming specific timings.",
+    ],
+    contribution:
+      "Contribution: progressive HLS previews and refinement of the audio/video rendering flow.",
+  },
+];
+---
+
+<BaseLayout title="At Amagi | R V Abhishek">
+  <PageIntro
+    label="Industry / Amagi"
+    title="Applied intelligence. Real-world constraints."
+    description="An internship at the intersection of computer vision, AI evaluation, and media engineering."
+  >
+    <div class="tags">
+      <span>Data Science Intern</span>
+      <span>June 2026–present</span>
+      <span>Bengaluru</span>
+    </div>
+  </PageIntro>
+  <nav class="chapter-nav" aria-label="Chapters">
+    <div class="container">
+      {chapters.map((c, i) => (
+        <a href={`#${c.id}`}>
+          0{i + 1} / {c.title}
+        </a>
+      ))}
+    </div>
+  </nav>
+  <details class="mobile-contents container">
+    <summary>On this page</summary>
+    <nav>
+      {chapters.map((c) => (
+        <a href={`#${c.id}`}>{c.title}</a>
+      ))}
+    </nav>
+  </details>
+  {chapters.map((c, i) => (
+    <section class="section chapter" id={c.id}>
+      <div class="container">
+        <div class="split">
+          <div>
+            <p class="eyebrow">Chapter 0{i + 1}</p>
+            <h2>{c.title}</h2>
+            {c.paragraphs.map((p) => (
+              <p>{p}</p>
+            ))}
+          </div>
+          <div class="chapter-figure">
+            <Diagram
+              kind={c.figure}
+              label="Illustrative workflow. No proprietary data or measured results shown."
+            />
+          </div>
+        </div>
+        {c.id === "evaluation" && (
+          <div class="panel reading" style="margin-top:32px">
+            <p class="eyebrow">A simple example / illustrative</p>
+            <h3>“A new chapter begins.”</h3>
+            <p>
+              21 characters, including spaces and punctuation. A length check
+              can verify the constraint; contextual review must still judge
+              whether the line fits.
+            </p>
+          </div>
+        )}
+        {c.id === "media" && <Simulation kind="media" />}
+        <p class="contribution">{c.contribution}</p>
+      </div>
+    </section>
+  ))}
+  <section class="section alt">
+    <div class="container reading">
+      <p class="eyebrow">A reflection</p>
+      <h2>The system around the model matters.</h2>
+      <p class="lede">
+        This work keeps bringing me back to the same habit: inspect the failure,
+        question the assumption, and improve what the evidence points to.
+      </p>
+      <div class="actions">
+        <a class="button" href={url("experience/")}>
+          ← All experience
+        </a>
+        <a class="button primary" href={url("projects/")}>
+          Explore the work →
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

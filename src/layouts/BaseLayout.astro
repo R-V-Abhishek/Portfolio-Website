@@ -1,196 +1,100 @@
 ---
-import '../styles/global.css';
-import Navbar from '../components/Navbar.astro';
-import Footer from '../components/Footer.astro';
-import MatrixRain from '../components/MatrixRain.astro';
-import CustomCursor from '../components/CustomCursor.astro';
-import CommandPalette from '../components/CommandPalette';
-import ProgressBar from '../components/ProgressBar.astro';
-
+import "../styles/global.css";
+import Navbar from "../components/Navbar.astro";
+import Footer from "../components/Footer.astro";
+import { SITE, url } from "../data/config";
 interface Props {
-	title: string;
-	description?: string;
-	rainOpacity?: number;
+  title?: string;
+  description?: string;
 }
-
 const {
-	title,
-	description = "Full-stack developer and Data Science enthusiast specializing in React, Python, and Machine Learning",
-	rainOpacity = 0.08,
+  title = `${SITE.owner} — Patterns, signals, and systems.`,
+  description = "Machine learning, music, and useful software. The work and explorations of R V Abhishek, Data Science Intern at Amagi, Bengaluru.",
 } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site);
 ---
 
 <!doctype html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="description" content={description} />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="generator" content={Astro.generator} />
-		<meta name="author" content="R V Abhishek" />
-		<meta name="keywords" content="Full Stack Developer, Data Science, Machine Learning, React, Python, Portfolio" />
-		
-		<!-- Open Graph / Social Media -->
-		<meta property="og:type" content="website" />
-		<meta property="og:title" content={title} />
-		<meta property="og:description" content={description} />
-		<meta property="og:url" content="https://rvabhishek.dev" />
-		
-		<title>{title}</title>
-	</head>
-	<body>
-		<ProgressBar />
-		<CustomCursor />
-		<MatrixRain opacity={rainOpacity} />
-		<Navbar />
-		<CommandPalette client:only="react" />
-		<main>
-			<slot />
-		</main>
-		<Footer />
-		
-		<script>
-			(function initLayoutEnhancements() {
-				function normalizePath(path: string): string {
-					return (path || '/').replace(/\/+$/, '') || '/';
-				}
-
-				function smoothScrollToHash(hash: string) {
-					if (!hash) return;
-					const target = document.querySelector<HTMLElement>(hash);
-					if (!target) return;
-
-					target.scrollIntoView({ behavior: 'auto', block: 'start' });
-				}
-
-				function bindGlobalHashHandler() {
-					if ((window as { __rvaHashHandlerBound?: boolean }).__rvaHashHandlerBound) return;
-					(window as { __rvaHashHandlerBound?: boolean }).__rvaHashHandlerBound = true;
-
-					document.addEventListener('click', (e: Event) => {
-						const target = e.target as Element | null;
-						if (!target) return;
-
-						const anchor = target.closest('a[href*="#"]') as HTMLAnchorElement | null;
-						if (!anchor) return;
-
-						const url = new URL(anchor.href, window.location.href);
-						if (!url.hash) return;
-
-						const samePath = normalizePath(url.pathname) === normalizePath(window.location.pathname);
-						if (!samePath) return;
-
-						e.preventDefault();
-						history.replaceState(null, '', url.hash);
-						smoothScrollToHash(url.hash);
-					});
-				}
-
-				function initScrollAnimations() {
-					const observerOptions = {
-						threshold: 0.1,
-						rootMargin: '0px 0px -100px 0px'
-					};
-
-					const globalRef = window as { __rvaObserver?: IntersectionObserver };
-					if (!globalRef.__rvaObserver) {
-						globalRef.__rvaObserver = new IntersectionObserver((entries: IntersectionObserverEntry[]) => {
-							entries.forEach((entry) => {
-								if (entry.isIntersecting) {
-									entry.target.classList.add('animate-in');
-								}
-							});
-						}, observerOptions);
-					}
-
-					document.querySelectorAll<HTMLElement>('.fade-in, .stagger-grid').forEach((el) => {
-						if (el.dataset.rvaObserved === 'true') return;
-						el.dataset.rvaObserved = 'true';
-						globalRef.__rvaObserver?.observe(el);
-					});
-				}
-
-				// ── Performance: Smart will-change ──────────────────────────
-				function initPerformanceOptimizations() {
-					// Only apply on hover-capable devices
-					if (!window.matchMedia('(hover: hover)').matches) return;
-
-					const hoverElements = document.querySelectorAll<HTMLElement>(
-						'.hoverable-card, .btn, .project-card, .skill-card'
-					);
-
-					hoverElements.forEach((el) => {
-						if (el.dataset.rvaWillChangeBound === 'true') return;
-						el.dataset.rvaWillChangeBound = 'true';
-
-						let timeoutId: ReturnType<typeof setTimeout> | null = null;
-
-						const applyWillChange = () => {
-							el.style.willChange = 'transform, box-shadow, background-color, border-color';
-						};
-
-						const removeWillChange = () => {
-							if (timeoutId) clearTimeout(timeoutId);
-							timeoutId = setTimeout(() => {
-								el.style.willChange = 'auto';
-							}, 450); // Match transition duration
-						};
-
-						el.addEventListener('mouseenter', applyWillChange);
-						el.addEventListener('mouseleave', removeWillChange);
-						el.addEventListener('focusin', applyWillChange);
-						el.addEventListener('focusout', removeWillChange);
-					});
-				}
-
-				// ── Lazy Loading Images ─────────────────────────────────────
-				function initLazyLoading() {
-					if (typeof IntersectionObserver === 'undefined') return;
-
-					const images = document.querySelectorAll<HTMLImageElement>('img[data-src], img[loading="lazy"]');
-					if (images.length === 0) return;
-
-					const imageObserver = new IntersectionObserver(
-						(entries, observer) => {
-							entries.forEach((entry) => {
-								if (entry.isIntersecting) {
-									const img = entry.target as HTMLImageElement;
-									const src = img.dataset.src || img.src;
-
-									if (src) {
-										img.src = src;
-										delete img.dataset.src;
-										img.classList.add('lazy-loaded');
-									}
-
-									observer.unobserve(img);
-								}
-							});
-						},
-						{
-							threshold: 0.01,
-							rootMargin: '50px 0px',
-						}
-					);
-
-					images.forEach((img) => imageObserver.observe(img));
-				}
-
-				function onPageReady() {
-					initScrollAnimations();
-					initPerformanceOptimizations();
-					initLazyLoading();
-
-					if (window.location.hash) {
-						setTimeout(() => smoothScrollToHash(window.location.hash), 60);
-					}
-				}
-
-				bindGlobalHashHandler();
-				onPageReady();
-				document.addEventListener('astro:page-load', onPageReady);
-			})();
-		</script>
-	</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" type="image/svg+xml" href={url("favicon.svg")} />
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title="Writing by R V Abhishek"
+      href={url("rss.xml")}
+    />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonical} />
+    <meta name="theme-color" content="#F8F9FF" />
+    <script is:inline>
+      (() => {
+        let theme;
+        try {
+          theme = localStorage.getItem("theme");
+        } catch {}
+        document.documentElement.dataset.theme =
+          theme === "light" || theme === "dark"
+            ? theme
+            : matchMedia("(prefers-color-scheme: dark)").matches
+              ? "dark"
+              : "light";
+      })();
+    </script>
+  </head>
+  <body id="top">
+    <a class="skip-link" href="#main">
+      Skip to content
+    </a>
+    <Navbar />
+    <main id="main" tabindex="-1">
+      <slot />
+    </main>
+    <Footer />
+    <script>
+      const themeButton = document.querySelector<HTMLButtonElement>(
+        "[data-theme-toggle]",
+      )!;
+      function syncTheme() {
+        const dark = document.documentElement.dataset.theme === "dark";
+        themeButton.setAttribute(
+          "aria-label",
+          `Switch to ${dark ? "light" : "dark"} theme`,
+        );
+        themeButton.textContent = dark ? "☀" : "☾";
+      }
+      syncTheme();
+      themeButton.addEventListener("click", () => {
+        const theme =
+          document.documentElement.dataset.theme === "dark" ? "light" : "dark";
+        document.documentElement.dataset.theme = theme;
+        try {
+          localStorage.setItem("theme", theme);
+        } catch {}
+        syncTheme();
+      });
+      matchMedia("(prefers-color-scheme: dark)").addEventListener(
+        "change",
+        (event) => {
+          let saved;
+          try {
+            saved = localStorage.getItem("theme");
+          } catch {}
+          if (!saved) {
+            document.documentElement.dataset.theme = event.matches
+              ? "dark"
+              : "light";
+            syncTheme();
+          }
+        },
+      );
+    </script>
+  </body>
 </html>

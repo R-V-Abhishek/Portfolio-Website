@@ -1,14 +1,66 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import ContactSection from '../components/Contact.astro';
-import PageHero from '../components/PageHero.astro';
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageIntro from "../components/design/PageIntro.astro";
+import Diagram from "../components/design/Diagram.astro";
+import { SITE } from "../data/config";
 ---
 
-<BaseLayout
-	title="Contact | R V Abhishek"
-	description="Get in touch with R V Abhishek — email, LinkedIn, GitHub, or send a message directly."
-	rainOpacity={0.10}
->
-	<PageHero title="Contact" subtitle="Let’s connect for opportunities and collaborations." breadcrumb="contact" />
-	<ContactSection />
+<BaseLayout title="Contact | R V Abhishek">
+  <PageIntro
+    label="Good things start with a conversation"
+    title="Let’s connect."
+    description="Have an interesting problem, a project to share, or a question about the work? I’d be glad to hear from you."
+  />
+  <section class="section">
+    <div class="container split">
+      <div>
+        <p class="eyebrow">A direct line</p>
+        <a class="contact-email" href={`mailto:${SITE.email}`}>
+          {SITE.email}
+        </a>
+        <div class="actions">
+          <button class="button" data-copy-email={SITE.email} hidden>
+            Copy email <span>⧉</span>
+          </button>
+        </div>
+        <p class="copy-feedback" role="status" aria-live="polite"></p>
+        <div class="contact-details">
+          <div>
+            <h2>Elsewhere</h2>
+            <a href={SITE.github}>GitHub ↗</a>
+            <a href={SITE.linkedin}>LinkedIn ↗</a>
+          </div>
+          <div>
+            <h2>Based in</h2>
+            <p>{SITE.location}</p>
+          </div>
+          <div>
+            <h2>Things I like talking about</h2>
+            <p>
+              Machine learning · Computer vision · Agentic AI · Useful software
+              · Carnatic music
+            </p>
+          </div>
+        </div>
+      </div>
+      <Diagram label="A connection begins with a signal." />
+    </div>
+  </section>
 </BaseLayout>
+<script>
+  const button =
+    document.querySelector<HTMLButtonElement>("[data-copy-email]")!;
+  if (navigator.clipboard) {
+    button.hidden = false;
+    button.addEventListener("click", async () => {
+      const status = document.querySelector(".copy-feedback")!;
+      try {
+        await navigator.clipboard.writeText(button.dataset.copyEmail!);
+        status.textContent = "Email copied to clipboard.";
+      } catch {
+        status.textContent =
+          "Copy unavailable. Select the email address above to copy it.";
+      }
+    });
+  }
+</script>

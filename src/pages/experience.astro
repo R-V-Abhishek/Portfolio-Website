@@ -1,14 +1,72 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import ExperienceSection from '../components/Experience.astro';
-import PageHero from '../components/PageHero.astro';
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageIntro from "../components/design/PageIntro.astro";
+import SectionHeading from "../components/design/SectionHeading.astro";
+import Diagram from "../components/design/Diagram.astro";
+import { experiences, pillars } from "../data/experience";
+import { SITE, url } from "../data/config";
 ---
 
-<BaseLayout
-	title="Experience & Certifications | R V Abhishek"
-	description="Work experience, leadership roles, and professional certifications by R V Abhishek."
-	rainOpacity={0.10}
->
-	<PageHero title="Experience" subtitle="Roles, leadership, and certifications." breadcrumb="experience" />
-	<ExperienceSection />
+<BaseLayout title="Experience & involvement | R V Abhishek">
+  <PageIntro
+    label="Practice, people & perspective"
+    title="Experience & involvement."
+    description="Learning through industry work, building with communities, and making room for music along the way."
+  />
+  <section class="section">
+    <div class="container">
+      <SectionHeading number="01" label="Industry" title="Amagi" />
+      <div class="split">
+        <div class="intro-copy">
+          <p class="eyebrow">June 2026–present / Bengaluru</p>
+          <h2>{SITE.role}</h2>
+          <p>
+            Working on computer vision, AI evaluation, and media systems. A
+            recurring theme: useful models depend on much more than the model
+            alone.
+          </p>
+          <div class="tags">
+            {pillars.map((p) => (
+              <span>{p.title}</span>
+            ))}
+          </div>
+          <a class="text-link" href={url("experience/amagi/")}>
+            Explore my Amagi experience →
+          </a>
+        </div>
+        <Diagram
+          kind="coverage"
+          label="Conceptual loop: coverage, training, evaluation, and iteration."
+        />
+      </div>
+    </div>
+  </section>
+  <section class="section">
+    <div class="container">
+      <SectionHeading
+        number="02"
+        label="Beyond the day-to-day"
+        title="Leadership & volunteering"
+      />
+      {experiences.map((e, i) => (
+        <article class="ledger-row">
+          <span class="mono">0{i + 1}</span>
+          <div>
+            <h3>{e.title}</h3>
+            <p>{e.organization}</p>
+            <span class="mono">{e.dates}</span>
+          </div>
+          <p>{e.summary}</p>
+        </article>
+      ))}
+      <div class="actions">
+        <a class="button" href={url("skills/")}>
+          Skills & Credentials →
+        </a>
+        <a class="button" href={url("about/")}>
+          More about me →
+        </a>
+      </div>
+    </div>
+  </section>
 </BaseLayout>

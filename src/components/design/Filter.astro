@@ -1,0 +1,88 @@
+---
+interface Props {
+  topics: string[];
+  label: string;
+  noun?: string;
+}
+const { topics, label, noun = "projects" } = Astro.props;
+---
+
+<div class="filters" role="group" aria-label={label} hidden>
+  {topics.map((topic, i) => (
+    <button
+      type="button"
+      data-topic={topic}
+      aria-pressed={i === 0 ? "true" : "false"}
+    >
+      {topic}
+    </button>
+  ))}
+</div>
+<p
+  class="filter-count"
+  data-filter-count
+  role="status"
+  aria-live="polite"
+  hidden
+></p>
+<div class="empty-state" data-filter-empty hidden>
+  <div class="empty-grid" aria-hidden="true">
+    ∅
+  </div>
+  <h3>No {noun} match this filter</h3>
+  <p>Try another topic to explore the collection.</p>
+  <button class="button" data-filter-reset>
+    Reset filters
+  </button>
+</div>
+<script>
+  document
+    .querySelectorAll<HTMLElement>("[data-filter-root]")
+    .forEach((root) => {
+      const controls = root.querySelector<HTMLElement>(".filters")!;
+      const buttons = [
+        ...controls.querySelectorAll<HTMLButtonElement>("[data-topic]"),
+      ];
+      const items = [
+        ...root.querySelectorAll<HTMLElement>("[data-filter-item]"),
+      ];
+      const count = root.querySelector<HTMLElement>("[data-filter-count]")!;
+      const empty = root.querySelector<HTMLElement>("[data-filter-empty]")!;
+      const render = () => {
+        const selected =
+          new URL(location.href).searchParams.get("topic") || "All";
+        buttons.forEach((button) =>
+          button.setAttribute(
+            "aria-pressed",
+            String(button.dataset.topic === selected),
+          ),
+        );
+        let visible = 0;
+        items.forEach((item) => {
+          const topics: string[] = JSON.parse(item.dataset.topics!);
+          item.hidden = selected !== "All" && !topics.includes(selected);
+          if (!item.hidden) visible++;
+        });
+        count.textContent = `${visible} ${root.dataset.filterNoun || "project"}${visible === 1 ? "" : "s"}${selected === "All" ? "" : ` · ${selected}`}`;
+        empty.hidden = visible !== 0;
+      };
+      const select = (topic: string) => {
+        const next = new URL(location.href);
+        topic === "All"
+          ? next.searchParams.delete("topic")
+          : next.searchParams.set("topic", topic);
+        history.pushState({}, "", next);
+        render();
+      };
+      buttons.forEach((button) =>
+        button.addEventListener("click", () => select(button.dataset.topic!)),
+      );
+      root
+        .querySelector("[data-filter-reset]")!
+        .addEventListener("click", () => select("All"));
+      controls.hidden = false;
+      count.hidden = false;
+      render();
+      window.addEventListener("popstate", render);
+    });
+</script>

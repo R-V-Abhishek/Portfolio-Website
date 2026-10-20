@@ -1,14 +1,161 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import AboutSection from '../components/About.astro';
-import PageHero from '../components/PageHero.astro';
+import BaseLayout from "../layouts/BaseLayout.astro";
+import SectionHeading from "../components/design/SectionHeading.astro";
+import Diagram from "../components/design/Diagram.astro";
+import Connection from "../components/design/Connection.astro";
+import { SITE, url } from "../data/config";
+import { capabilities } from "../data/skills";
+import { experiences } from "../data/experience";
 ---
 
-<BaseLayout
-	title="About | R V Abhishek"
-	description="Full-Stack Developer and Data Science enthusiast pursuing B.E. CSE at BMS College of Engineering, Bengaluru."
-	rainOpacity={0.12}
->
-	<PageHero title="About" subtitle="Background, journey, and what I’m building." breadcrumb="about" />
-	<AboutSection />
+<BaseLayout title="About | R V Abhishek">
+  <section class="hero">
+    <div class="container split">
+      <div>
+        <p class="eyebrow">A little about the person</p>
+        <h1>
+          An engineer’s curiosity.
+          <br />A musician’s <em>ear.</em>
+        </h1>
+        <p class="lede">
+          I’m Abhishek — a Computer Science & Data Science student at BMSCE, a
+          Data Science Intern at Amagi, and a Carnatic vocalist.
+        </p>
+        <p style="margin-top:22px">
+          I like understanding how things work, especially when the answer
+          connects fields that don’t usually sit beside each other. That
+          curiosity takes me from vision models and language systems to music,
+          media, and useful everyday software.
+        </p>
+      </div>
+      <figure class="portrait">
+        <img
+          src={url("illustrations/portrait.svg")}
+          width="400"
+          height="400"
+          alt="Illustrated portrait of Abhishek with side-swept hair, rectangular glasses, and a gentle smile"
+        />
+        <figcaption>A code-assembled portrait / Notionists</figcaption>
+      </figure>
+    </div>
+  </section>
+  <section class="section">
+    <div class="container">
+      <SectionHeading
+        number="01"
+        label="Questions worth following"
+        title="What keeps me curious"
+      />
+      <div class="grid-two">
+        {capabilities.map((c, i) => (
+          <div class="panel">
+            <p class="eyebrow">0{i + 1} / An ongoing exploration</p>
+            <h3>{c.title}</h3>
+            <p>{c.text}</p>
+            <a class="text-link" href={url(c.href)}>
+              {c.link} →
+            </a>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+  <section class="section alt" id="music">
+    <div class="container split">
+      <div class="intro-copy">
+        <p class="eyebrow">02 / Music, before the models</p>
+        <h2>
+          Structure, with room
+          <br />
+          for <em>expression.</em>
+        </h2>
+        <p>
+          I’ve performed 75+ Carnatic concerts across Karnataka and Tamil Nadu,
+          and taught myself percussion along the way. Listening closely is a
+          practice I carry into engineering too.
+        </p>
+        <p>
+          SwaraSync grew from that overlap: a music practice assistant combining
+          pitch tracking, Kalman smoothing, and a finite-state model of raga
+          grammar. It became a Top 6 National Finalist at the Unisys Innovation
+          Program.
+        </p>
+        <p class="quote">
+          A recurring pattern is an invitation to pay closer attention.
+        </p>
+        <a class="text-link" href={url("projects/?topic=Signal+Processing")}>
+          Explore SwaraSync →
+        </a>
+      </div>
+      <Diagram
+        kind="music"
+        label="Conceptual pitch and rhythm study, rather than measured music analysis."
+      />
+    </div>
+  </section>
+  <section class="section">
+    <div class="container">
+      <SectionHeading number="03" label="Foundations" title="Education" />
+      <div class="grid-two">
+        {SITE.education.map((e) => (
+          <div class="panel">
+            <p class="eyebrow">{e.dates}</p>
+            <h3>{e.name}</h3>
+            <p>{e.qualification}</p>
+            <p class="mono">{e.result}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+  <section class="section">
+    <div class="container">
+      <SectionHeading
+        number="04"
+        label="Building with people"
+        title="Community"
+        href={url("experience/")}
+        action="All involvement →"
+      />
+      <div class="grid-three">
+        {experiences.map((e) => (
+          <div class="panel">
+            <h3>{e.organization}</h3>
+            <p>
+              {e.title}
+              <br />
+              {e.dates}
+            </p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+  <section class="section">
+    <div class="container">
+      <SectionHeading
+        number="05"
+        label="A few personal notes"
+        title="Still learning."
+      />
+      <div class="grid-three">
+        <div class="notes">
+          <span class="eyebrow">Languages</span>
+          <p class="serif">Four ways to say hello.</p>
+          <p>Kannada, English, Hindi, and Tamil.</p>
+        </div>
+        <div class="notes">
+          <span class="eyebrow">A small personal project</span>
+          <p class="serif">Learning to read Tamil.</p>
+          <p>A self-taught connection to language and music.</p>
+        </div>
+        <div class="notes">
+          <span class="eyebrow">Across disciplines</span>
+          <p class="serif">Follow the interesting thread.</p>
+          <p>From a melody to a model, there is always more to understand.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  <Connection />
 </BaseLayout>
